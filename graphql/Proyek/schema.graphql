@@ -1,0 +1,48 @@
+type Proyek {
+    id: ID!
+    kode: String
+    nama: String
+    nama_sekolah: String
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+}
+
+input CreateProyekInput {
+    kode: String
+    nama: String
+    tanggal: String
+    nama_sekolah: String
+}
+
+input UpdateProyekInput {
+    kode: String
+    nama: String
+    tanggal: Date
+    nama_sekolah: String
+}
+
+extend type Mutation {
+    createProyek(input: CreateProyekInput! @spread): Proyek
+        @create(model: "App\\Models\\Proyek\\Proyek")
+
+    updateProyek(id: ID! @eq, input: UpdateProyekInput! @spread): Proyek
+        @update(model: "App\\Models\\Proyek\\Proyek")
+
+    deleteProyek(id: ID! @eq): Proyek
+        @delete(model: "App\\Models\\Proyek\\Proyek")
+
+    restoreProyek(id: ID!): Proyek
+        @field(resolver: "App\\GraphQL\\Mutations\\Proyek\\Mutation@restore")
+
+    forceDeleteProyek(id: ID!): Proyek
+        @field(resolver: "App\\GraphQL\\Mutations\\Proyek\\Mutation@forceDelete")
+}
+
+extend type Query {
+    allProyeks: [Proyek!]!
+        @all(model: "App\\Models\\Proyek\\Proyek")
+
+    getProyeks(search: String): [Proyek!]!
+        @field(resolver: "App\\GraphQL\\Queries\\Proyek\\Query@getProyeks")
+}
