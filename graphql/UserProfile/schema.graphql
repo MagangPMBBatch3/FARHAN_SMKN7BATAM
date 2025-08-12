@@ -1,0 +1,53 @@
+type UserProfile {
+    id: ID!
+    user_id: ID!
+    name_lengkap: String!
+    nip: String
+    alamat: String
+    no_telp: String
+    bagian_id: Int
+    jabatan_id: Int
+    status_id: Int
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+    bagian: Bagian @belongsTo
+    jabatan: Jabatan @belongsTo
+    status: Status @belongsTo
+}
+
+input CreateUserProfileInput {
+    user_id: ID!
+    name_lengkap: String!
+    nip: String
+    alamat: String
+    no_telp: String
+    bagian_id: Int
+    jabatan_id: Int
+    status_id: Int
+}
+
+extend type Query {
+    allUserProfiles: [UserProfile!]!
+        @all(model: "App\\Models\\UserProfile\\UserProfile")
+
+    userProfile(id: ID! @eq): UserProfile
+        @find(model: "App\\Models\\UserProfile\\UserProfile")
+}
+
+extend type Mutation {
+    createUserProfile(input: CreateUserProfileInput! @spread): UserProfile
+        @create(model: "App\\Models\\UserProfile\\UserProfile")
+
+    updateUserProfile(id: ID! @eq, input: UpdateUserProfileInput! @spread): UserProfile
+        @update(model: "App\\Models\\UserProfile\\UserProfile")
+
+    deleteUserProfile(id: ID! @eq): UserProfile
+        @delete(model: "App\\Models\\UserProfile\\UserProfile")
+
+    restoreUserProfile(id: ID!): UserProfile
+        @field(resolver: "App\\GraphQL\\UserProfile\\Mutations\\UserProfileMutation@restore")
+
+    forceDeleteUserProfile(id: ID!): UserProfile
+        @field(resolver: "App\\GraphQL\\UserProfile\\Mutations\\UserProfileMutation@forceDelete")
+}
