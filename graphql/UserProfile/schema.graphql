@@ -16,6 +16,12 @@ type UserProfile {
     status: Status @belongsTo
 }
 
+input UpdateUserProfileInput {
+    nip: String
+    alamat: String
+    no_telp: String
+}
+
 input CreateUserProfileInput {
     user_id: ID!
     name_lengkap: String!
