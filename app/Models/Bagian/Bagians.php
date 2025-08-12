@@ -11,10 +11,9 @@ class Bagians extends Model
     protected $fillable = [
         'nama',
     ];
-    protected $cast = [
+    protected $casts = [
         'created_at' => 'datetime',
-        'updated_at' => 'datetime'
+        'updated_at' => 'datetime',
     ];
-
     public $timestamps = false;
 }
