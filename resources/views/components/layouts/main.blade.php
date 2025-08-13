@@ -28,11 +28,10 @@
         </ul>
     </aside>
 
-    <!-- Main Content -->
     <div class="flex-1 p-6">
-        {{-- @include('components.navbar') --}}
+        @include('components.level.navbar')
         {{ $slot }}
     </div>
-
+    
 </body>
 </html>

@@ -1,4 +1,5 @@
 <x-layouts.auth title="Login">
+        <script src="https://cdn.tailwindcss.com"></script>
     <form action="/login" method="POST" class="bg-white p-6 rounded shadow-md w-96">
         @csrf
         <h1 class="text-2xl font-bold mb-4 text-center">Login</h1>

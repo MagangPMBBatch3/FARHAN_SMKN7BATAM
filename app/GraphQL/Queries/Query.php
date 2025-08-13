@@ -1,9 +1,10 @@
-<?php 
-namespace App\GraphQL\Proyek\Queries;
+<?php
+
+namespace App\GraphQL\Queries;
 
 use App\Models\Proyek\Proyek;
 
-class ProyekQuery
+class Query
 {
     public function getProyeks($_, array $args)
     {
@@ -15,6 +16,7 @@ class ProyekQuery
                   ->orWhere('kode', 'like', '%' . $args['search'] . '%')
                   ->orWhere('nama_sekolah', 'like', '%' . $args['search'] . '%');
         }
+
         return $query->get();
     }
 }

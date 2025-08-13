@@ -1,6 +1,6 @@
 <?php
 
-namespace App\GraphQL\UserProfile\UserProfile;
+namespace App\GraphQL\UserProfile\Mutations;
 use App\Models\UserProfile\UserProfile;
 
 class UserProfileMutation

@@ -44,5 +44,5 @@ extend type Query {
         @all(model: "App\\Models\\Proyek\\Proyek")
 
     getProyeks(search: String): [Proyek!]!
-        @field(resolver: "App\\GraphQL\\Queries\\Proyek\\Query@getProyeks")
+        @field(resolver: "App\\GraphQL\\Queries\\Query@getProyeks")
 }
