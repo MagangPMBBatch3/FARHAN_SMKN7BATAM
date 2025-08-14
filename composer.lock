@@ -6258,18 +6258,6 @@
         },
         {
             "name": "webonyx/graphql-php",
-<<<<<<< HEAD
-            "version": "v15.22.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webonyx/graphql-php.git",
-                "reference": "d160c99334edd34adbc38fbe80b6df455d1923f8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webonyx/graphql-php/zipball/d160c99334edd34adbc38fbe80b6df455d1923f8",
-                "reference": "d160c99334edd34adbc38fbe80b6df455d1923f8",
-=======
             "version": "v15.22.1",
             "source": {
                 "type": "git",
@@ -6280,7 +6268,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/webonyx/graphql-php/zipball/c7f84dd5b78654e6273c1aa231fa3a3307ea09fe",
                 "reference": "c7f84dd5b78654e6273c1aa231fa3a3307ea09fe",
->>>>>>> 0f5cd1e9858b04547f21f95c482d161349abe964
                 "shasum": ""
             },
             "require": {
@@ -6293,20 +6280,12 @@
                 "amphp/http-server": "^2.1",
                 "dms/phpunit-arraysubset-asserts": "dev-master",
                 "ergebnis/composer-normalize": "^2.28",
-<<<<<<< HEAD
-                "friendsofphp/php-cs-fixer": "3.84.0",
-=======
                 "friendsofphp/php-cs-fixer": "3.85.1",
->>>>>>> 0f5cd1e9858b04547f21f95c482d161349abe964
                 "mll-lab/php-cs-fixer-config": "5.11.0",
                 "nyholm/psr7": "^1.5",
                 "phpbench/phpbench": "^1.2",
                 "phpstan/extension-installer": "^1.1",
-<<<<<<< HEAD
-                "phpstan/phpstan": "2.1.20",
-=======
                 "phpstan/phpstan": "2.1.22",
->>>>>>> 0f5cd1e9858b04547f21f95c482d161349abe964
                 "phpstan/phpstan-phpunit": "2.0.7",
                 "phpstan/phpstan-strict-rules": "2.0.6",
                 "phpunit/phpunit": "^9.5 || ^10.5.21 || ^11",
@@ -6341,11 +6320,7 @@
             ],
             "support": {
                 "issues": "https://github.com/webonyx/graphql-php/issues",
-<<<<<<< HEAD
-                "source": "https://github.com/webonyx/graphql-php/tree/v15.22.0"
-=======
                 "source": "https://github.com/webonyx/graphql-php/tree/v15.22.1"
->>>>>>> 0f5cd1e9858b04547f21f95c482d161349abe964
             },
             "funding": [
                 {
@@ -6353,11 +6328,7 @@
                     "type": "open_collective"
                 }
             ],
-<<<<<<< HEAD
-            "time": "2025-07-28T12:28:41+00:00"
-=======
             "time": "2025-08-11T13:02:26+00:00"
->>>>>>> 0f5cd1e9858b04547f21f95c482d161349abe964
         }
     ],
     "packages-dev": [

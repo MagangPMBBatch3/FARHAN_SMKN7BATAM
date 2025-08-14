@@ -1,12 +1,21 @@
 type UserProfile {
     id: ID!
     user_id: ID!
+<<<<<<< HEAD
     name_lengkap: String!
     nip: String
     alamat: String
     no_telp: String
     bagian_id: Int
     jabatan_id: Int
+=======
+    nama_lengkap: String!
+    nrp: String
+    alamat: String
+    no_telp: String
+    bagian_id: Int
+    level_id: Int
+>>>>>>> 8c9f770
     status_id: Int
     created_at: DateTime
     updated_at: DateTime
@@ -16,6 +25,7 @@ type UserProfile {
     status: Status @belongsTo
 }
 
+<<<<<<< HEAD
 input CreateUserProfileInput {
     user_id: ID!
     name_lengkap: String!
@@ -24,6 +34,22 @@ input CreateUserProfileInput {
     no_telp: String
     bagian_id: Int
     jabatan_id: Int
+=======
+input UpdateUserProfileInput {
+    nrp: String
+    alamat: String
+    no_telp: String
+}
+
+input CreateUserProfileInput {
+    user_id: ID!
+    nama_lengkap: String!
+    nrp: String
+    alamat: String
+    no_telp: String
+    bagian_id: Int
+    level_id: Int
+>>>>>>> 8c9f770
     status_id: Int
 }
 

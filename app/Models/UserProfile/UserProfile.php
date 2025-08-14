@@ -10,6 +10,7 @@ class UserProfile extends Model
     use SoftDeletes;
 
     protected $table = 'users_profile';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'user_id',
@@ -26,7 +27,6 @@ class UserProfile extends Model
         'deleted_at' => 'datetime',
     ];
 
-    // Relasi
     public function user()
     {
         return $this->belongsTo(\App\Models\User\User::class);

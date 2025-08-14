@@ -19,6 +19,8 @@ extend type Query {
   allLevel: [Level!]!
     @all(model: "App\\Models\\Level\\Level")
 
+  allLevelArsip: [Level!]!
+    @field(resolver: "App\\GraphQL\\Level\\Queries\\LevelQuery@allArsip")
   # Cari Level berdasarkan ID
   level(id: ID! @eq(key: "id")): Level
     @find(model: "App\\Models\\Level\\Level")
