@@ -1,5 +1,5 @@
 <div id="modalEditLevel" class="hidden">
-    <div class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center flex">
+    <div class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center flex ">
         <div class="bg-white rounded-lg shadow-lg w-96 p-6">
             <h2 class="text-lg font-bold mb-4">Edit Bagian</h2>
             <form id="formEditLevel" onsubmit="updateLevel(); return false;">
