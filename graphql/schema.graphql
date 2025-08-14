@@ -9,3 +9,10 @@ scalar DateTime
 #import ./Pesan/Schema.graphql
 #import ./JenisPesan/Schema.graphql
 #import ./Status/Schema.graphql
+#import ./Aktivitas/Schema.graphql
+#import ./JamKerja/Schema.graphql
+#import ./JamPerTanggal/Schema.graphql
+#import ./Lembur/Schema.graphql
+#import ./ProyekUser/Schema.graphql
+#import ./Keterangan/Schema.graphql
+

@@ -12,9 +12,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [AuthController::class, 'dashboard']);
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Bagian
     Route::get('/bagian', [BagianController::class, 'index'])->name('bagian.index');
 
-    // Level
     Route::get('/level', [LevelController::class, 'index'])->name('level.index');
 });

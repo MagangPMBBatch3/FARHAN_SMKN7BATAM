@@ -1,0 +1,34 @@
+type Keterangan {
+  id: ID!
+  bagian_id: Int
+  proyek_id: Int
+  tanggal: Date
+  created_at: DateTime
+  updated_at: DateTime
+  deleted_at: DateTime
+  bagian: Bagian @belongsTo
+  proyek: Proyek @belongsTo
+}
+
+input CreateKeteranganInput {
+  bagian_id: Int
+  proyek_id: Int
+  tanggal: Date
+}
+
+input UpdateKeteranganInput {
+  bagian_id: Int
+  proyek_id: Int
+  tanggal: Date
+}
+
+extend type Query {
+  allKeterangan: [Keterangan!]! @all(model: "App\\Models\\Keterangan\\Keterangan")
+  keterangan(id: ID! @eq): Keterangan @find(model: "App\\Models\\Keterangan\\Keterangan")
+}
+
+extend type Mutation {
+  createKeterangan(input: CreateKeteranganInput! @spread): Keterangan @create
+  updateKeterangan(id: ID! @eq, input: UpdateKeteranganInput! @spread): Keterangan @update
+  deleteKeterangan(id: ID! @eq): Keterangan @delete
+}

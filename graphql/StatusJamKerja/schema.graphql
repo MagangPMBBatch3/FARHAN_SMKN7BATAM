@@ -1,0 +1,26 @@
+type StatusJamKerja {
+  id: ID!
+  nama: String!
+  created_at: DateTime
+  updated_at: DateTime
+  deleted_at: DateTime
+}
+
+input CreateStatusJamKerjaInput {
+  nama: String!
+}
+
+input UpdateStatusJamKerjaInput {
+  nama: String
+}
+
+extend type Query {
+  allStatusJamKerja: [StatusJamKerja!]! @all(model: "App\\Models\\StatusJamKerja\\StatusJamKerja")
+  statusJamKerja(id: ID! @eq): StatusJamKerja @find(model: "App\\Models\\StatusJamKerja\\StatusJamKerja")
+}
+
+extend type Mutation {
+  createStatusJamKerja(input: CreateStatusJamKerjaInput! @spread): StatusJamKerja @create
+  updateStatusJamKerja(id: ID! @eq, input: UpdateStatusJamKerjaInput! @spread): StatusJamKerja @update
+  deleteStatusJamKerja(id: ID! @eq): StatusJamKerja @delete
+}

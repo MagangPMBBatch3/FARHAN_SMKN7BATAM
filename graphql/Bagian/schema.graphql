@@ -39,4 +39,3 @@ type Mutation {
         @delete(model: "App\\Models\\Bagian\\Bagians")
 
 }
->>>>>>> 0f5cd1e9858b04547f21f95c482d161349abe964

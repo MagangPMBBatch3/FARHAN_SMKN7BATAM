@@ -1,0 +1,36 @@
+type JamPerTanggal {
+  id: ID!
+  users_profile_id: Int
+  proyek_id: Int
+  tanggal: Date
+  jam: Float
+  created_at: DateTime
+  updated_at: DateTime
+  deleted_at: DateTime
+  proyek: Proyek @belongsTo
+}
+
+input CreateJamPerTanggalInput {
+  users_profile_id: Int
+  proyek_id: Int
+  tanggal: Date
+  jam: Float
+}
+
+input UpdateJamPerTanggalInput {
+  users_profile_id: Int
+  proyek_id: Int
+  tanggal: Date
+  jam: Float
+}
+
+extend type Query {
+  allJamPerTanggal: [JamPerTanggal!]! @all(model: "App\\Models\\JamPerTanggal\\JamPerTanggal")
+  jamPerTanggal(id: ID! @eq): JamPerTanggal @find(model: "App\\Models\\JamPerTanggal\\JamPerTanggal")
+}
+
+extend type Mutation {
+  createJamPerTanggal(input: CreateJamPerTanggalInput! @spread): JamPerTanggal @create
+  updateJamPerTanggal(id: ID! @eq, input: UpdateJamPerTanggalInput! @spread): JamPerTanggal @update
+  deleteJamPerTanggal(id: ID! @eq): JamPerTanggal @delete
+}

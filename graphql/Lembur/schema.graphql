@@ -1,0 +1,33 @@
+type Lembur {
+  id: ID!
+  users_profile_id: Int
+  proyek_id: Int
+  tanggal: Date
+  created_at: DateTime
+  updated_at: DateTime
+  deleted_at: DateTime
+  proyek: Proyek @belongsTo
+}
+
+input CreateLemburInput {
+  users_profile_id: Int
+  proyek_id: Int
+  tanggal: Date
+}
+
+input UpdateLemburInput {
+  users_profile_id: Int
+  proyek_id: Int
+  tanggal: Date
+}
+
+extend type Query {
+  allLembur: [Lembur!]! @all(model: "App\\Models\\Lembur\\Lembur")
+  lembur(id: ID! @eq): Lembur @find(model: "App\\Models\\Lembur\\Lembur")
+}
+
+extend type Mutation {
+  createLembur(input: CreateLemburInput! @spread): Lembur @create
+  updateLembur(id: ID! @eq, input: UpdateLemburInput! @spread): Lembur @update
+  deleteLembur(id: ID! @eq): Lembur @delete
+}

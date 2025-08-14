@@ -1,0 +1,26 @@
+type ModeJamKerja {
+  id: ID!
+  nama: String!
+  created_at: DateTime
+  updated_at: DateTime
+  deleted_at: DateTime
+}
+
+input CreateModeJamKerjaInput {
+  nama: String!
+}
+
+input UpdateModeJamKerjaInput {
+  nama: String
+}
+
+extend type Query {
+  allModeJamKerja: [ModeJamKerja!]! @all(model: "App\\Models\\ModeJamKerja\\ModeJamKerja")
+  modeJamKerja(id: ID! @eq): ModeJamKerja @find(model: "App\\Models\\ModeJamKerja\\ModeJamKerja")
+}
+
+extend type Mutation {
+  createModeJamKerja(input: CreateModeJamKerjaInput! @spread): ModeJamKerja @create
+  updateModeJamKerja(id: ID! @eq, input: UpdateModeJamKerjaInput! @spread): ModeJamKerja @update
+  deleteModeJamKerja(id: ID! @eq): ModeJamKerja @delete
+}

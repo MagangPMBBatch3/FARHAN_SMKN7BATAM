@@ -1,0 +1,49 @@
+type JamKerja {
+  id: ID!
+  user_id: Int
+  tanggal: Date
+  jam_masuk: String
+  jam_keluar: String
+  created_at: DateTime
+  updated_at: DateTime
+  deleted_at: DateTime
+}
+
+input CreateJamKerjaInput {
+  user_id: Int
+  tanggal: Date
+  jam_masuk: String
+  jam_keluar: String
+}
+
+input UpdateJamKerjaInput {
+  user_id: Int
+  tanggal: Date
+  jam_masuk: String
+  jam_keluar: String
+}
+
+extend type Query {
+  allJamKerja: [JamKerja!]!
+    @all(model: "App\\Models\\JamKerja\\JamKerja")
+
+  jamKerja(id: ID! @eq): JamKerja
+    @find(model: "App\\Models\\JamKerja\\JamKerja")
+}
+
+extend type Mutation {
+  createJamKerja(input: CreateJamKerjaInput! @spread): JamKerja
+    @create(model: "App\\Models\\JamKerja\\JamKerja")
+
+  updateJamKerja(id: ID! @eq, input: UpdateJamKerjaInput! @spread): JamKerja
+    @update(model: "App\\Models\\JamKerja\\JamKerja")
+
+  deleteJamKerja(id: ID! @eq): JamKerja
+    @delete(model: "App\\Models\\JamKerja\\JamKerja")
+
+  restoreJamKerja(id: ID!): JamKerja
+    @field(resolver: "App\\GraphQL\\JamKerjaMutation\\Mutations\\JamKerjaMutation@restore")
+
+  forceDeleteJamKerja(id: ID!): JamKerja
+    @field(resolver: "App\\GraphQL\\JamKerjaMutation\\Mutations\\JamKerjaMutation@forceDelete")
+}

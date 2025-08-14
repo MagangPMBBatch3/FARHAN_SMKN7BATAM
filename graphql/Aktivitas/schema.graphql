@@ -1,0 +1,48 @@
+type Aktivitas {
+  id: ID!
+  bagian_id: Int
+  no_wbs: String
+  nama: String!
+  created_at: DateTime
+  updated_at: DateTime
+  deleted_at: DateTime
+  bagian: Bagian @belongsTo
+}
+
+input CreateAktivitasInput {
+  bagian_id: Int
+  no_wbs: String
+  nama: String!
+}
+
+input UpdateAktivitasInput {
+  id: ID!
+  bagian_id: Int
+  no_wbs: String
+  nama: String
+}
+
+extend type Query {
+  allAktivitas: [Aktivitas!]!
+    @all(model: "App\\Models\\Aktivitas\\Aktivitas")
+
+  aktivitas(id: ID! @eq): Aktivitas
+    @find(model: "App\\Models\\Aktivitas\\Aktivitas")
+}
+
+extend type Mutation {
+  createAktivitas(input: CreateAktivitasInput! @spread): Aktivitas!
+    @create(model: "App\\Models\\Aktivitas\\Aktivitas")
+
+  updateAktivitas(input: UpdateAktivitasInput! @spread): Aktivitas!
+    @update(model: "App\\Models\\Aktivitas\\Aktivitas")
+
+  deleteAktivitas(id: ID! @eq): Aktivitas
+    @delete(model: "App\\Models\\Aktivitas\\Aktivitas")
+
+  restoreAktivitas(id: ID!): Aktivitas
+    @field(resolver: "App\\GraphQL\\Aktivitas\\Mutations\\AktivitasMutation@restore")
+
+  forceDeleteAktivitas(id: ID!): Aktivitas
+    @field(resolver: "App\\GraphQL\\Aktivitas\\Mutations\\AktivitasMutation@forceDelete")
+}
