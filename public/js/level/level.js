@@ -124,10 +124,11 @@ async function searchLevel() {
     }
 
     let query = '';
-    if (isNaN(keyword)) {
+
+    if (!isNaN(keyword)) {
         query = `
         {
-            levelById(id: ${keyword}) {
+            level(id: ${keyword}) {
                 id
                 nama
             }
@@ -140,6 +141,7 @@ async function searchLevel() {
         });
         const data = await res.json();
         renderLevelTable(data.data.level ? [data.data.level] : [], 'dataLevel', true);
+
     } else {
         query = `
         {
@@ -158,5 +160,6 @@ async function searchLevel() {
         renderLevelTable(data.data.levelByNama, 'dataLevel', true);
     }
 }
+
 
 document.addEventListener('DOMContentLoaded', loadLevelData);

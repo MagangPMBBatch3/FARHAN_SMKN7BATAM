@@ -15,17 +15,14 @@ input UpdateLevelInput {
 }
 
 extend type Query {
-  # Ambil semua Level (yang belum dihapus)
   allLevel: [Level!]!
     @all(model: "App\\Models\\Level\\Level")
 
   allLevelArsip: [Level!]!
     @field(resolver: "App\\GraphQL\\Level\\Queries\\LevelQuery@allArsip")
-  # Cari Level berdasarkan ID
   level(id: ID! @eq(key: "id")): Level
     @find(model: "App\\Models\\Level\\Level")
 
-  # Cari Level berdasarkan nama (LIKE)
   levelByNama(nama: String! @where(operator: "like", key: "nama")): [Level!]!
     @all(model: "App\\Models\\Level\\Level")
 }
