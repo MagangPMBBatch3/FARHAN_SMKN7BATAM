@@ -6,28 +6,18 @@ async function loadData(queryType = "all") {
     if (!isNaN(searchValue)) {
         query = `
         query {
-            aktivitas(id: ${searchValue}){
+            status(id: ${searchValue}){
                 id
-                bagian_id
-                no_wbs
                 nama
-                bagian {
-                    nama
-                }
             }
         }
         `;
     } else {
         query = `
         query {
-            aktivitasByNama(nama: "%${searchValue}%"){
+            statusByNama(nama: "%${searchValue}%"){
                 id
-                bagian_id
-                no_wbs
                 nama
-                bagian {
-                    nama
-                }
             }
         }
         `;
@@ -35,14 +25,9 @@ async function loadData(queryType = "all") {
 } else {
     query = `
     query {
-        allAktivitas {
+        allStatus {
             id
-            bagian_id
-            no_wbs
             nama
-            bagian {
-                nama
-            }
         }        
     }
     `;
@@ -56,13 +41,17 @@ async function loadData(queryType = "all") {
     });
     const data = await res.json();
 
-    const tbody = document.getElementById('dataAktivitas');
+    const tbody = document.getElementById('dataStatus');
     tbody.innerHTML = '';
 
     let items = [];
-    if (data.data.allAktivitas) items = data.data.allAktivitas;
-    if (data.data.aktivitasByNama) items = data.data.aktivitasByNama;
-    if (data.data.aktivitas) items = [data.data.aktivitas];
+    if (data && data.data) {
+    if (data.data.allStatus) items = data.data.allStatus;
+    if (data.data.statusByNama) items = data.data.statusByNama;
+    if (data.data.status) items = [data.data.status];
+} else {
+    console.error("GraphQL Error:", data.errors || "Tidak ada data");
+}
 
     if (items.length === 0) {
         tbody.innerHTML = `<tr><td colspan="3" class="text-center p-2">Data tidak ditemukan</td></tr>`;
@@ -73,8 +62,6 @@ async function loadData(queryType = "all") {
     tbody.innerHTML += `
         <tr class="border-b">
             <td class="border px-2 py-1">${item.id}</td>
-            <td class="border px-2 py-1">${item.bagian ? item.bagian.nama : '-'}</td>
-            <td class="border px-2 py-1">${item.no_wbs}</td>
             <td class="border px-2 py-1">${item.nama}</td>
             <td class="border px-2 py-1">
                 <button onclick="openEditModal(${item.id}, '${item.nama}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
@@ -86,7 +73,7 @@ async function loadData(queryType = "all") {
 
 }
 
-function searchBagian() {
+function searchStatus() {
     loadData("search");
 }
 
@@ -94,7 +81,7 @@ async function hapusBagian(id) {
     if (!confirm("Yakin ingin menghapus data ini?")) return;
     const mutation = `
         mutation {
-            deleteUser(id: ${id}) {
+            deleteStatus(id: ${id}) {
                 id
             }
         }

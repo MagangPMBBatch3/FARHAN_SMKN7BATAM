@@ -6,28 +6,19 @@ async function loadData(queryType = "all") {
     if (!isNaN(searchValue)) {
         query = `
         query {
-            aktivitas(id: ${searchValue}){
+            user(id: ${searchValue}){
                 id
-                bagian_id
-                no_wbs
-                nama
-                bagian {
-                    nama
-                }
+                name
             }
         }
         `;
     } else {
         query = `
         query {
-            aktivitasByNama(nama: "%${searchValue}%"){
+            userByName(name: "%${searchValue}%"){
                 id
-                bagian_id
-                no_wbs
-                nama
-                bagian {
-                    nama
-                }
+                name
+                email
             }
         }
         `;
@@ -35,14 +26,10 @@ async function loadData(queryType = "all") {
 } else {
     query = `
     query {
-        allAktivitas {
+        allUsers {
             id
-            bagian_id
-            no_wbs
-            nama
-            bagian {
-                nama
-            }
+            name
+            email
         }        
     }
     `;
@@ -56,13 +43,13 @@ async function loadData(queryType = "all") {
     });
     const data = await res.json();
 
-    const tbody = document.getElementById('dataAktivitas');
+    const tbody = document.getElementById('dataUser');
     tbody.innerHTML = '';
 
     let items = [];
-    if (data.data.allAktivitas) items = data.data.allAktivitas;
-    if (data.data.aktivitasByNama) items = data.data.aktivitasByNama;
-    if (data.data.aktivitas) items = [data.data.aktivitas];
+    if (data.data.allUsers) items = data.data.allUsers;
+    if (data.data.userByNama) items = data.data.userByNama;
+    if (data.data.user) items = [data.data.user];
 
     if (items.length === 0) {
         tbody.innerHTML = `<tr><td colspan="3" class="text-center p-2">Data tidak ditemukan</td></tr>`;
@@ -73,9 +60,8 @@ async function loadData(queryType = "all") {
     tbody.innerHTML += `
         <tr class="border-b">
             <td class="border px-2 py-1">${item.id}</td>
-            <td class="border px-2 py-1">${item.bagian ? item.bagian.nama : '-'}</td>
-            <td class="border px-2 py-1">${item.no_wbs}</td>
-            <td class="border px-2 py-1">${item.nama}</td>
+            <td class="border px-2 py-1">${item.name}</td>
+            <td class="border px-2 py-1">${item.email}</td>
             <td class="border px-2 py-1">
                 <button onclick="openEditModal(${item.id}, '${item.nama}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
                 <button onclick="hapusBagian(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Hapus</button>
@@ -86,7 +72,7 @@ async function loadData(queryType = "all") {
 
 }
 
-function searchBagian() {
+function searchUser() {
     loadData("search");
 }
 

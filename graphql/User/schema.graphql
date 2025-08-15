@@ -30,6 +30,10 @@ extend type Query {
 
   userByEmail(email: String! @where(operator: "like", key: "email")): [User!]!
     @all(model: "App\\Models\\User\\User")
+
+  userByName(name: String! @where(operator: "like", key: "name")): [User!]!
+    @all(model: "App\\Models\\User\\User")  
+    
 }
 
 extend type Mutation {

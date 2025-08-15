@@ -1,26 +1,44 @@
 type JamKerja {
   id: ID!
-  user_id: Int
-  tanggal: Date
-  jam_masuk: String
-  jam_keluar: String
+  users_profile_id: Int!
+  no_wbs: String!
+  kode_proyek: String!
+  proyek_id: Int!
+  aktivitas_id: Int!
+  tanggal: String!
+  jumlah_jam: Float!
+  keterangan: String
+  status_id: Int!
+  mode_id: Int!
   created_at: DateTime
   updated_at: DateTime
   deleted_at: DateTime
 }
 
 input CreateJamKerjaInput {
-  user_id: Int
-  tanggal: Date
-  jam_masuk: String
-  jam_keluar: String
+  users_profile_id: Int!
+  no_wbs: String!
+  kode_proyek: String!
+  proyek_id: Int!
+  aktivitas_id: Int!
+  tanggal: String!
+  jumlah_jam: Float!
+  keterangan: String
+  status_id: Int!
+  mode_id: Int!
 }
 
 input UpdateJamKerjaInput {
-  user_id: Int
-  tanggal: Date
-  jam_masuk: String
-  jam_keluar: String
+  users_profile_id: Int
+  no_wbs: String
+  kode_proyek: String
+  proyek_id: Int
+  aktivitas_id: Int
+  tanggal: String
+  jumlah_jam: Float
+  keterangan: String
+  status_id: Int
+  mode_id: Int
 }
 
 extend type Query {
@@ -29,6 +47,9 @@ extend type Query {
 
   jamKerja(id: ID! @eq): JamKerja
     @find(model: "App\\Models\\JamKerja\\JamKerja")
+    
+  allJamKerjaArsip: [JamKerja!]!
+    @field(resolver: "App\\GraphQL\\JamKerja\\Queries\\JamKerjaQuery@allArsip")
 }
 
 extend type Mutation {
@@ -42,8 +63,8 @@ extend type Mutation {
     @delete(model: "App\\Models\\JamKerja\\JamKerja")
 
   restoreJamKerja(id: ID!): JamKerja
-    @field(resolver: "App\\GraphQL\\JamKerjaMutation\\Mutations\\JamKerjaMutation@restore")
+    @field(resolver: "App\\GraphQL\\JamKerja\\Mutations\\JamKerjaMutation@restore")
 
   forceDeleteJamKerja(id: ID!): JamKerja
-    @field(resolver: "App\\GraphQL\\JamKerjaMutation\\Mutations\\JamKerjaMutation@forceDelete")
+    @field(resolver: "App\\GraphQL\\JamKerja\\Mutations\\JamKerjaMutation@forceDelete")
 }

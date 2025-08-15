@@ -6,28 +6,18 @@ async function loadData(queryType = "all") {
     if (!isNaN(searchValue)) {
         query = `
         query {
-            aktivitas(id: ${searchValue}){
+            modeJamKerja(id: "${searchValue}"){
                 id
-                bagian_id
-                no_wbs
                 nama
-                bagian {
-                    nama
-                }
             }
         }
         `;
     } else {
         query = `
         query {
-            aktivitasByNama(nama: "%${searchValue}%"){
+            modeJamKerja(search: "%${searchValue}%"){
                 id
-                bagian_id
-                no_wbs
                 nama
-                bagian {
-                    nama
-                }
             }
         }
         `;
@@ -35,14 +25,9 @@ async function loadData(queryType = "all") {
 } else {
     query = `
     query {
-        allAktivitas {
+        allModeJamKerja {
             id
-            bagian_id
-            no_wbs
             nama
-            bagian {
-                nama
-            }
         }        
     }
     `;
@@ -56,16 +41,20 @@ async function loadData(queryType = "all") {
     });
     const data = await res.json();
 
-    const tbody = document.getElementById('dataAktivitas');
+    const tbody = document.getElementById('dataModeJamKerja');
     tbody.innerHTML = '';
 
     let items = [];
-    if (data.data.allAktivitas) items = data.data.allAktivitas;
-    if (data.data.aktivitasByNama) items = data.data.aktivitasByNama;
-    if (data.data.aktivitas) items = [data.data.aktivitas];
+    if (data && data.data) {
+    if (data.data.allModeJamKerja) items = data.data.allModeJamKerja;
+    if (data.data.modeJamKerjaByNama) items = data.data.modeJamKerjaByNama;
+    if (data.data.modeJamKerja) items = [data.data.modeJamKerja];
+} else {
+    console.error("GraphQL Error:", data.errors || "Tidak ada data");
+}
 
     if (items.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="3" class="text-center p-2">Data tidak ditemukan</td></tr>`;
+        tbody.innerHTML = console.log(searchValue + `<tr><td colspan="3" class="text-center p-2">Data tidak ditemukan</td></tr>`);
     }
 
     items.forEach(item => {
@@ -73,8 +62,6 @@ async function loadData(queryType = "all") {
     tbody.innerHTML += `
         <tr class="border-b">
             <td class="border px-2 py-1">${item.id}</td>
-            <td class="border px-2 py-1">${item.bagian ? item.bagian.nama : '-'}</td>
-            <td class="border px-2 py-1">${item.no_wbs}</td>
             <td class="border px-2 py-1">${item.nama}</td>
             <td class="border px-2 py-1">
                 <button onclick="openEditModal(${item.id}, '${item.nama}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
@@ -86,7 +73,7 @@ async function loadData(queryType = "all") {
 
 }
 
-function searchBagian() {
+function searchProyek() {
     loadData("search");
 }
 
@@ -94,7 +81,7 @@ async function hapusBagian(id) {
     if (!confirm("Yakin ingin menghapus data ini?")) return;
     const mutation = `
         mutation {
-            deleteUser(id: ${id}) {
+            deleteProyek(id: ${id}) {
                 id
             }
         }

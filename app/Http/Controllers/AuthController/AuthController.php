@@ -40,4 +40,24 @@ class AuthController {
         $request->session()->regenerateToken();
         return redirect('/login');
     }
+    public function user()
+    {
+        return view('components.user.index');
+    }
+    public function proyek()
+    {
+        return view('components.proyek.index');
+    }
+    public function status()
+    {
+        return view('components.status.index');
+    }
+    public function mode()
+    {
+        return view('components.mode.index');
+    }
+    public function jam()
+    {
+        return view('components.jam.index');
+    }
 }
