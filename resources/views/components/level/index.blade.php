@@ -3,7 +3,7 @@
         <h1 class="text-2x1 font-bold mb-4">Data Level</h1>
 
         <div class="flex justify-between mb-4">
-            <input type="text" id="searchLevel" placeholder="Cari ID atau Nama..." class="border p-2 rounded w-64">
+            <input type="text" id="searchLevel" placeholder="Cari ID atau Nama..." class="border p-2 rounded w-64" oninput="searchLevel()">
             <button onclick="openAddLevelModal()" class="bg-blue-500 text-white px-4 py-2 rounded">Tambah Data</button>
         </div>
 

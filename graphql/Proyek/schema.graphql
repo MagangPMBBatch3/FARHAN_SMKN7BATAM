@@ -3,6 +3,7 @@ type Proyek {
     kode: String
     nama: String
     nama_sekolah: String
+    tanggal: String
     created_at: DateTime
     updated_at: DateTime
     deleted_at: DateTime
