@@ -9,15 +9,18 @@ function closeAddModal(){
 
 async function create(){
     const nama = document.getElementById('addNama').value;
+    const email = document.getElementById('addEmail').value;
     if (!nama) return alert("Nama tidak boleh kosong");
+    if (!email) return alert("Email tidak boleh kosong");
 
     const mutation = `
 
-    mutation {
-    createStatus(input: { nama: "${nama}"})
-            id
-            nama
-            }
+        mutation {
+        createUser(input: { nama: "${nama}", email: "${email}"})
+                id
+                nama
+                email
+                }
     `;
 
     await fetch('/graphql', {
@@ -26,5 +29,5 @@ async function create(){
         body: JSON.stringify({query: mutation})
     });
     closeAddModal();
-    loadData();
+    loadUserData();
 }

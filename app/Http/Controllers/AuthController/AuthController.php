@@ -60,4 +60,24 @@ class AuthController {
     {
         return view('components.jam.index');
     }
+    public function lembur()
+    {
+        return view('components.lembur.index');
+    }
+    public function pesan()
+    {
+        return view('components.pesan.index');
+    }
+    public function keterangan()
+    {
+        return view('components.keterangan.index');
+    }
+    public function jenis()
+    {
+        return view('components.jenis.index');
+    }
+    public function proyekUser()
+    {
+        return view('components.proyekUser.index');
+    }
 }

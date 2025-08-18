@@ -2,7 +2,7 @@ type Keterangan {
   id: ID!
   bagian_id: Int
   proyek_id: Int
-  tanggal: Date
+  tanggal: String
   created_at: DateTime
   updated_at: DateTime
   deleted_at: DateTime
@@ -13,13 +13,13 @@ type Keterangan {
 input CreateKeteranganInput {
   bagian_id: Int
   proyek_id: Int
-  tanggal: Date
+  tanggal: String
 }
 
 input UpdateKeteranganInput {
   bagian_id: Int
   proyek_id: Int
-  tanggal: Date
+  tanggal: String
 }
 
 extend type Query {

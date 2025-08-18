@@ -1,98 +1,185 @@
-async function loadData(queryType = "all") {
-    let query;
-    const searchValue = document.getElementById('search').value.trim();
-
-    if (queryType === "search" && searchValue) {
-    if (!isNaN(searchValue)) {
-        query = `
-        query {
-            user(id: ${searchValue}){
-                id
-                name
-            }
+// ==========================
+// Load Data User
+// ==========================
+async function loadUserData() {
+    // Query data aktif
+    const queryAktif = `
+      query {
+        allUsers{
+          id
+          name
+          email
         }
+      }
+    `;
+
+    const resAktif = await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: queryAktif })
+    });
+    const dataAktif = await resAktif.json();
+    renderUserTable(dataAktif?.data?.allUsers || [], 'dataUser', true);
+
+    // Query data arsip
+    const queryArsip = `
+      query {
+        allUserArsip {
+          id
+          name
+          email
+          deleted_at
+        }
+      }
+    `;
+
+    const resArsip = await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: queryArsip })
+    });
+    const dataArsip = await resArsip.json();
+    console.log(dataArsip);
+    renderUserTable(dataArsip?.data?.allUserArsip || [], 'dataUserArsip', false);
+}
+
+// ==========================
+// Render Table User
+// ==========================
+function renderUserTable(userList, tableId, isActive) {
+    const tbody = document.getElementById(tableId);
+    tbody.innerHTML = '';
+
+    if (!userList.length) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="4" class="text-center text-gray-500 p-3">Tidak ada data</td>
+            </tr>
         `;
-    } else {
+        return;
+    }
+
+    userList.forEach(item => {
+        let actions = '';
+        if (isActive) {
+            actions = `
+                <button onclick="openEditModal(${item.id}, '${item.name}', '${item.email}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+                <button onclick="archiveUser(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
+            `;
+        } else {
+            actions = `
+                <button onclick="restoreUser(${item.id})" class="bg-green-500 text-white px-2 py-1 rounded">Restore</button>
+                <button onclick="forceDeleteUser(${item.id})" class="bg-red-700 text-white px-2 py-1 rounded">Hapus Permanen</button>
+            `;
+        }
+
+        tbody.innerHTML += `
+            <tr>
+                <td class="border p-2">${item.id}</td>
+                <td class="border p-2">${item.name}</td>
+                <td class="border p-2">${item.email}</td>
+                <td class="border p-2">${actions}</td>
+            </tr>
+        `;
+    });
+}
+
+// ==========================
+// Archive, Restore, Force Delete
+// ==========================
+async function archiveUser(id) {
+    if (!confirm('Pindahkan ke arsip?')) return;
+    const mutation = `
+        mutation {
+            deleteUser(id: ${id}) { id }
+        }
+    `;
+    await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: mutation })
+    });
+    loadUserData();
+}
+
+async function restoreUser(id) {
+    if (!confirm('Kembalikan dari arsip?')) return;
+    const mutation = `
+        mutation {
+            restoreUser(id: ${id}) { id }
+        }
+    `;
+    await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: mutation })
+    });
+    loadUserData();
+}
+
+async function forceDeleteUser(id) {
+    if (!confirm('Hapus permanen? Data tidak bisa dikembalikan')) return;
+    const mutation = `
+        mutation {
+            forceDeleteUser(id: ${id}) { id }
+        }
+    `;
+    await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: mutation })
+    });
+    loadUserData();
+}
+
+// ==========================
+// Search User
+// ==========================
+async function search() {
+    const keyword = document.getElementById('search').value.trim();
+    if (!keyword) {
+        loadUserData();
+        return;
+    }
+
+    let query = '';
+
+    if (!isNaN(keyword)) {
         query = `
-        query {
-            userByName(name: "%${searchValue}%"){
+        {
+            user(id: ${keyword}) {
                 id
                 name
                 email
             }
         }
         `;
-    }
-} else {
-    query = `
-    query {
-        allUsers {
-            id
-            name
-            email
-        }        
-    }
-    `;
-}
+        const res = await fetch('/graphql', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query })
+        });
+        const data = await res.json();
+        renderUserTable(data.data.user ? [data.data.user] : [], 'dataUser', true);
 
-
-    const res = await fetch('/graphql', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ query })
-    });
-    const data = await res.json();
-
-    const tbody = document.getElementById('dataUser');
-    tbody.innerHTML = '';
-
-    let items = [];
-    if (data.data.allUsers) items = data.data.allUsers;
-    if (data.data.userByNama) items = data.data.userByNama;
-    if (data.data.user) items = [data.data.user];
-
-    if (items.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="3" class="text-center p-2">Data tidak ditemukan</td></tr>`;
-    }
-
-    items.forEach(item => {
-    if (!item) return;
-    tbody.innerHTML += `
-        <tr class="border-b">
-            <td class="border px-2 py-1">${item.id}</td>
-            <td class="border px-2 py-1">${item.name}</td>
-            <td class="border px-2 py-1">${item.email}</td>
-            <td class="border px-2 py-1">
-                <button onclick="openEditModal(${item.id}, '${item.nama}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
-                <button onclick="hapusBagian(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Hapus</button>
-            </td>
-        </tr>
-    `;
-});
-
-}
-
-function searchUser() {
-    loadData("search");
-}
-
-async function hapusBagian(id) {
-    if (!confirm("Yakin ingin menghapus data ini?")) return;
-    const mutation = `
-        mutation {
-            deleteUser(id: ${id}) {
+    } else {
+        query = `
+        {
+            userByName(name: "%${keyword}%") {
                 id
+                name
+                email
             }
         }
-    `;
-
-    await fetch("/graphql", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: mutation })
-    });
-
-    loadData();
+        `;
+        const res = await fetch('/graphql', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query })
+        });
+        const data = await res.json();
+        renderUserTable(data.data.userByName || [], 'dataUser', true);
+    }
 }
 
-document.addEventListener("DOMContentLoaded", () => loadData());
+document.addEventListener('DOMContentLoaded', loadUserData);

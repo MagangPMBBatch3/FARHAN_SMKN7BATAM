@@ -1,13 +1,17 @@
-// ==========================
-// Load Data Status
-// ==========================
-async function loadStatusData() {
-    // Query data aktif
+async function loadKeteranganData() {
     const queryAktif = `
       query {
-        allStatus {
+        allKeterangan {
           id
-          nama
+          bagian_id
+          proyek_id
+          tanggal
+          bagian {
+            nama
+          }
+          proyek {
+            nama
+          }
         }
       }
     `;
@@ -18,14 +22,15 @@ async function loadStatusData() {
         body: JSON.stringify({ query: queryAktif })
     });
     const dataAktif = await resAktif.json();
-    renderStatusTable(dataAktif?.data?.allStatus || [], 'dataStatus', true);
+    renderKeteranganTable(dataAktif?.data?.allKeterangan || [], 'dataKeterangan', true);
 
-    // Query data arsip
     const queryArsip = `
       query {
-        allStatusArsip {
+        allKeteranganArsip {
           id
-          nama
+          bagian_id
+          proyek_id
+          tanggal
           deleted_at
         }
       }
@@ -37,104 +42,99 @@ async function loadStatusData() {
         body: JSON.stringify({ query: queryArsip })
     });
     const dataArsip = await resArsip.json();
-    renderStatusTable(dataArsip?.data?.allStatusArsip || [], 'dataStatusArsip', false);
+    renderKeteranganTable(dataArsip?.data?.allKeteranganArsip || [], 'dataKeteranganArsip', false);
 }
 
-// ==========================
-// Render Table Status
-// ==========================
-function renderStatusTable(statusList, tableId, isActive) {
+function renderKeteranganTable(keterangan, tableId, isActive) {
     const tbody = document.getElementById(tableId);
     tbody.innerHTML = '';
 
-    if (!statusList.length) {
+    if (!keterangan.length) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="3" class="text-center text-gray-500 p-3">Tidak ada data</td>
+                <td colspan="5" class="text-center text-gray-500 p-3">Tidak ada data</td>
             </tr>
         `;
         return;
     }
 
-    statusList.forEach(item => {
+    keterangan.forEach(item => {
         let actions = '';
         if (isActive) {
             actions = `
-                <button onclick="openEditModal(${item.id}, '${item.nama}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
-                <button onclick="archiveStatus(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
+                <button onclick="openEditKeteranganModal(${item.id})" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+                <button onclick="archiveKeterangan(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
             `;
         } else {
             actions = `
-                <button onclick="restoreStatus(${item.id})" class="bg-green-500 text-white px-2 py-1 rounded">Restore</button>
-                <button onclick="forceDeleteStatus(${item.id})" class="bg-red-700 text-white px-2 py-1 rounded">Hapus Permanen</button>
+                <button onclick="restoreKeterangan(${item.id})" class="bg-green-500 text-white px-2 py-1 rounded">Restore</button>
+                <button onclick="forceDeleteKeterangan(${item.id})" class="bg-red-700 text-white px-2 py-1 rounded">Hapus Permanen</button>
             `;
         }
 
         tbody.innerHTML += `
             <tr>
                 <td class="border p-2">${item.id}</td>
-                <td class="border p-2">${item.nama}</td>
+                <td class="border p-2">${item.bagian?.nama || item.bagian_id}</td>
+                <td class="border p-2">${item.proyek?.nama || item.proyek_id}</td>
+                <td class="border p-2">${item.tanggal}</td>
                 <td class="border p-2">${actions}</td>
             </tr>
         `;
     });
 }
 
-// ==========================
-// Archive, Restore, Force Delete
-// ==========================
-async function archiveStatus(id) {
+// === CRUD GraphQL untuk Keterangan ===
+async function archiveKeterangan(id) {
     if (!confirm('Pindahkan ke arsip?')) return;
     const mutation = `
-        mutation {
-            deleteStatus(id: ${id}) { id }
-        }
+    mutation {
+      deleteKeterangan(id: ${id}) { id }
+    }
     `;
     await fetch('/graphql', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: mutation })
     });
-    loadStatusData();
+    loadKeteranganData();
 }
 
-async function restoreStatus(id) {
+async function restoreKeterangan(id) {
     if (!confirm('Kembalikan dari arsip?')) return;
     const mutation = `
-        mutation {
-            restoreStatus(id: ${id}) { id }
-        }
+    mutation {
+      restoreKeterangan(id: ${id}) { id }
+    }
     `;
     await fetch('/graphql', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: mutation })
     });
-    loadStatusData();
+    loadKeteranganData();
 }
 
-async function forceDeleteStatus(id) {
+async function forceDeleteKeterangan(id) {
     if (!confirm('Hapus permanen? Data tidak bisa dikembalikan')) return;
     const mutation = `
-        mutation {
-            forceDeleteStatus(id: ${id}) { id }
-        }
+    mutation {
+      forceDeleteKeterangan(id: ${id}) { id }
+    }
     `;
     await fetch('/graphql', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: mutation })
     });
-    loadStatusData();
+    loadKeteranganData();
 }
 
-// ==========================
-// Search Status
-// ==========================
-async function searchStatus() {
-    const keyword = document.getElementById('searchStatus').value.trim();
+// === Search ===
+async function searchKeterangan() {
+    const keyword = document.getElementById('searchKeterangan').value.trim();
     if (!keyword) {
-        loadStatusData();
+        loadKeteranganData();
         return;
     }
 
@@ -143,9 +143,11 @@ async function searchStatus() {
     if (!isNaN(keyword)) {
         query = `
         {
-            status(id: ${keyword}) {
+            keterangan(id: ${keyword}) {
                 id
-                nama
+                bagian_id
+                proyek_id
+                tanggal
             }
         }
         `;
@@ -155,14 +157,16 @@ async function searchStatus() {
             body: JSON.stringify({ query })
         });
         const data = await res.json();
-        renderStatusTable(data.data.status ? [data.data.status] : [], 'dataStatus', true);
+        renderKeteranganTable(data.data.keterangan ? [data.data.keterangan] : [], 'dataKeterangan', true);
 
     } else {
         query = `
         {
-            statusByNama(nama: "%${keyword}%") {
+            keteranganByNama(nama: "%${keyword}%") {
                 id
-                nama
+                bagian_id
+                proyek_id
+                tanggal
             }
         }
         `;
@@ -172,7 +176,8 @@ async function searchStatus() {
             body: JSON.stringify({ query })
         });
         const data = await res.json();
-        renderStatusTable(data.data.statusByNama || [], 'dataStatus', true);
+        renderKeteranganTable(data.data.keteranganByNama || [], 'dataKeterangan', true);
     }
 }
-document.addEventListener('DOMContentLoaded', loadStatusData);
+
+document.addEventListener('DOMContentLoaded', loadKeteranganData);
