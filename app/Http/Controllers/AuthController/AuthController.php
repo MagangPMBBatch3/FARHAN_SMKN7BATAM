@@ -80,4 +80,8 @@ class AuthController {
     {
         return view('components.proyekUser.index');
     }
+    public function tanggal()
+    {
+        return view('components.tanggal.index');
+    }
 }

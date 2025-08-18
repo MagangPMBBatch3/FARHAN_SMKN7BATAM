@@ -4,7 +4,7 @@
 
         <div class="flex justify-between mb-4">
             <input type="text" id="search" placeholder="Cari Id atau Nama..."
-                class="border p-2 rounded w-64" oninput="searchProyek()">
+                class="border p-2 rounded w-64" oninput="search()">
             <button onclick="openAddModal()" class="bg-blue-500 text-white px-4 py-2 rounded">Tambah Data</button>
         </div>
         <div class="h-96 overflow-y-auto">

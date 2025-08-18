@@ -51,6 +51,7 @@
                 <li><a href="/jam-kerja" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="clock"></i> Jam Kerja</a></li>
                 <li><a href="/lembur" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="watch"></i> Lembur</a></li>
                 <li><a href="/mode" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="clock"></i> Mode Kerja</a></li>
+                <li><a href="/jam-per-tanggal" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="clock"></i> Jam Per Tanggal</a></li>
                 <!-- Pesan -->
                 <li class="mt-4 text-xs uppercase text-gray-300 font-semibold">Pesan</li>
                 <li><a href="/pesan" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="message-square"></i> Pesan</a></li>
