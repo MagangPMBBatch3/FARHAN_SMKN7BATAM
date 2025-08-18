@@ -24,10 +24,10 @@
         </div>
     </div>
 
-    {{-- @include('components.aktivitas.modal-add')
-    @include('components.aktivitas.modal-edit') --}}
+    @include('components.proyek.modal-add')
+    @include('components.proyek.modal-edit')
 
     <script src="{{ asset('js/proyek/proyek.js') }}"></script>
-    {{-- <script src="{{ asset('js/aktivitas/aktivitas-create.js') }}"></script>
-    <script src="{{ asset('js/aktivitas/aktivitas-edit.js') }}"></script> --}}
+    <script src="{{ asset('js/proyek/proyek-create.js') }}"></script>
+    <script src="{{ asset('js/proyek/proyek-edit.js') }}"></script>
 </x-layouts.main>

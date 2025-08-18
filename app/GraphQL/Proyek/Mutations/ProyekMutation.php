@@ -4,23 +4,17 @@ namespace App\GraphQL\Proyek\Mutations;
 
 use App\Models\Proyek\Proyek;
 
-class ProyekMutation
-{
-    public function restore($_, array $args): ?Proyek
+class ProyekMutation {
+    public function restore($_, array $args)
     {
-        return Proyek::withTrashed()->find($args['id'])?->restore()
-            ? Proyek::find($args['id'])
-            : null;
+        $Proyek = Proyek::withTrashed()->findOrFail($args['id']);
+        $Proyek->restore();
+        return $Proyek;
     }
-
-    public function forceDelete($_, array $args): ?Proyek
+    public function forceDelete($_, array $args)
     {
-        $proyek = Proyek::withTrashed()->find($args['id']);
-        if ($proyek) {
-            $proyek->forceDelete();
-            return $proyek;
-        }
-
-        return null;
+        $Proyek = Proyek::withTrashed()->findOrFail($args['id']);
+        $Proyek->forceDelete();
+        return $Proyek;
     }
 }

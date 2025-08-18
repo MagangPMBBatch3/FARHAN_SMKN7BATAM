@@ -40,6 +40,7 @@
                 <!-- Proyek -->
                 <li class="mt-4 text-xs uppercase text-gray-300 font-semibold">Proyek</li>
                 <li><a href="/proyek" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="briefcase"></i> Proyek</a></li>
+                <li><a href="/proyek-user" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="briefcase"></i> Proyek User</a></li>
 
                 <!-- Aktivitas -->
                 <li class="mt-4 text-xs uppercase text-gray-300 font-semibold">Aktivitas</li>
@@ -53,6 +54,7 @@
                 <!-- Pesan -->
                 <li class="mt-4 text-xs uppercase text-gray-300 font-semibold">Pesan</li>
                 <li><a href="/pesan" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="message-square"></i> Pesan</a></li>
+                <li><a href="/jenis-pesan" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="message-square"></i> Jenis Pesan</a></li>
 
                 <!-- Keterangan -->
                 <li class="mt-4 text-xs uppercase text-gray-300 font-semibold">Lainnya</li>

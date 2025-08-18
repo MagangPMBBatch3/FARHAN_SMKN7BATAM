@@ -23,5 +23,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/status', [AuthController::class, 'status'])->name('status.index');
     Route::get('/mode', [AuthController::class, 'mode'])->name('mode.index');
     Route::get('/jam-kerja', [AuthController::class, 'jam'])->name('jam.index');
+    Route::get('/lembur', [AuthController::class, 'lembur'])->name('lembur.index');
+    Route::get('/pesan', [AuthController::class, 'pesan'])->name('pesan.index');
+    Route::get('/keterangan', [AuthController::class, 'keterangan'])->name('keterangan.index');
+    Route::get('/jenis-pesan', [AuthController::class, 'jenis'])->name('jenis.index');
+    Route::get('/proyek-user', [AuthController::class, 'proyekUser'])->name('proyekUser.index');
 
 });

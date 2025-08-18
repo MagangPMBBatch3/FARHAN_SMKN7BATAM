@@ -1,11 +1,10 @@
-<x-layouts.main title="Data Status">
+<x-layouts.main title="Data Jenis">
     <div class="bg-white p-4 rounded shadow w-full">
-        <h1 class="text-2x1 font-bold mb-4">Data Status</h1>
-        <h3 class="text-2x2 font-bold mb-4">RunTest: -Add Data</h3>
+        <h1 class="text-2x1 font-bold mb-4">Data Jenis</h1>
 
         <div class="flex justify-between mb-4">
-            <input type="text" id="search" placeholder="Cari ID atau Nama..." class="border p-2 rounded w-64" oninput="searchStatus()">
-            <button onclick="openAddModal()" class="bg-blue-500 text-white px-4 py-2 rounded">Tambah Data</button>
+            <input type="text" id="searchJenis" placeholder="Cari ID atau Nama..." class="border p-2 rounded w-64" oninput="searchJenis()">
+            <button onclick="openAddJenisModal()" class="bg-blue-500 text-white px-4 py-2 rounded">Tambah Data</button>
         </div>
 
         <div class="mb4">
@@ -13,8 +12,8 @@
                 Aktif</button>
             <button onclick="showTab('arsip')" id="tabArsip" class="px-4 py-2 bg-gray-300 text-black rounded-t">Data
                 Arsip</button>
-        </div>
 
+        </div>
         <div id="tableAktif">
             <table class="w-full border">
                 <thead class="bg-gray-200">
@@ -24,29 +23,28 @@
                         <th class="p-2 border">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="dataStatus"></tbody>
+                <tbody id="dataJenis"></tbody>
             </table>
         </div>
-
         <div id="tableArsip" class="hidden">
             <table class="w-full border">
                 <thead class="bg-gray-200">
                     <tr>
-                        <th class="p-2 border">ID</th>
+                    <th class="p-2 border">ID</th>
                         <th class="p-2 border">Nama</th>
                         <th class="p-2 border">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="dataStatusArsip"></tbody>
+                <tbody id="dataJenisArsip"></tbody>
             </table>
         </div>
 
-        @include('components.status.modal-add')
-        @include('components.status.modal-edit')
+        <!-- @include('components.level.modal-add')
+        @include('components.level.modal-edit') -->
 
-        <script src="{{ asset('js/status/status.js') }}"></script>
-        <script src="{{ asset('js/status/status-create.js') }}"></script>
-        <script src="{{ asset('js/status/status-edit.js') }}"></script>
+        <script src="{{ asset('js/jenis/jenis.js') }}"></script>
+        <!-- <script src="{{ asset('js/level/level-create.js') }}"></script>
+        <script src="{{ asset('js/level/level-edit.js') }}"></script> -->
 
         <script>
             function showTab(tab) {
@@ -71,8 +69,11 @@
                     tableAktif.classList.add('hidden');
                 }
 
-                loadStatusData();
+                loadJenisData();
+
             }
+
         </script>
+
     </div>
 </x-layouts.main>

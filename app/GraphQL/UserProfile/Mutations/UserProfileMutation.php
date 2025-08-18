@@ -1,24 +1,20 @@
 <?php
 
-namespace App\GraphQL\UserProfile\UserProfile;
+namespace App\GraphQL\UserProfile\Mutations;
+
 use App\Models\UserProfile\UserProfile;
 
-class UserProfileMutation
-{
-    public function restore($_, array $args): ?UserProfile
+class UserProfileMutation {
+    public function restore($_, array $args)
     {
-        return UserProfile::withTrashed()->find($args['id'])?->restore()
-        ? UserProfile::find($args['id'])
-        : null;
+        $UserProfile = UserProfile::withTrashed()->findOrFail($args['id']);
+        $UserProfile->restore();
+        return $UserProfile;
     }
-
-    public function forceDelete($_, array $args): ?UserProfile
+    public function forceDelete($_, array $args)
     {
-        $profile = UserProfile::withTrashed()->find($args['id']);
-        if ($profile){
-            $profile->forceDelete();
-            return $profile;
-        }
-        return null;
+        $UserProfile = UserProfile::withTrashed()->findOrFail($args['id']);
+        $UserProfile->forceDelete();
+        return $UserProfile;
     }
 }

@@ -76,7 +76,8 @@ async function loadData(queryType = "all") {
             <td class="border px-2 py-1">${item.tanggal}</td>
             <td class="border px-2 py-1">${item.nama_sekolah}</td>
             <td class="border px-2 py-1">
-                <button onclick="openEditModal(${item.id}, '${item.nama}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+               <button onclick='openEditModal({id:"${item.id}", nama:"${item.nama}", kode:"${item.kode}", tanggal:"${item.tanggal}", nama_sekolah:"${item.nama_sekolah}"})' class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+
                 <button onclick="hapusBagian(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Hapus</button>
             </td>
         </tr>

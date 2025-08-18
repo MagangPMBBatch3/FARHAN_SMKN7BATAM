@@ -2,7 +2,7 @@ type Lembur {
   id: ID!
   users_profile_id: Int
   proyek_id: Int
-  tanggal: Date
+  tanggal: String
   created_at: DateTime
   updated_at: DateTime
   deleted_at: DateTime
@@ -12,13 +12,13 @@ type Lembur {
 input CreateLemburInput {
   users_profile_id: Int
   proyek_id: Int
-  tanggal: Date
+  tanggal: String
 }
 
 input UpdateLemburInput {
   users_profile_id: Int
   proyek_id: Int
-  tanggal: Date
+  tanggal: String
 }
 
 extend type Query {

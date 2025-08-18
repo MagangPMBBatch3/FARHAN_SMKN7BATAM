@@ -8,7 +8,7 @@ class UserMutation
 {
     public function restore($_, array $args): ?User
     {
-        return User::withTrashed()->fund($args['id'])?->restore()
+        return User::withTrashed()->find($args['id'])?->restore()
         ? User::find($args['id'])
         : null;
     }

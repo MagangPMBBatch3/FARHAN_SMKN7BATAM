@@ -19,7 +19,7 @@ input CreateProyekInput {
 input UpdateProyekInput {
     kode: String
     nama: String
-    tanggal: Date
+    tanggal: String
     nama_sekolah: String
 }
 
@@ -34,10 +34,10 @@ extend type Mutation {
         @delete(model: "App\\Models\\Proyek\\Proyek")
 
     restoreProyek(id: ID!): Proyek
-        @field(resolver: "App\\GraphQL\\Mutations\\Proyek\\Mutation@restore")
+        @field(resolver: "App\\GraphQL\\Proyek\\Mutations\\ProyekMutation@restore")
 
     forceDeleteProyek(id: ID!): Proyek
-        @field(resolver: "App\\GraphQL\\Mutations\\Proyek\\Mutation@forceDelete")
+        @field(resolver: "App\\GraphQL\\Proyek\\Mutations\\ProyekMutation@forceDelete")
 }
 
 extend type Query {
