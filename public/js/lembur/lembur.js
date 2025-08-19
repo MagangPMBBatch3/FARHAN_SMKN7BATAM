@@ -6,6 +6,13 @@ async function loadLemburData() {
           users_profile_id
           proyek_id
           tanggal
+          proyek{
+            nama
+          }
+          userProfile {
+            id
+            nama_lengkap
+          }
         }
       }
     `;
@@ -46,7 +53,7 @@ function renderLemburTable(lemburs, tableId, isActive) {
     if (!lemburs.length) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="3" class="text-center text-gray-500 p-3">Tidak ada data</td>
+                <td colspan="5" class="text-center text-gray-500 p-3">Tidak ada data</td>
             </tr>
         `;
         return;
@@ -56,21 +63,31 @@ function renderLemburTable(lemburs, tableId, isActive) {
         let actions = '';
         if (isActive) {
             actions = `
-                <button onclick="openEditLevelModal(${item.id}, '${item.nama}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
-                <button onclick="archiveLevel(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
+                <button onclick="openEditLemburModal(${item.id}, '${item.userProfile ? item.userProfile.nama_lengkap : ''}')" 
+                    class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+                <button onclick="archiveLembur(${item.id})" 
+                    class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
             `;
         } else {
             actions = `
-                <button onclick="restoreLevel(${item.id})" class="bg-green-500 text-white px-2 py-1 rounded">Restore</button>
-                <button onclick="forceDeleteLevel(${item.id})" class="bg-red-700 text-white px-2 py-1 rounded">Hapus Permanen</button>
+                <button onclick="restoreLembur(${item.id})" 
+                    class="bg-green-500 text-white px-2 py-1 rounded">Restore</button>
+                <button onclick="forceDeleteLembur(${item.id})" 
+                    class="bg-red-700 text-white px-2 py-1 rounded">Hapus Permanen</button>
             `;
         }
+
+        // 🛠️ cek null
+        const userName = item.userProfile ? item.userProfile.nama_lengkap : "User tidak tersedia";
+        const proyekName = item.proyek 
+            ? item.proyek.nama 
+            : `<span class="text-red-500">Proyek tidak tersedia</span>`;
 
         tbody.innerHTML += `
             <tr>
                 <td class="border p-2">${item.id}</td>
-                <td class="border p-2">${item.users_profile_id}</td>
-                <td class="border p-2">${item.proyek_id}</td>
+                <td class="border p-2">${userName}</td>
+                <td class="border p-2">${proyekName}</td>
                 <td class="border p-2">${item.tanggal}</td>
                 <td class="border p-2">${actions}</td>
             </tr>
@@ -78,11 +95,12 @@ function renderLemburTable(lemburs, tableId, isActive) {
     });
 }
 
-async function archiveLevel(id) {
+
+async function archiveLembur(id) {
     if(!confirm('Pindahkan ke arsip?')) return;
     const mutation = `
     mutation {
-    deleteLevel(id: ${id}){id}
+    deleteLembur(id: ${id}){id}
     }
     `;
     await fetch('/graphql', {
@@ -90,35 +108,35 @@ async function archiveLevel(id) {
     headers: {'Content-Type' : 'application/json'},
     body: JSON.stringify({ query: mutation})
   });
-  loadLevelData();
+  loadLemburData();
     
 }
 
-async function restoreLevel(id) {
+async function restoreLembur(id) {
     if (!confirm('Kembalikan dari arsip')) return;
     const mutation =`
     mutation {
-    restoreLevel(id: ${id}){id}}
+    restoreLembur(id: ${id}){id}}
     `;
     await fetch('/graphql', {
     method: 'POST',
     headers: {'Content-Type' : 'application/json'},
     body: JSON.stringify({ query: mutation})
   });
-  loadLevelData();
+  loadLemburData();
 }
 
-async function forceDeleteLevel(id) {
+async function forceDeleteLembur(id) {
     if(!confirm('Hapus permanen? Data tidak bisa dikembalikan')) return;
     const mutation = `
     mutation{
-    forceDeleteLevel(id: ${id}){id}}`;
+    forceDeleteLembur(id: ${id}){id}}`;
     await fetch('/graphql', {
     method: 'POST',
     headers: {'Content-Type' : 'application/json'},
     body: JSON.stringify({ query: mutation})
   });
-  loadLevelData();
+  loadLemburData();
 }
 
 async function searchLembur() {
@@ -147,12 +165,12 @@ async function searchLembur() {
             body: JSON.stringify({ query })
         });
         const data = await res.json();
-        renderLemburTable(data.data.lembur ? [data.data.lembur] : [], 'dataLevel', true);
+        renderLemburTable(data.data.lembur ? [data.data.lembur] : [], 'dataLembur', true);
 
     } else {
         query = `
         {
-            levelByNama(nama: "%${keyword}%") {
+            LemburByNama(nama: "%${keyword}%") {
                 id
                 nama
             }
@@ -164,7 +182,7 @@ async function searchLembur() {
             body: JSON.stringify({ query })
         });
         const data = await res.json();
-        renderLevelTable(data.data.levelByNama, 'dataLevel', true);
+        renderLemburTable(data.data.LemburByNama, 'dataLembur', true);
     }
 }
 

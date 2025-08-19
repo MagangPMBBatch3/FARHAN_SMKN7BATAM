@@ -5,7 +5,7 @@
         <div class="flex justify-between mb-4">
             <input type="text" id="searchLembur" placeholder="Cari ID atau Nama..." class="border p-2 rounded w-64"
                 oninput="searchLembur()">
-            <button onclick="openAddLevelModal()" class="bg-blue-500 text-white px-4 py-2 rounded">Tambah Data</button>
+            <button onclick="openAddLemburModal()" class="bg-blue-500 text-white px-4 py-2 rounded">Tambah Data</button>
         </div>
 
         <div class="mb4">
@@ -44,12 +44,12 @@
             </table>
         </div>
 
-        <!-- @include('components.level.modal-add')
-        @include('components.level.modal-edit') -->
+        @include('components.lembur.modal-add')
+        @include('components.lembur.modal-edit')
 
         <script src="{{ asset('js/lembur/lembur.js') }}"></script>
-        <!-- <script src="{{ asset('js/level/level-create.js') }}"></script>
-        <script src="{{ asset('js/level/level-edit.js') }}"></script> -->
+        <script src="{{ asset('js/Lembur/Lembur-create.js') }}"></script>
+        <script src="{{ asset('js/Lembur/Lembur-edit.js') }}"></script>
 
         <script>
             function showTab(tab) {

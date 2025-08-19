@@ -26,10 +26,16 @@ class UserProfile extends Model
     protected $casts = [
         'deleted_at' => 'datetime',
     ];
+    protected static function booted()
+    {
+        static::addGlobalScope('not_deleted', function ($builder) {
+            $builder->whereNull('deleted_at');
+        });
+    }
 
     public function user()
     {
-        return $this->belongsTo(\App\Models\User\User::class);
+        return $this->belongsTo(\App\Models\User::class, 'user_id', 'id');
     }
 
     public function bagian()

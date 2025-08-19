@@ -1,6 +1,6 @@
 <?php
 
-namespace App\GraphQL\JamPerTanggalMutations;
+namespace App\GraphQL\JamPerTanggal\Mutations;
 
 use App\Models\JamPerTanggal\JamPerTanggal;
 
@@ -8,15 +8,15 @@ class JamPerTanggalMutation
 {
     public function restore($_, array $args)
     {
-        $data = JamPerTanggal::withTrashed()->findOrFail($args['id']);
-        $data->restore();
-        return $data;
+        $jam = JamPerTanggal::withTrashed()->findOrFail($args['id']);
+        $jam->restore();
+        return $jam;
     }
 
     public function forceDelete($_, array $args)
     {
-        $data = JamPerTanggal::withTrashed()->findOrFail($args['id']);
-        $data->forceDelete();
-        return $data;
+        $jam = JamPerTanggal::withTrashed()->findOrFail($args['id']);
+        $jam->forceDelete();
+        return $jam;
     }
 }

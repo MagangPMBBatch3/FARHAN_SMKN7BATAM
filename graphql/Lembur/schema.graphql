@@ -7,6 +7,7 @@ type Lembur {
   updated_at: DateTime
   deleted_at: DateTime
   proyek: Proyek @belongsTo
+ userProfile: UserProfile @belongsTo
 }
 
 input CreateLemburInput {
@@ -24,10 +25,18 @@ input UpdateLemburInput {
 extend type Query {
   allLembur: [Lembur!]! @all(model: "App\\Models\\Lembur\\Lembur")
   lembur(id: ID! @eq): Lembur @find(model: "App\\Models\\Lembur\\Lembur")
+  allLemburArsip: [Lembur!]!
+    @field(resolver: "App\\GraphQL\\Lembur\\Queries\\LemburQuery@allArsip")
 }
 
 extend type Mutation {
-  createLembur(input: CreateLemburInput! @spread): Lembur @create
+  createLembur(input: CreateLemburInput! @spread): Lembur @create(model: "App\\Models\\Lembur\\Lembur")
   updateLembur(id: ID! @eq, input: UpdateLemburInput! @spread): Lembur @update
-  deleteLembur(id: ID! @eq): Lembur @delete
+  deleteLembur(id: ID! @eq(key: "id")): Lembur
+    @delete(model: "App\\Models\\Lembur\\Lembur")
+  restoreLembur(id: ID!): Lembur
+    @field(resolver: "App\\GraphQL\\Lembur\\Mutations\\LemburMutation@restore")
+
+  forceDeleteLembur(id: ID!): Lembur
+    @field(resolver: "App\\GraphQL\\Lembur\\Mutations\\LemburMutation@forceDelete")
 }

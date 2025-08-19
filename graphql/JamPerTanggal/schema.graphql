@@ -2,7 +2,7 @@ type JamPerTanggal {
   id: ID!
   users_profile_id: Int
   proyek_id: Int
-  tanggal: Date
+  tanggal: String
   jam: Float
   created_at: DateTime
   updated_at: DateTime
@@ -13,24 +13,49 @@ type JamPerTanggal {
 input CreateJamPerTanggalInput {
   users_profile_id: Int
   proyek_id: Int
-  tanggal: Date
+  tanggal: String
   jam: Float
 }
 
 input UpdateJamPerTanggalInput {
   users_profile_id: Int
   proyek_id: Int
-  tanggal: Date
+  tanggal: String
   jam: Float
 }
 
 extend type Query {
-  allJamPerTanggal: [JamPerTanggal!]! @all(model: "App\\Models\\JamPerTanggal\\JamPerTanggal")
-  jamPerTanggal(id: ID! @eq): JamPerTanggal @find(model: "App\\Models\\JamPerTanggal\\JamPerTanggal")
+  allJamPerTanggal: [JamPerTanggal!]!
+    @all(model: "App\\Models\\JamPerTanggal\\JamPerTanggal")
+
+  allJamPerTanggalArsip: [JamPerTanggal!]!
+    @field(resolver: "App\\GraphQL\\JamPerTanggal\\Queries\\JamPerTanggalQuery@allArsip")
+
+  jamPerTanggal(id: ID! @eq(key: "id")): JamPerTanggal
+    @find(model: "App\\Models\\JamPerTanggal\\JamPerTanggal")
+
+  jamPerTanggalByTanggal(
+    tanggal: String! @where(operator: "like", key: "tanggal")
+  ): [JamPerTanggal!]!
+    @all(model: "App\\Models\\JamPerTanggal\\JamPerTanggal")
 }
 
 extend type Mutation {
-  createJamPerTanggal(input: CreateJamPerTanggalInput! @spread): JamPerTanggal @create
-  updateJamPerTanggal(id: ID! @eq, input: UpdateJamPerTanggalInput! @spread): JamPerTanggal @update
-  deleteJamPerTanggal(id: ID! @eq): JamPerTanggal @delete
+  createJamPerTanggal(input: CreateJamPerTanggalInput @spread): JamPerTanggal
+    @create(model: "App\\Models\\JamPerTanggal\\JamPerTanggal")
+
+  updateJamPerTanggal(
+    id: ID! @eq(key: "id"),
+    input: UpdateJamPerTanggalInput! @spread
+  ): JamPerTanggal
+    @update(model: "App\\Models\\JamPerTanggal\\JamPerTanggal")
+
+  deleteJamPerTanggal(id: ID! @eq(key: "id")): JamPerTanggal
+    @delete(model: "App\\Models\\JamPerTanggal\\JamPerTanggal")
+
+  restoreJamPerTanggal(id: ID!): JamPerTanggal
+    @field(resolver: "App\\GraphQL\\JamPerTanggal\\Mutations\\JamPerTanggalMutation@restore")
+
+  forceDeleteJamPerTanggal(id: ID!): JamPerTanggal
+    @field(resolver: "App\\GraphQL\\JamPerTanggal\\Mutations\\JamPerTanggalMutation@forceDelete")
 }

@@ -45,6 +45,9 @@ extend type Query {
   allJamKerja: [JamKerja!]!
     @all(model: "App\\Models\\JamKerja\\JamKerja")
 
+  jamKerjaByNoWbs(no_wbs: String! @where(operator: "like", key: "no_wbs")): [JamKerja!]!
+    @all(model: "App\\Models\\JamKerja\\JamKerja")
+
   jamKerja(id: ID! @eq): JamKerja
     @find(model: "App\\Models\\JamKerja\\JamKerja")
     

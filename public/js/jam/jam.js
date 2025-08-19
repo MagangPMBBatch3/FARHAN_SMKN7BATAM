@@ -71,7 +71,7 @@ function renderJamTable(items, tableId, isActive) {
         let actions = '';
         if (isActive) {
             actions = `
-                <button onclick="openEditJamModal(${item.id})" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+                <button onclick="modalEdit(${item.id})" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
                 <button onclick="archiveJam(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
             `;
         } else {
@@ -157,7 +157,7 @@ async function searchJam() {
     if (!isNaN(keyword)) {
         query = `
         {
-            JamKerja(id: ${keyword}) {
+            jamKerjaByNoWbs(no_wbs: "%${keyword}%") {
                 id
                 users_profile_id
                 no_wbs
@@ -178,7 +178,7 @@ async function searchJam() {
             body: JSON.stringify({ query })
         });
         const data = await res.json();
-        renderJamTable(data.data.Jam ? [data.data.Jam] : [], 'dataJam', true);
+        renderJamTable(data.data.jamKerjaByNoWbs ? [data.data.jamKerjaByNoWbs] : [], 'datajamKerjaByNoWbs', true);
     } else {
         query = `
         {
@@ -203,7 +203,8 @@ async function searchJam() {
             body: JSON.stringify({ query })
         });
         const data = await res.json();
-        renderJamTable(data.data.JamByNoWbs, 'dataJam', true);
+renderJamTable(data.data.jamKerjaByNoWbs || [], 'dataJam', true);
+
     }
 }
 

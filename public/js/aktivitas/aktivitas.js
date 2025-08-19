@@ -1,40 +1,6 @@
-async function loadData(queryType = "all") {
-    let query;
-    const searchValue = document.getElementById('search').value.trim();
-
-    if (queryType === "search" && searchValue) {
-    if (!isNaN(searchValue)) {
-        query = `
-        query {
-            aktivitas(id: ${searchValue}){
-                id
-                bagian_id
-                no_wbs
-                nama
-                bagian {
-                    nama
-                }
-            }
-        }
-        `;
-    } else {
-        query = `
-        query {
-            aktivitasByNama(nama: "%${searchValue}%"){
-                id
-                bagian_id
-                no_wbs
-                nama
-                bagian {
-                    nama
-                }
-            }
-        }
-        `;
-    }
-} else {
-    query = `
-    query {
+async function loadAktivitasData() {
+    const queryAktif = `
+      query {
         allAktivitas {
             id
             bagian_id
@@ -43,70 +9,173 @@ async function loadData(queryType = "all") {
             bagian {
                 nama
             }
-        }        
-    }
+        }
+      }
     `;
+
+    const resAktif = await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: queryAktif })
+    });
+    const dataAktif = await resAktif.json();
+    renderAktivitasTable(dataAktif?.data?.allAktivitas || [], 'dataAktivitas', true);
+
+    const queryArsip = `
+      query {
+        allAktivitasArsip {
+            id
+            bagian_id
+            no_wbs
+            nama
+            bagian {
+                nama
+            }
+            deleted_at
+        }
+      }
+    `;
+
+    const resArsip = await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: queryArsip })
+    });
+    const dataArsip = await resArsip.json();
+    renderAktivitasTable(dataArsip?.data?.allAktivitasArsip || [], 'dataAktivitasArsip', false);
 }
 
-
-    const res = await fetch('/graphql', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ query })
-    });
-    const data = await res.json();
-
-    const tbody = document.getElementById('dataAktivitas');
+function renderAktivitasTable(items, tableId, isActive) {
+    const tbody = document.getElementById(tableId);
     tbody.innerHTML = '';
 
-    let items = [];
-    if (data.data.allAktivitas) items = data.data.allAktivitas;
-    if (data.data.aktivitasByNama) items = data.data.aktivitasByNama;
-    if (data.data.aktivitas) items = [data.data.aktivitas];
-
-    if (items.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="3" class="text-center p-2">Data tidak ditemukan</td></tr>`;
+    if (!items.length) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" class="text-center text-gray-500 p-3">Tidak ada data</td>
+            </tr>
+        `;
+        return;
     }
 
     items.forEach(item => {
-    if (!item) return;
-    tbody.innerHTML += `
-        <tr class="border-b">
-            <td class="border px-2 py-1">${item.id}</td>
-            <td class="border px-2 py-1">${item.bagian ? item.bagian.nama : '-'}</td>
-            <td class="border px-2 py-1">${item.no_wbs}</td>
-            <td class="border px-2 py-1">${item.nama}</td>
-            <td class="border px-2 py-1">
-                <button onclick="openEditModal(${item.id}, '${item.nama}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
-                <button onclick="hapusBagian(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Hapus</button>
-            </td>
-        </tr>
-    `;
-});
-
-}
-
-function searchBagian() {
-    loadData("search");
-}
-
-async function hapusBagian(id) {
-    if (!confirm("Yakin ingin menghapus data ini?")) return;
-    const mutation = `
-        mutation {
-            deleteUser(id: ${id}) {
-                id
-            }
+        let actions = '';
+        if (isActive) {
+            actions = `
+                <button onclick="modalEditAktivitas(${item.id}, '${item.nama}', '${item.bagian_id}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+                <button onclick="archiveAktivitas(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
+            `;
+        } else {
+            actions = `
+                <button onclick="restoreAktivitas(${item.id})" class="bg-green-500 text-white px-2 py-1 rounded">Restore</button>
+                <button onclick="forceDeleteAktivitas(${item.id})" class="bg-red-700 text-white px-2 py-1 rounded">Hapus Permanen</button>
+            `;
         }
-    `;
 
-    await fetch("/graphql", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        tbody.innerHTML += `
+            <tr>
+                <td class="border p-2">${item.id}</td>
+                <td class="border p-2">${item.bagian ? item.bagian.nama : '-'}</td>
+                <td class="border p-2">${item.no_wbs}</td>
+                <td class="border p-2">${item.nama}</td>
+                <td class="border p-2">${actions}</td>
+            </tr>
+        `;
+    });
+}
+
+async function archiveAktivitas(id) {
+    if (!confirm('Pindahkan ke arsip?')) return;
+    const mutation = `
+    mutation {
+        deleteAktivitas(id: ${id}) { id }
+    }
+    `;
+    await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: mutation })
     });
-
-    loadData();
+    loadAktivitasData();
 }
 
-document.addEventListener("DOMContentLoaded", () => loadData());
+async function restoreAktivitas(id) {
+    if (!confirm('Kembalikan dari arsip?')) return;
+    const mutation = `
+    mutation {
+        restoreAktivitas(id: ${id}) { id }
+    }
+    `;
+    await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: mutation })
+    });
+    loadAktivitasData();
+}
+
+async function forceDeleteAktivitas(id) {
+    if (!confirm('Hapus permanen? Data tidak bisa dikembalikan')) return;
+    const mutation = `
+    mutation {
+        forceDeleteAktivitas(id: ${id}) { id }
+    }
+    `;
+    await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: mutation })
+    });
+    loadAktivitasData();
+}
+
+async function searchAktivitas() {
+    const keyword = document.getElementById('searchAktivitas').value.trim();
+    if (!keyword) {
+        loadAktivitasData();
+        return;
+    }
+
+    let query = '';
+    if (!isNaN(keyword)) {
+        query = `
+        query {
+            aktivitas(id: ${keyword}) {
+                id
+                bagian_id
+                no_wbs
+                nama
+                bagian { nama }
+            }
+        }
+        `;
+        const res = await fetch('/graphql', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query })
+        });
+        const data = await res.json();
+        renderAktivitasTable(data.data.aktivitas ? [data.data.aktivitas] : [], 'dataAktivitas', true);
+    } else {
+        query = `
+        query {
+            aktivitasByNama(nama: "%${keyword}%") {
+                id
+                bagian_id
+                no_wbs
+                nama
+                bagian { nama }
+            }
+        }
+        `;
+        const res = await fetch('/graphql', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query })
+        });
+        const data = await res.json();
+        renderAktivitasTable(data.data.aktivitasByNama || [], 'dataAktivitas', true);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadAktivitasData);
