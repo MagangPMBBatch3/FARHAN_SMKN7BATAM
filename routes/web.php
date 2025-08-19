@@ -29,5 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/jenis-pesan', [AuthController::class, 'jenis'])->name('jenis.index');
     Route::get('/proyek-user', [AuthController::class, 'proyekUser'])->name('proyekUser.index');
     Route::get('/jam-per-tanggal', [AuthController::class, 'tanggal'])->name('tanggal.index');
+    Route::get('/user-profile', [AuthController::class, 'userProfile'])->name('userProfile.index');
+    Route::get('/status-jam-kerja', [AuthController::class, 'statusJam'])->name('statusJam.index');
 
 });

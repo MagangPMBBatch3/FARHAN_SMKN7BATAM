@@ -1,6 +1,6 @@
-<x-layouts.main title="Data Jam Per Tanggal">
+<x-layouts.main title="Data User">
     <div class="bg-white p-4 rounded shadow w-full">
-        <h1 class="text-2xl font-bold mb-4">Data Jam Per Tanggal</h1>
+        <h1 class="text-2xl font-bold mb-4">Data User</h1>
 
         <div class="flex justify-between mb-4">
             <input type="text" id="search" 
@@ -25,14 +25,19 @@
                 <thead class="bg-gray-200">
                     <tr>
                         <th class="p-2 border">ID</th>
-                        <th class="p-2 border">User Profile Id</th>
-                        <th class="p-2 border">Proyek Id</th>
-                        <th class="p-2 border">Tanggal</th>
-                        <th class="p-2 border">Jam</th>
+                        <th class="p-2 border">user ID</th>
+                        <th class="p-2 border">Nama Lengkap</th>
+                        <th class="p-2 border">Email</th>
+                        <th class="p-2 border">nrp</th>
+                        <th class="p-2 border">alamat</th>
+                        <th class="p-2 border">foto</th>
+                        <th class="p-2 border">bagian</th>
+                        <th class="p-2 border">jabatan</th>
+                        <th class="p-2 border">status</th>
                         <th class="p-2 border">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="dataTanggal"></tbody>
+                <tbody id="dataUserProfiles"></tbody>
             </table>
         </div>
 
@@ -42,23 +47,27 @@
                 <thead class="bg-gray-200">
                     <tr>
                     <th class="p-2 border">ID</th>
-                        <th class="p-2 border">User Profile Id</th>
-                        <th class="p-2 border">Proyek Id</th>
-                        <th class="p-2 border">Tanggal</th>
-                        <th class="p-2 border">Jam</th>
+                        <th class="p-2 border">Nama Lengkap</th>
+                        <th class="p-2 border">Email</th>
+                        <th class="p-2 border">nrp</th>
+                        <th class="p-2 border">alamat</th>
+                        <th class="p-2 border">foto</th>
+                        <th class="p-2 border">bagian</th>
+                        <th class="p-2 border">jabatan</th>
+                        <th class="p-2 border">status</th>
                         <th class="p-2 border">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="dataTanggalArsip"></tbody>
+                <tbody id="dataUserProfilesArsip"></tbody>
             </table>
         </div>
 
-        @include('components.tanggal.modal-add')
-        @include('components.tanggal.modal-edit')
+        @include('components.userProfile.modal-add')
+        @include('components.userProfile.modal-edit')
 
-        <script src="{{ asset('js/tanggal/tanggal.js') }}"></script>
-        <script src="{{ asset('js/tanggal/tanggal-create.js') }}"></script>
-        <script src="{{ asset('js/tanggal/tanggal-edit.js') }}"></script>
+        <script src="{{ asset('js/userProfile/userProfile.js') }}"></script>
+        <script src="{{ asset('js/userProfile/userProfile-create.js') }}"></script>
+        <script src="{{ asset('js/userProfile/userProfile-edit.js') }}"></script>
 
         <script>
             function showTab(tab) {

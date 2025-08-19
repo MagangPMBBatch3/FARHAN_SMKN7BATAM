@@ -1,49 +1,63 @@
 type Proyek {
-    id: ID!
-    kode: String
-    nama: String
-    nama_sekolah: String
-    tanggal: String
-    created_at: DateTime
-    updated_at: DateTime
-    deleted_at: DateTime
+  id: ID!
+  kode: String
+  nama: String
+  nama_sekolah: String
+  tanggal: String
+  created_at: DateTime
+  updated_at: DateTime
+  deleted_at: DateTime
 }
 
 input CreateProyekInput {
-    kode: String
-    nama: String
-    tanggal: String
-    nama_sekolah: String
+  kode: String
+  nama: String
+  tanggal: String
+  nama_sekolah: String
 }
 
 input UpdateProyekInput {
-    kode: String
-    nama: String
-    tanggal: String
-    nama_sekolah: String
-}
-
-extend type Mutation {
-    createProyek(input: CreateProyekInput! @spread): Proyek
-        @create(model: "App\\Models\\Proyek\\Proyek")
-
-    updateProyek(id: ID! @eq, input: UpdateProyekInput! @spread): Proyek
-        @update(model: "App\\Models\\Proyek\\Proyek")
-
-    deleteProyek(id: ID! @eq): Proyek
-        @delete(model: "App\\Models\\Proyek\\Proyek")
-
-    restoreProyek(id: ID!): Proyek
-        @field(resolver: "App\\GraphQL\\Proyek\\Mutations\\ProyekMutation@restore")
-
-    forceDeleteProyek(id: ID!): Proyek
-        @field(resolver: "App\\GraphQL\\Proyek\\Mutations\\ProyekMutation@forceDelete")
+  kode: String
+  nama: String
+  tanggal: String
+  nama_sekolah: String
 }
 
 extend type Query {
-    allProyeks: [Proyek!]!
-        @all(model: "App\\Models\\Proyek\\Proyek")
+  allProyeks: [Proyek!]!
+    @all(model: "App\\Models\\Proyek\\Proyek")
 
-    getProyeks(search: String): [Proyek!]!
+  allProyeksArsip: [Proyek!]!
+    @field(resolver: "App\\GraphQL\\Proyek\\Queries\\ProyekQuery@allArsip")
+
+  proyek(id: ID! @eq(key: "id")): Proyek
+    @find(model: "App\\Models\\Proyek\\Proyek")
+
+  proyekByNama(nama: String! @where(operator: "like", key: "nama")): [Proyek!]!
+    @all(model: "App\\Models\\Proyek\\Proyek")
+
+  getProyeks(search: String): [Proyek] 
         @field(resolver: "App\\GraphQL\\Queries\\Query@getProyeks")
+
+
+}
+
+extend type Mutation {
+  createProyek(input: CreateProyekInput! @spread): Proyek
+    @create(model: "App\\Models\\Proyek\\Proyek")
+
+  updateProyek(
+    id: ID! @eq(key: "id"),
+    input: UpdateProyekInput! @spread
+  ): Proyek
+    @update(model: "App\\Models\\Proyek\\Proyek")
+
+  deleteProyek(id: ID! @eq(key: "id")): Proyek
+    @delete(model: "App\\Models\\Proyek\\Proyek")
+
+  restoreProyek(id: ID!): Proyek
+    @field(resolver: "App\\GraphQL\\Proyek\\Mutations\\ProyekMutation@restore")
+
+  forceDeleteProyek(id: ID!): Proyek
+    @field(resolver: "App\\GraphQL\\Proyek\\Mutations\\ProyekMutation@forceDelete")
 }

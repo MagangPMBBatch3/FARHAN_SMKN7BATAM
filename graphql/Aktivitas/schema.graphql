@@ -28,6 +28,11 @@ extend type Query {
 
   aktivitas(id: ID! @eq): Aktivitas
     @find(model: "App\\Models\\Aktivitas\\Aktivitas")
+
+  allAktivitasArsip: [Aktivitas!]!
+    @field(resolver: "App\\GraphQL\\Aktivitas\\Queries\\AktivitasQuery@allArsip")
+  aktivitasByNama(nama: String! @where(operator: "like", key: "nama")
+    ): [Aktivitas]! @all(model: "App\\Models\\Aktivitas\\Aktivitas")
 }
 
 extend type Mutation {

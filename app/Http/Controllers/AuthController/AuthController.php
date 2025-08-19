@@ -84,4 +84,12 @@ class AuthController {
     {
         return view('components.tanggal.index');
     }
+    public function userProfile()
+    {
+        return view('components.userProfile.index');
+    }
+    public function statusJam()
+    {
+        return view('components.statusJam.index');
+    }
 }

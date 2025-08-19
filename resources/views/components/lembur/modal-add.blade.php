@@ -1,0 +1,37 @@
+<div id="modalAddLembur" class="hidden">
+    <div class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center flex">
+        <div class="bg-white rounded-lg shadow-lg w-96 p-6">
+            <h2 class="text-lg font-bold mb-4">Tambah Lembur</h2>
+            <form id="formAddLembur" onsubmit="addLembur(); return false;">
+                @csrf
+                <div class="mb-4">
+                    <label for="addLemburUser" class="block mb-1">Pilih User</label>
+                    <select id="addLemburUser" name="users_profile_id" class="border p-2 w-full rounded" required>
+                        <option value="">-- Pilih User --</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="addLemburProyek" class="block mb-1">Pilih Proyek</label>
+                    <select id="addLemburProyek" name="proyek_id" class="border p-2 w-full rounded" required>
+                        <option value="">-- Pilih Proyek --</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="addLemburTanggal" class="block mb-1">Tanggal</label>
+                    <input type="date" id="addLemburTanggal" name="tanggal" class="border p-2 w-full rounded" required>
+                </div>
+
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="closeAddLemburModal()" class="bg-gray-400 text-white px-4 py-2 rounded">
+                        Batal
+                    </button>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -6,17 +6,11 @@
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body class="bg-gray-100 flex">
-
-    <!-- Sidebar -->
     <aside class="w-64 bg-blue-600 text-white min-h-screen flex flex-col p-4 shadow-lg">
-        <!-- Logo / Judul -->
         <div class="flex items-center gap-2 mb-8">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18m-7 5h7" />
-            </svg>
+            <i data-feather="menu" class="w-6 h-6"></i>
             <h2 class="text-2xl font-bold">Menu</h2>
         </div>
-
-        <!-- Menu Navigasi -->
         <nav class="flex-1">
             <ul class="space-y-1">
 
@@ -27,39 +21,83 @@
                     </a>
                 </li>
 
-                <!-- Master Data -->
-                <li class="mt-4 text-xs uppercase text-gray-300 font-semibold">Master Data</li>
-                <li><a href="/bagian" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="grid"></i> Bagian</a></li>
-                <li><a href="/level" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="layers"></i> Level</a></li>
-                <li><a href="/status" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="tag"></i> Status</a></li>
+                <!-- Master Data Dropdown -->
+                <li>
+                    <button class="w-full flex justify-between items-center p-2 rounded hover:bg-blue-500 transition dropdown-btn">
+                        <span class="flex items-center gap-3"><i data-feather="grid"></i> Master Data</span>
+                        <i data-feather="chevron-down"></i>
+                    </button>
+                    <ul class="ml-6 mt-1 hidden space-y-1 dropdown-menu bg-blue-800">
+                        <li><a href="/bagian" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="grid"></i> Bagian</a></li>
+                        <li><a href="/level" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="layers"></i> Level</a></li>
+                        <li><a href="/status" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="tag"></i> Status</a></li>
+                    </ul>
+                </li>
 
-                <!-- User -->
-                <li class="mt-4 text-xs uppercase text-gray-300 font-semibold">Manajemen User</li>
-                <li><a href="/user" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="users"></i> User</a></li>
+                <!-- Manajemen User Dropdown -->
+                <li>
+                    <button class="w-full flex justify-between items-center p-2 rounded hover:bg-blue-500 transition dropdown-btn">
+                        <span class="flex items-center gap-3"><i data-feather="users"></i> Manajemen User</span>
+                        <i data-feather="chevron-down"></i>
+                    </button>
+                    <ul class="ml-6 mt-1 hidden space-y-1 dropdown-menu bg-blue-800">
+                        <li><a href="/user" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="users"></i> User</a></li>
+                        <li><a href="/user-profile" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="user"></i> User Profile</a></li>
+                    </ul>
+                </li>
 
-                <!-- Proyek -->
-                <li class="mt-4 text-xs uppercase text-gray-300 font-semibold">Proyek</li>
-                <li><a href="/proyek" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="briefcase"></i> Proyek</a></li>
-                <li><a href="/proyek-user" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="briefcase"></i> Proyek User</a></li>
+                <!-- Proyek Dropdown -->
+                <li>
+                    <button class="w-full flex justify-between items-center p-2 rounded hover:bg-blue-500 transition dropdown-btn">
+                        <span class="flex items-center gap-3"><i data-feather="briefcase"></i> Proyek</span>
+                        <i data-feather="chevron-down"></i>
+                    </button>
+                    <ul class="ml-6 mt-1 hidden space-y-1 dropdown-menu bg-blue-800">
+                        <li><a href="/proyek" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="briefcase"></i> Proyek</a></li>
+                        <li><a href="/proyek-user" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="user-check"></i> Proyek User</a></li>
+                    </ul>
+                </li>
 
                 <!-- Aktivitas -->
-                <li class="mt-4 text-xs uppercase text-gray-300 font-semibold">Aktivitas</li>
-                <li><a href="/aktivitas" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="check-square"></i> Aktivitas</a></li>
+                <li>
+                    <a href="/aktivitas" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500 transition">
+                        <i data-feather="check-square"></i> Aktivitas
+                    </a>
+                </li>
 
-                <!-- Jam Kerja -->
-                <li class="mt-4 text-xs uppercase text-gray-300 font-semibold">Jam Kerja</li>
-                <li><a href="/jam-kerja" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="clock"></i> Jam Kerja</a></li>
-                <li><a href="/lembur" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="watch"></i> Lembur</a></li>
-                <li><a href="/mode" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="clock"></i> Mode Kerja</a></li>
-                <li><a href="/jam-per-tanggal" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="clock"></i> Jam Per Tanggal</a></li>
-                <!-- Pesan -->
-                <li class="mt-4 text-xs uppercase text-gray-300 font-semibold">Pesan</li>
-                <li><a href="/pesan" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="message-square"></i> Pesan</a></li>
-                <li><a href="/jenis-pesan" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="message-square"></i> Jenis Pesan</a></li>
+                <!-- Jam Kerja Dropdown -->
+                <li>
+                    <button class="w-full flex justify-between items-center p-2 rounded hover:bg-blue-500 transition dropdown-btn">
+                        <span class="flex items-center gap-3"><i data-feather="clock"></i> Jam Kerja</span>
+                        <i data-feather="chevron-down"></i>
+                    </button>
+                    <ul class="ml-6 mt-1 hidden space-y-1 dropdown-menu bg-blue-800">
+                        <li><a href="/jam-kerja" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="clock"></i> Jam Kerja</a></li>
+                        <li><a href="/lembur" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="watch"></i> Lembur</a></li>
+                        <li><a href="/mode" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="cpu"></i> Mode Kerja</a></li>
+                        <li><a href="/jam-per-tanggal" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="calendar"></i> Jam Per Tanggal</a></li>
+                        <li><a href="/status-jam-kerja" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="activity"></i> Status Jam Kerja</a></li>
+                    </ul>
+                </li>
+
+                <!-- Pesan Dropdown -->
+                <li>
+                    <button class="w-full flex justify-between items-center p-2 rounded hover:bg-blue-500 transition dropdown-btn">
+                        <span class="flex items-center gap-3"><i data-feather="message-square"></i> Pesan</span>
+                        <i data-feather="chevron-down"></i>
+                    </button>
+                    <ul class="ml-6 mt-1 hidden space-y-1 dropdown-menu bg-blue-800">
+                        <li><a href="/pesan" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="message-square"></i> Pesan</a></li>
+                        <li><a href="/jenis-pesan" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="message-circle"></i> Jenis Pesan</a></li>
+                    </ul>
+                </li>
 
                 <!-- Keterangan -->
-                <li class="mt-4 text-xs uppercase text-gray-300 font-semibold">Lainnya</li>
-                <li><a href="/keterangan" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500"><i data-feather="info"></i> Keterangan</a></li>
+                <li>
+                    <a href="/keterangan" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500 transition">
+                        <i data-feather="info"></i> Keterangan
+                    </a>
+                </li>
             </ul>
         </nav>
 
@@ -73,8 +111,6 @@
             </form>
         </div>
     </aside>
-
-    <!-- Konten -->
     <div class="flex-1 p-6">
         @include('components.level.navbar')
         {{ $slot }}
@@ -82,6 +118,13 @@
 
     <script>
         feather.replace();
+        document.querySelectorAll('.dropdown-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const menu = button.nextElementSibling;
+                menu.classList.toggle('hidden');
+                button.querySelector('i[data-feather="chevron-down"]').classList.toggle('rotate-180');
+            });
+        });
     </script>
 
 </body>

@@ -1,6 +1,6 @@
-<x-layouts.main title="Data Jam">
+<x-layouts.main title="Data Jam Kerja">
     <div class="bg-white p-4 rounded shadow w-full">
-        <h1 class="text-2x1 font-bold mb-4">Data Jam</h1>
+        <h1 class="text-2x1 font-bold mb-4">Data Jam Kerja</h1>
 
         <div class="flex justify-between mb-4">
             <input type="text" id="searchJam" placeholder="Cari ID atau No WBS..." 
@@ -59,12 +59,12 @@
             </table>
         </div>
 
-        {{-- @include('components.Jam.modal-add')
-        @include('components.Jam.modal-edit') --}}
+        @include('components.jam.modal-add')
+        @include('components.jam.modal-edit')
 
         <script src="{{ asset('js/jam/jam.js') }}"></script>
-        {{-- <script src="{{ asset('js/Jam/Jam-create.js') }}"></script>
-        <script src="{{ asset('js/Jam/Jam-edit.js') }}"></script> --}}
+        <script src="{{ asset('js/jam/Jam-create.js') }}"></script>
+        <script src="{{ asset('js/jam/Jam-edit.js') }}"></script>
 
         <script>
             function showTab(tab) {

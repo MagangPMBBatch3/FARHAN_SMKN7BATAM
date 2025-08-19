@@ -1,26 +1,26 @@
 type UserProfile {
     id: ID!
     user_id: ID!
-    name_lengkap: String!
-    nip: String
+    nama_lengkap: String!
+    nrp: String
     alamat: String
-    no_telp: String
+    foto: String
     bagian_id: Int
-    jabatan_id: Int
+    level_id: Int
     status_id: Int
     created_at: DateTime
     updated_at: DateTime
     deleted_at: DateTime
+    user: User @belongsTo
     bagian: Bagian @belongsTo
-    jabatan: Jabatan @belongsTo
+    level: Level @belongsTo
     status: Status @belongsTo
 }
-
 
 input UpdateUserProfileInput {
     nrp: String
     alamat: String
-    no_telp: String
+    foto: String
 }
 
 input CreateUserProfileInput {
@@ -28,11 +28,12 @@ input CreateUserProfileInput {
     nama_lengkap: String!
     nrp: String
     alamat: String
-    no_telp: String
+    foto: String
     bagian_id: Int
     level_id: Int
     status_id: Int
 }
+
 
 extend type Query {
     allUserProfiles: [UserProfile!]!
@@ -40,6 +41,9 @@ extend type Query {
 
     userProfile(id: ID! @eq): UserProfile
         @find(model: "App\\Models\\UserProfile\\UserProfile")
+
+    userProfileByName(name: String! @where(operator: "like", key: "name")): [UserProfile!]!
+      @all(model: "App\\Models\\UserProfile\\UserProfile")  
 }
 
 extend type Mutation {

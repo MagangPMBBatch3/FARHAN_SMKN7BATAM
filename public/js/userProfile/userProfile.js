@@ -5,12 +5,27 @@ async function loadData() {
     // Query data aktif
     const queryAktif = `
       query {
-        allJamPerTanggal{
-          id
-          users_profile_id
-          proyek_id
-          tanggal
-          jam
+        allUserProfiles{
+            id
+    user_id
+    nama_lengkap
+    nrp
+    alamat
+    bagian_id
+    level_id
+    status_id
+    user {
+      email
+    }
+    bagian {
+      nama
+    }
+    level {
+      nama
+    }
+    status {
+      nama
+    }
         }
       }
     `;
@@ -21,17 +36,32 @@ async function loadData() {
         body: JSON.stringify({ query: queryAktif }),
     });
     const dataAktif = await resAktif.json();
-    renderUserTable(dataAktif?.data?.allJamPerTanggal || [], "dataTanggal", true);
+    renderUserTable(dataAktif?.data?.allUserProfiles || [], "dataUserProfiles", true);
 
     // Query data arsip
     const queryArsip = `
-    query {
-        allJamPerTanggalArsip{
-          id
-          users_profile_id
-          proyek_id
-          tanggal
-          jam
+      query {
+        allUserProfiles {
+            id
+    user_id
+    nama_lengkap
+    nrp
+    alamat
+    bagian_id
+    level_id
+    status_id
+    user {
+      email
+    }
+    bagian {
+      nama
+    }
+    level {
+      nama
+    }
+    status {
+      nama
+    }
         }
       }
     `;
@@ -44,8 +74,8 @@ async function loadData() {
     const dataArsip = await resArsip.json();
     console.log(dataArsip);
     renderUserTable(
-        dataArsip?.data?.allJamPerTanggalArsip || [],
-        "dataTanggalArsip",
+        dataArsip?.data?.allUserProfilesArsip || [],
+        "dataUserProfilesArsip",
         false
     );
 }
@@ -68,25 +98,31 @@ function renderUserTable(userList, tableId, isActive) {
 
     userList.forEach((item) => {
         let actions = "";
+        console.log(item)
         if (isActive) {
             actions = `
                 <button onclick="openEditModal(${item.id}, '${item.name}', '${item.email}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
-                <button onclick="archiveJamPerTanggal(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
+                <button onclick="archiveUserProfile(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
             `;
         } else {
             actions = `
-                <button onclick="restoreJamPerTanggal(${item.id})" class="bg-green-500 text-white px-2 py-1 rounded">Restore</button>
-                <button onclick="forceDeleteJamPerTanggal(${item.id})" class="bg-red-700 text-white px-2 py-1 rounded">Hapus Permanen</button>
+                <button onclick="restoreUser(${item.id})" class="bg-green-500 text-white px-2 py-1 rounded">Restore</button>
+                <button onclick="forceDeleteUser(${item.id})" class="bg-red-700 text-white px-2 py-1 rounded">Hapus Permanen</button>
             `;
         }
 
         tbody.innerHTML += `
             <tr>
                 <td class="border p-2">${item.id}</td>
-                <td class="border p-2">${item.users_profile_id}</td>
-                <td class="border p-2">${item.proyek_id}</td>
-                <td class="border p-2">${item.tanggal}</td>
-                <td class="border p-2">${item.jam}</td>
+                <td class="border p-2">${item.user_id}</td>
+                <td class="border p-2">${item.nama_lengkap}</td>
+                <td class="border p-2">${item.user.email}</td>
+                <td class="border p-2">${item.nrp}</td>
+                <td class="border p-2">${item.alamat}</td>
+                <td class="border p-2">${item.foto}</td>
+                <td class="border p-2">${item.bagian.nama}</td>
+                <td class="border p-2">${item.level.nama    }</td>
+                <td class="border p-2">${item.status.nama}</td>
                 <td class="border p-2">${actions}</td>
             </tr>
         `;
@@ -96,11 +132,11 @@ function renderUserTable(userList, tableId, isActive) {
 // ==========================
 // Archive, Restore, Force Delete
 // ==========================
-async function archiveJamPerTanggal(id) {
+async function archiveUser(id) {
     if (!confirm("Pindahkan ke arsip?")) return;
     const mutation = `
         mutation {
-            deleteJamPerTanggal(id: ${id}) { id }
+            deleteUserProfile(id: ${id}) { id }
         }
     `;
     await fetch("/graphql", {
@@ -111,11 +147,11 @@ async function archiveJamPerTanggal(id) {
     loadData();
 }
 
-async function restoreJamPerTanggal(id) {
+async function restoreUser(id) {
     if (!confirm("Kembalikan dari arsip?")) return;
     const mutation = `
         mutation {
-            restoreJamPerTanggal(id: ${id}) { id }
+            restoreUserProfile(id: ${id}) { id }
         }
     `;
     await fetch("/graphql", {
@@ -126,11 +162,11 @@ async function restoreJamPerTanggal(id) {
     loadData();
 }
 
-async function forceDeleteJamPerTanggal(id) {
+async function forceDeleteUserProfile(id) {
     if (!confirm("Hapus permanen? Data tidak bisa dikembalikan")) return;
     const mutation = `
         mutation {
-            forceDeleteJamPerTanggal(id: ${id}) { id }
+            forceDeleteUserProfile(id: ${id}) { id }
         }
     `;
     await fetch("/graphql", {
@@ -156,12 +192,27 @@ async function search() {
     if (!isNaN(keyword)) {
         query = `
         {
-            jamPerTanggal(id: ${keyword}) {
+            userProfile(id: ${keyword}) {
                 id
-          users_profile_id
-          proyek_id
-          tanggal
-          jam
+    user_id
+    nama_lengkap
+    nrp
+    alamat
+    bagian_id
+    level_id
+    status_id
+    user {
+      email
+    }
+    bagian {
+      nama
+    }
+    level {
+      nama
+    }
+    status {
+      nama
+    }
             }
         }
         `;
@@ -171,22 +222,35 @@ async function search() {
             body: JSON.stringify({ query }),
         });
         const data = await res.json();
-        console.log(data);
         renderUserTable(
-            data.data.jamPerTanggal ? [data.data.jamPerTanggal] : [],
-            "dataTanggal",
+            data.data.userProfiles ? [data.data.userProfiles] : [],
+            "dataUserProfiles",
             true
         );
     } else {
         query = `
         {
-            userByName(name: "%${keyword}%") {
+            userProfileByName(name: "%${keyword}%") {
                 id
-          users_profile_id
-          proyek_id
-          tanggal
-          jam
-        }
+    user_id
+    nama_lengkap
+    nrp
+    alamat
+    bagian_id
+    level_id
+    status_id
+    user {
+      email
+    }
+    bagian {
+      nama
+    }
+    level {
+      nama
+    }
+    status {
+      nama
+    }
             }
         }
         `;
@@ -196,7 +260,7 @@ async function search() {
             body: JSON.stringify({ query }),
         });
         const data = await res.json();
-        renderUserTable(data.data.jamPerTanggal || [], "dataTanggal", true);
+        renderUserTable(data.data.useProfileByName || [], "dataUserProfile", true);
     }
 }
 

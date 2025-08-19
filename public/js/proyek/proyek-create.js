@@ -1,4 +1,27 @@
-function openAddModal(){
+async function loadData() {
+    // Data aktif
+    const queryAktif = `
+      query {
+        allProyeks {
+          id
+          kode
+          nama
+          tanggal
+          nama_sekolah
+        }
+      }
+    `;
+
+    const resAktif = await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: queryAktif })
+    });
+    const dataAktif = await resAktif.json();
+    renderProyekTable(dataAktif?.data?.allProyeks || [], 'dataProyek', true);
+}
+
+function openAddProyekModal(){
     document.getElementById('modalAdd').classList.remove('hidden');
 }
 
