@@ -1,10 +1,10 @@
 <x-layouts.main title="Data Status">
     <div class="bg-white p-4 rounded shadow w-full">
         <h1 class="text-2x1 font-bold mb-4">Data Status</h1>
-        <h3 class="text-2x2 font-bold mb-4">RunTest: -Add Data</h3>
 
         <div class="flex justify-between mb-4">
-            <input type="text" id="search" placeholder="Cari ID atau Nama..." class="border p-2 rounded w-64" oninput="searchStatus()">
+            <input type="text" id="searchStatus" placeholder="Cari ID atau Nama..." class="border p-2 rounded w-64"
+                oninput="searchStatus()">
             <button onclick="openAddModal()" class="bg-blue-500 text-white px-4 py-2 rounded">Tambah Data</button>
         </div>
 

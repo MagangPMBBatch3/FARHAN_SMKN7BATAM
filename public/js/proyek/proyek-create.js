@@ -21,16 +21,16 @@ async function loadData() {
     renderProyekTable(dataAktif?.data?.allProyeks || [], 'dataProyek', true);
 }
 
-function openAddProyekModal(){
+function openAddProyekModal() {
     document.getElementById('modalAdd').classList.remove('hidden');
 }
 
-function closeAddModal(){
+function closeAddModal() {
     document.getElementById('modalAdd').classList.add('hidden');
     document.getElementById('addNama').value = '';
 }
 
-async function create(){
+async function create() {
     const nama = document.getElementById('addNama').value;
     const kode = document.getElementById('addKode').value;
     const tanggal = document.getElementById('addTanggal').value;
@@ -44,18 +44,18 @@ async function create(){
     const mutation = `
 
         mutation {
-        createProyek(input: { nama: "${nama}", kode: "${kode}", tanggal: "${tanggal}", nama_sekolah: "${nama_sekolah}"})
+        createProyek(input: { nama: "${nama}", kode: "${kode}", tanggal: "${tanggal}", nama_sekolah: "${nama_sekolah}"}){
                 id
                 nama
                 kode
-                nama_sekolah
+                nama_sekolah}
                 }
     `;
 
     await fetch('/graphql', {
         method: 'POST',
-        headers: {'Content-Type' : 'application/json'},
-        body: JSON.stringify({query: mutation})
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: mutation })
     });
     closeAddModal();
     loadData();

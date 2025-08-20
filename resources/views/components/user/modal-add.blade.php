@@ -9,8 +9,12 @@
                     <input type="text" id="addNama" name="nama" class="border p-2 w-full rounded" required>
                 </div>
                 <div class="mb-4">
-                    <label for="addEmail" class="block mb-1">Edit User</label>
+                    <label for="addEmail" class="block mb-1">Email User</label>
                     <input type="text" id="addEmail" name="email" class="border p-2 w-full rounded" required>
+                </div>
+                <div class="mb-4">
+                    <label for="addPassword" class="block mb-1">Password User</label>
+                    <input type="text" id="addPassword" name="email" class="border p-2 w-full rounded" required>
                 </div>
                 <div class="flex justify-end gap-2">
                     <button type="button" onclick="closeAddModal()" class="bg-gray-400 text-white px-4 py-2 rounded">

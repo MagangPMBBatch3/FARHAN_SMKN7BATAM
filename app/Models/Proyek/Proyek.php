@@ -24,10 +24,4 @@ class Proyek extends Model
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
-    protected static function booted()
-    {
-        static::addGlobalScope('not_deleted', function ($builder) {
-            $builder->whereNull('deleted_at');
-        });
-    }
 }
