@@ -8,7 +8,6 @@
 <body class="bg-gray-100 flex">
     <aside class="w-64 bg-blue-600 text-white min-h-screen flex flex-col p-4 shadow-lg">
         <div class="flex items-center gap-2 mb-8">
-            <i data-feather="menu" class="w-6 h-6"></i>
             <h2 class="text-2xl font-bold">Menu</h2>
         </div>
         <nav class="flex-1">

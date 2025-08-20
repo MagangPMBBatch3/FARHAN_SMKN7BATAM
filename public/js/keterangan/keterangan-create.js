@@ -1,12 +1,15 @@
 async function loadData() {
     const queryAktif = `
       query {
-        allAktivitas {
+        allKeterangan {
             id
             bagian_id
-            no_wbs
-            nama
+            proyek_id
+            tanggal
             bagian {
+                nama
+            }
+            proyek{
                 nama
             }
         }
@@ -19,19 +22,21 @@ async function loadData() {
         body: JSON.stringify({ query: queryAktif })
     });
     const dataAktif = await resAktif.json();
-    renderAktivitasTable(dataAktif?.data?.allAktivitas || [], 'dataAktivitas', true);
+    renderKeteranganTable(dataAktif?.data?.allKeterangan || [], 'dataKeterangan', true);
 
     const queryArsip = `
       query {
-        allAktivitasArsip {
+        allKeteranganArsip {
             id
             bagian_id
-            no_wbs
-            nama
+            proyek_id
+            tanggal
             bagian {
                 nama
             }
-            deleted_at
+            proyek{
+                nama
+            }
         }
       }
     `;
@@ -42,11 +47,12 @@ async function loadData() {
         body: JSON.stringify({ query: queryArsip })
     });
     const dataArsip = await resArsip.json();
-    renderAktivitasTable(dataArsip?.data?.allAktivitasArsip || [], 'dataAktivitasArsip', false);
+    renderKeteranganTable(dataArsip?.data?.allKeteranganArsip || [], 'dataKeteranganArsip', false);
 }
 async function openAddKeteranganModal() {
     document.getElementById('modalAdd').classList.remove('hidden');
     await loadBagianOptions(); 
+    await loadProyekOptions(); 
 }
 
 function closeAddModal() {
@@ -83,25 +89,60 @@ async function loadBagianOptions() {
         });
     }
 }
+async function loadProyekOptions() {
+    const query = `
+        query {
+            allProyeks{
+                id
+                nama
+            }
+        }
+    `;
 
-async function createProyek() {
-    const kode = document.getElementById('addKode').value;
-    const nama = document.getElementById('addNama').value;
-    const bagianId = document.getElementById('addBagian').value;
+    const res = await fetch('/graphql', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ query })
+    });
 
-    if (!kode || !nama || !bagianId) {
+    const result = await res.json();
+    const select = document.getElementById('addProyek');
+    select.innerHTML = `<option value="">-- Pilih Proyek --</option>`;
+
+    if (result.data && result.data.allProyeks) {
+        result.data.allProyeks.forEach(b => {
+            const opt = document.createElement('option');
+            opt.value = b.id;
+            opt.textContent = b.nama;
+            select.appendChild(opt);
+        });
+    }
+}
+
+async function addKeterangan() {
+    const Bagian = document.getElementById('addBagian').value;
+    const Proyek = document.getElementById('addProyek').value;
+    const Tanggal = document.getElementById('addTanggal').value;
+
+    if (!Bagian || !Proyek || !Tanggal) {
         return alert("Semua field wajib diisi!");
     }
 
     const mutation = `
         mutation {
-            createAktivitas(input: {
-                no_wbs: "${kode}",
-                nama: "${nama}",
-                bagian_id: ${bagianId}
+            createKeterangan(input: {
+                bagian_id: ${Bagian},
+                proyek_id: ${Proyek},
+                tanggal: "${Tanggal}"
             }) {
                 id
-                nama
+                proyek{
+                    nama
+                }
+                bagian{
+                    nama
+                }
+                tanggal
             }
         }
     `;

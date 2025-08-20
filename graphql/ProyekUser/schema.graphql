@@ -24,6 +24,12 @@ extend type Query {
         @all(model: "App\\Models\\ProyekUser\\ProyekUser")
     proyekUser(id: ID! @eq): ProyekUser
         @find(model: "App\\Models\\ProyekUser\\ProyekUser")
+    allProyekUserArsip: [ProyekUser!]!
+        @field(
+            resolver: "App\\GraphQL\\ProyekUser\\Queries\\ProyekUserQuery@allArsip"
+        )
+        searchProyekUser(keyword: String!): [ProyekUser!]!
+        @field(resolver: "App\\GraphQL\\ProyekUser\\Queries\\ProyekUserQuery@search")
 }
 
 extend type Mutation {
@@ -35,4 +41,11 @@ extend type Mutation {
     ): ProyekUser @update(model: "App\\Models\\ProyekUser\\ProyekUser")
     deleteProyekUser(id: ID! @eq): ProyekUser
         @delete(model: "App\\Models\\ProyekUser\\ProyekUser")
+    restoreProyekUser(id: ID!): ProyekUser
+        @field(resolver: "App\\GraphQL\\ProyekUser\\Mutations\\ProyekUserMutation@restore")
+
+    forceDeleteProyekUser(id: ID!): ProyekUser
+        @field(
+            resolver: "App\\GraphQL\\ProyekUser\\Mutations\\ProyekUserMutation@forceDelete"
+        )
 }

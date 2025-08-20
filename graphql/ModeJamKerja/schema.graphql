@@ -17,17 +17,35 @@ input UpdateModeJamKerjaInput {
 extend type Query {
     allModeJamKerja: [ModeJamKerja!]!
         @all(model: "App\\Models\\ModeJamKerja\\ModeJamKerja")
+
     modeJamKerja(id: ID! @eq): ModeJamKerja
         @find(model: "App\\Models\\ModeJamKerja\\ModeJamKerja")
+
+    # khusus data arsip (sudah soft delete)
+    allModeJamKerjaArsip: [ModeJamKerja!]!
+        @all(model: "App\\Models\\ModeJamKerja\\ModeJamKerja")
+        @softDeletes
+
+    modeJamKerjaArsip: [ModeJamKerja!]!
+        @field(resolver: "App\\GraphQL\\ModeJamKerja\\Queries\\ModeJamKerjaQuery@allArsip")
 }
 
 extend type Mutation {
     createModeJamKerja(input: CreateModeJamKerjaInput! @spread): ModeJamKerja
         @create(model: "App\\Models\\ModeJamKerja\\ModeJamKerja")
+
     updateModeJamKerja(
         id: ID! @eq
         input: UpdateModeJamKerjaInput! @spread
-    ): ModeJamKerja @update(model: "App\\Models\\ModeJamKerja\\ModeJamKerja")
+    ): ModeJamKerja
+        @update(model: "App\\Models\\ModeJamKerja\\ModeJamKerja")
+
     deleteModeJamKerja(id: ID! @eq): ModeJamKerja
         @delete(model: "App\\Models\\ModeJamKerja\\ModeJamKerja")
+
+    # restore data arsip
+    restoreModeJamKerja(id: ID! @eq): ModeJamKerja
+        @restore(model: "App\\Models\\ModeJamKerja\\ModeJamKerja")
+    forceDeleteMode(id: ID!): ModeJamKerja
+    @field(resolver: "App\\GraphQL\\ModeJamKerja\\Mutations\\ModeJamKerjaMutation@forceDelete")
 }

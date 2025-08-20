@@ -39,12 +39,12 @@
             </table>
         </div>
 
-        <!-- @include('components.level.modal-add')
-        @include('components.level.modal-edit') -->
+        @include('components.jenis.modal-add')
+        @include('components.jenis.modal-edit')
 
         <script src="{{ asset('js/jenis/jenis.js') }}"></script>
-        <!-- <script src="{{ asset('js/level/level-create.js') }}"></script>
-        <script src="{{ asset('js/level/level-edit.js') }}"></script> -->
+        <script src="{{ asset('js/jenis/jenis-create.js') }}"></script>
+        <script src="{{ asset('js/jenis/jenis-edit.js') }}"></script>
 
         <script>
             function showTab(tab) {
@@ -69,7 +69,7 @@
                     tableAktif.classList.add('hidden');
                 }
 
-                loadJenisData();
+                loadData();
 
             }
 

@@ -1,9 +1,16 @@
 <div id="modalAdd" class="hidden">
     <div class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center flex">
         <div class="bg-white rounded-lg shadow-lg w-96 p-6">
-            <h2 class="text-lg font-bold mb-4">Tambah Proyek User</h2>
-            <form id="formAdd" onsubmit="create(); return false;">
+            <h2 class="text-lg font-bold mb-4">Tambah Keterangan</h2>
+            <form id="formAdd" onsubmit="addKeterangan(); return false;">
                 @csrf
+                <div class="mb-4">
+                    <label for="addBagian" class="block mb-1">Pilih Bagian</label>
+                    <select id="addBagian" name="bagian_id" class="border p-2 w-full rounded" required>
+                        <option value="">-- Pilih User --</option>
+                    </select>
+                </div>
+
                 <div class="mb-4">
                     <label for="addProyek" class="block mb-1">Pilih Proyek</label>
                     <select id="addProyek" name="proyek_id" class="border p-2 w-full rounded" required>
@@ -12,11 +19,10 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="addUser" class="block mb-1">Pilih User</label>
-                    <select id="addUser" name="users_profile_id" class="border p-2 w-full rounded" required>
-                        <option value="">-- Pilih User --</option>
-                    </select>
+                    <label for="addTanggal" class="block mb-1">Tanggal</label>
+                    <input type="date" id="addTanggal" name="tanggal" class="border p-2 w-full rounded" required>
                 </div>
+
                 <div class="flex justify-end gap-2">
                     <button type="button" onclick="closeAddModal()" class="bg-gray-400 text-white px-4 py-2 rounded">
                         Batal

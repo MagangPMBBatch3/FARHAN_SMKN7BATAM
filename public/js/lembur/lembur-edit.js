@@ -88,3 +88,7 @@ function openEditLemburModal(lembur) {
         }
     });
 }
+
+function closeEditLemburModal(){
+    document.getElementById('modalEditLembur').classList.add('hidden')
+}
