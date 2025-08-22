@@ -1,9 +1,5 @@
-// ==========================
-// Load Data User
-// ==========================
 async function loadData() {
-    // Query data aktif
-    const queryAktif = `
+  const queryAktif = `
       query {
         allUserProfiles{
             id
@@ -11,6 +7,7 @@ async function loadData() {
     nama_lengkap
     nrp
     alamat
+    foto
     bagian_id
     level_id
     status_id
@@ -30,16 +27,15 @@ async function loadData() {
       }
     `;
 
-    const resAktif = await fetch("/graphql", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: queryAktif }),
-    });
-    const dataAktif = await resAktif.json();
-    renderUserTable(dataAktif?.data?.allUserProfiles || [], "dataUserProfiles", true);
+  const resAktif = await fetch("/graphql", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: queryAktif }),
+  });
+  const dataAktif = await resAktif.json();
+  renderUserTable(dataAktif?.data?.allUserProfiles || [], "dataUserProfiles", true);
 
-    // Query data arsip
-    const queryArsip = `
+  const queryArsip = `
       query {
         allUserProfiles {
             id
@@ -47,6 +43,7 @@ async function loadData() {
     nama_lengkap
     nrp
     alamat
+    foto
     bagian_id
     level_id
     status_id
@@ -66,52 +63,50 @@ async function loadData() {
       }
     `;
 
-    const resArsip = await fetch("/graphql", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: queryArsip }),
-    });
-    const dataArsip = await resArsip.json();
-    console.log(dataArsip);
-    renderUserTable(
-        dataArsip?.data?.allUserProfilesArsip || [],
-        "dataUserProfilesArsip",
-        false
-    );
+  const resArsip = await fetch("/graphql", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: queryArsip }),
+  });
+  const dataArsip = await resArsip.json();
+  console.log(dataArsip);
+  renderUserTable(
+    dataArsip?.data?.allUserProfilesArsip || [],
+    "dataUserProfilesArsip",
+    false
+  );
 }
 
-// ==========================
-// Render Table User
-// ==========================
 function renderUserTable(userList, tableId, isActive) {
-    const tbody = document.getElementById(tableId);
-    tbody.innerHTML = "";
+  const tbody = document.getElementById(tableId);
+  console.log("a" + tbody);
+  tbody.innerHTML = "";
 
-    if (!userList.length) {
-        tbody.innerHTML = `
+  if (!userList.length) {
+    tbody.innerHTML = `
             <tr>
                 <td colspan="4" class="text-center text-gray-500 p-3">Tidak ada data</td>
             </tr>
         `;
-        return;
-    }
+    return;
+  }
 
-    userList.forEach((item) => {
-        let actions = "";
-        console.log(item)
-        if (isActive) {
-            actions = `
-                <button onclick="openEditModal(${item.id}, '${item.name}', '${item.email}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+  userList.forEach((item) => {
+    let actions = "";
+    if (isActive) {
+      actions = `
+                <button onclick="openEditModal(${item.id}, '${item.nama_lengkap}', '${item.email}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
                 <button onclick="archiveUserProfile(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
+                <button onclick="userProfile(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">User Profile</button>
             `;
-        } else {
-            actions = `
+    } else {
+      actions = `
                 <button onclick="restoreUser(${item.id})" class="bg-green-500 text-white px-2 py-1 rounded">Restore</button>
                 <button onclick="forceDeleteUser(${item.id})" class="bg-red-700 text-white px-2 py-1 rounded">Hapus Permanen</button>
             `;
-        }
+    }
 
-        tbody.innerHTML += `
+    tbody.innerHTML += `
             <tr>
                 <td class="border p-2">${item.id}</td>
                 <td class="border p-2">${item.user_id}</td>
@@ -121,76 +116,71 @@ function renderUserTable(userList, tableId, isActive) {
                 <td class="border p-2">${item.alamat}</td>
                 <td class="border p-2">${item.foto}</td>
                 <td class="border p-2">${item.bagian.nama}</td>
-                <td class="border p-2">${item.level.nama    }</td>
+                <td class="border p-2">${item.level.nama}</td>
                 <td class="border p-2">${item.status.nama}</td>
                 <td class="border p-2">${actions}</td>
             </tr>
         `;
-    });
+  });
 }
 
-// ==========================
-// Archive, Restore, Force Delete
-// ==========================
+
 async function archiveUser(id) {
-    if (!confirm("Pindahkan ke arsip?")) return;
-    const mutation = `
+  if (!confirm("Pindahkan ke arsip?")) return;
+  const mutation = `
         mutation {
             deleteUserProfile(id: ${id}) { id }
         }
     `;
-    await fetch("/graphql", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: mutation }),
-    });
-    loadData();
+  await fetch("/graphql", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: mutation }),
+  });
+  loadData();
 }
 
 async function restoreUser(id) {
-    if (!confirm("Kembalikan dari arsip?")) return;
-    const mutation = `
+  if (!confirm("Kembalikan dari arsip?")) return;
+  const mutation = `
         mutation {
             restoreUserProfile(id: ${id}) { id }
         }
     `;
-    await fetch("/graphql", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: mutation }),
-    });
-    loadData();
+  await fetch("/graphql", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: mutation }),
+  });
+  loadData();
 }
 
 async function forceDeleteUserProfile(id) {
-    if (!confirm("Hapus permanen? Data tidak bisa dikembalikan")) return;
-    const mutation = `
+  if (!confirm("Hapus permanen? Data tidak bisa dikembalikan")) return;
+  const mutation = `
         mutation {
             forceDeleteUserProfile(id: ${id}) { id }
         }
     `;
-    await fetch("/graphql", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: mutation }),
-    });
-    loadData();
+  await fetch("/graphql", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: mutation }),
+  });
+  loadData();
 }
 
-// ==========================
-// Search User
-// ==========================
 async function search() {
-    const keyword = document.getElementById("search").value.trim();
-    if (!keyword) {
-        loadData();
-        return;
-    }
+  const keyword = document.getElementById("search").value.trim();
+  if (!keyword) {
+    loadData();
+    return;
+  }
 
-    let query = "";
+  let query = "";
 
-    if (!isNaN(keyword)) {
-        query = `
+  if (!isNaN(keyword)) {
+    query = `
         {
             userProfile(id: ${keyword}) {
                 id
@@ -198,6 +188,7 @@ async function search() {
     nama_lengkap
     nrp
     alamat
+    foto
     bagian_id
     level_id
     status_id
@@ -216,26 +207,27 @@ async function search() {
             }
         }
         `;
-        const res = await fetch("/graphql", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ query }),
-        });
-        const data = await res.json();
-        renderUserTable(
-            data.data.userProfiles ? [data.data.userProfiles] : [],
-            "dataUserProfiles",
-            true
-        );
-    } else {
-        query = `
+    const res = await fetch("/graphql", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query }),
+    });
+    const data = await res.json();
+    renderUserTable(
+      data.data.userProfile ? [data.data.userProfile] : [],
+      "dataUserProfiles",
+      true
+    );
+  } else {
+    query = `
         {
-            userProfileByName(name: "%${keyword}%") {
+            userProfileByName(nama_lengkap: "%${keyword}%") {
                 id
     user_id
     nama_lengkap
     nrp
     alamat
+    foto
     bagian_id
     level_id
     status_id
@@ -254,14 +246,14 @@ async function search() {
             }
         }
         `;
-        const res = await fetch("/graphql", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ query }),
-        });
-        const data = await res.json();
-        renderUserTable(data.data.useProfileByName || [], "dataUserProfile", true);
-    }
+    const res = await fetch("/graphql", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query }),
+    });
+    const data = await res.json();
+    renderUserTable(data.data.userProfileByName || [], "dataUserProfiles", true);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", loadData);

@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Proyek\Proyek;
 use App\Models\Aktivitas\Aktivitas;
+use App\Models\UserProfile\UserProfile;
+use App\Models\ModeJamKerja\ModeJamKerja;
+use App\Models\StatusJamKerja\StatusJamKerja;   
 
 class JamKerja extends Model
 {
@@ -26,13 +29,28 @@ class JamKerja extends Model
         'mode_id'
     ];
 
-    public function proyek()
+    public function Proyek()
     {
         return $this->belongsTo(Proyek::class, 'proyek_id');
     }
 
-    public function aktivitas()
+    public function Aktivitas()
     {
         return $this->belongsTo(Aktivitas::class, 'aktivitas_id');
+    }
+
+    public function UserProfile()
+    {
+        return $this->belongsTo(UserProfile::class, 'users_profile_id');
+    }
+
+    public function ModeJamKerja()
+    {
+        return $this->belongsTo(ModeJamKerja::class, 'mode_id');
+    }
+
+    public function StatusJamKerja()
+    {
+        return $this->belongsTo(StatusJamKerja::class, 'status_id');
     }
 }

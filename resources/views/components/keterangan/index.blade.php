@@ -14,7 +14,7 @@
                 Arsip</button>
 
         </div>
-        <div id="tableAktif">
+        <div id="tableAktif" class="overflow-y-auto max-h-80">
             <table class="w-full border">
                 <thead class="bg-gray-200">
                     <tr>
@@ -39,16 +39,16 @@
                         <th class="p-2 border">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="dataKeterangaArsip"></tbody>
+                <tbody id="dataKeteranganArsip"></tbody>
             </table>
         </div>
 
-        <!-- @include('components.level.modal-add')
-        @include('components.level.modal-edit') -->
+        @include('components.keterangan.modal-add')
+        @include('components.keterangan.modal-edit')
 
         <script src="{{ asset('js/keterangan/keterangan.js') }}"></script>
-        <!-- <script src="{{ asset('js/level/level-create.js') }}"></script>
-        <script src="{{ asset('js/level/level-edit.js') }}"></script> -->
+        <script src="{{ asset('js/keterangan/keterangan-create.js') }}"></script>
+        <script src="{{ asset('js/keterangan/keterangan-edit.js') }}"></script>
 
         <script>
             function showTab(tab) {

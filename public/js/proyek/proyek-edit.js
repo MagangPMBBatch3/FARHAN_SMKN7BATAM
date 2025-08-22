@@ -1,13 +1,13 @@
-function openEditModal(data){
-    document.getElementById('editId').value = data.id;
-    document.getElementById('editKode').value = data.kode;
-    document.getElementById('editNama').value = data.nama;
-    document.getElementById('editTanggal').value = data.tanggal;
-    document.getElementById('editNama_Sekolah').value = data.nama_sekolah;
+function openEditModal(id, kode, nama, tanggal, nama_sekolah) {
+    document.getElementById('editId').value = id;
+    document.getElementById('editKode').value = kode;
+    document.getElementById('editNama').value = nama;
+    document.getElementById('editTanggal').value = tanggal;
+    document.getElementById('editNama_Sekolah').value = nama_sekolah;
     document.getElementById('modalEdit').classList.remove('hidden');
 }
 
-function closeEditModal(){
+function closeEditModal() {
     document.getElementById('modalEdit').classList.add('hidden');
 }
 
@@ -37,8 +37,8 @@ async function update() {
     `;
     await fetch('/graphql', {
         method: 'POST',
-        headers: {'Content-Type' : 'application/json'},
-        body: JSON.stringify({query: mutation})
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: mutation })
     });
     closeEditModal();
     loadData();

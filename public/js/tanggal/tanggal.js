@@ -1,17 +1,21 @@
-// ==========================
-// Load Data User
-// ==========================
+
 async function loadData() {
-    // Query data aktif
     const queryAktif = `
-      query {
-        allJamPerTanggal{
-          id
-          users_profile_id
-          proyek_id
-          tanggal
-          jam
+    query{
+        allJamPerTanggal {
+        id
+        users_profile_id
+        proyek_id
+        tanggal
+        jam
+        proyek {
+          nama
         }
+        userProfile {
+          nama_lengkap
+        }
+      }
+      
       }
     `;
 
@@ -23,15 +27,20 @@ async function loadData() {
     const dataAktif = await resAktif.json();
     renderUserTable(dataAktif?.data?.allJamPerTanggal || [], "dataTanggal", true);
 
-    // Query data arsip
     const queryArsip = `
     query {
         allJamPerTanggalArsip{
-          id
-          users_profile_id
-          proyek_id
-          tanggal
-          jam
+            id
+            users_profile_id
+            proyek_id
+            tanggal
+            jam
+            proyek {
+              nama
+            }
+            userProfile {
+              nama_lengkap
+            }
         }
       }
     `;
@@ -50,9 +59,6 @@ async function loadData() {
     );
 }
 
-// ==========================
-// Render Table User
-// ==========================
 function renderUserTable(userList, tableId, isActive) {
     const tbody = document.getElementById(tableId);
     tbody.innerHTML = "";
@@ -60,7 +66,7 @@ function renderUserTable(userList, tableId, isActive) {
     if (!userList.length) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="4" class="text-center text-gray-500 p-3">Tidak ada data</td>
+                <td colspan="6" class="text-center text-gray-500 p-3">Tidak ada data</td>
             </tr>
         `;
         return;
@@ -70,21 +76,28 @@ function renderUserTable(userList, tableId, isActive) {
         let actions = "";
         if (isActive) {
             actions = `
-                <button onclick="openEditModal(${item.id}, '${item.name}', '${item.email}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
-                <button onclick="archiveJamPerTanggal(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
+            <button onclick="openEditModal(${item.id}, '${item.users_profile_id}', '${item.proyek_id}', '${item.tanggal}', '${item.jam}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+
+                <button onclick="archiveJamPerTanggal(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">
+                    Arsipkan
+                </button>
             `;
         } else {
             actions = `
-                <button onclick="restoreJamPerTanggal(${item.id})" class="bg-green-500 text-white px-2 py-1 rounded">Restore</button>
-                <button onclick="forceDeleteJamPerTanggal(${item.id})" class="bg-red-700 text-white px-2 py-1 rounded">Hapus Permanen</button>
+                <button onclick="restoreJamPerTanggal(${item.id})" class="bg-green-500 text-white px-2 py-1 rounded">
+                    Restore
+                </button>
+                <button onclick="forceDeleteJamPerTanggal(${item.id})" class="bg-red-700 text-white px-2 py-1 rounded">
+                    Hapus Permanen
+                </button>
             `;
         }
 
         tbody.innerHTML += `
             <tr>
                 <td class="border p-2">${item.id}</td>
-                <td class="border p-2">${item.users_profile_id}</td>
-                <td class="border p-2">${item.proyek_id}</td>
+                <td class="border p-2">${item.userProfile.nama_lengkap}</td>
+                <td class="border p-2">${item.proyek.nama}</td>
                 <td class="border p-2">${item.tanggal}</td>
                 <td class="border p-2">${item.jam}</td>
                 <td class="border p-2">${actions}</td>
@@ -93,9 +106,7 @@ function renderUserTable(userList, tableId, isActive) {
     });
 }
 
-// ==========================
-// Archive, Restore, Force Delete
-// ==========================
+
 async function archiveJamPerTanggal(id) {
     if (!confirm("Pindahkan ke arsip?")) return;
     const mutation = `
@@ -141,9 +152,6 @@ async function forceDeleteJamPerTanggal(id) {
     loadData();
 }
 
-// ==========================
-// Search User
-// ==========================
 async function search() {
     const keyword = document.getElementById("search").value.trim();
     if (!keyword) {
@@ -158,10 +166,16 @@ async function search() {
         {
             jamPerTanggal(id: ${keyword}) {
                 id
-          users_profile_id
-          proyek_id
-          tanggal
-          jam
+                users_profile_id
+                proyek_id
+                tanggal
+                jam
+                proyek {
+                  nama
+                }
+                userProfile {
+                  nama_lengkap
+                }
             }
         }
         `;
@@ -180,12 +194,17 @@ async function search() {
     } else {
         query = `
         {
-            userByName(name: "%${keyword}%") {
+            jamPerTanggalByTanggal(tanggal: "%${keyword}%") {
                 id
-          users_profile_id
-          proyek_id
-          tanggal
-          jam
+        users_profile_id
+        proyek_id
+        tanggal
+        jam
+        proyek {
+          nama
+        }
+        userProfile {
+          nama_lengkap
         }
             }
         }
@@ -196,7 +215,7 @@ async function search() {
             body: JSON.stringify({ query }),
         });
         const data = await res.json();
-        renderUserTable(data.data.jamPerTanggal || [], "dataTanggal", true);
+        renderUserTable(data.data.jamPerTanggalByTanggal || [], "dataTanggal", true);
     }
 }
 

@@ -1,10 +1,10 @@
-async function loadJenisData() {
+async function loadData() {
     const queryAktif = `
       query {
         allJenisPesan {
-          id
-          nama
-          deleted_at
+            id
+            nama
+            deleted_at
         }
       }
     `;
@@ -15,11 +15,25 @@ async function loadJenisData() {
         body: JSON.stringify({ query: queryAktif })
     });
     const dataAktif = await resAktif.json();
-    const aktifData = (dataAktif?.data?.allJenisPesan || []).filter(j => !j.deleted_at);
-    renderJenisTable(aktifData, 'dataJenis', true);
+    renderJenisTable(dataAktif?.data?.allJenisPesan || [], 'dataJenis', true);
 
-    const arsipData = (dataAktif?.data?.allJenisPesan || []).filter(j => j.deleted_at);
-    renderJenisTable(arsipData, 'dataJenisArsip', false);
+    const queryArsip = `
+      query {
+        jenisPesanArsip {
+            id
+                nama
+                deleted_at
+      }
+    }
+    `;
+
+    const resArsip = await fetch('/graphql', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: queryArsip })
+    });
+    const dataArsip = await resArsip.json();
+    renderJenisTable(dataArsip?.data?.jenisPesanArsip || [], 'dataJenisArsip', false);
 }
 
 function renderJenisTable(jenisList, tableId, isActive) {
@@ -39,7 +53,7 @@ function renderJenisTable(jenisList, tableId, isActive) {
         let actions = '';
         if (isActive) {
             actions = `
-                <button onclick="openEditJenisModal(${item.id}, '${item.nama}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+                <button onclick="openEditModal(${item.id}, '${item.nama}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
                 <button onclick="archiveJenis(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
             `;
         } else {
@@ -71,7 +85,7 @@ async function archiveJenis(id) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: mutation })
     });
-    loadJenisData();
+    loadData();
 }
 
 async function restoreJenis(id) {
@@ -86,7 +100,7 @@ async function restoreJenis(id) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: mutation })
     });
-    loadJenisData();
+    loadData();
 }
 
 async function forceDeleteJenis(id) {
@@ -101,13 +115,13 @@ async function forceDeleteJenis(id) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: mutation })
     });
-    loadJenisData();
+    loadData();
 }
 
 async function searchJenis() {
     const keyword = document.getElementById('searchJenis').value.trim();
     if (!keyword) {
-        loadJenisData();
+        loadData();
         return;
     }
 
@@ -151,4 +165,4 @@ async function searchJenis() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', loadJenisData);
+document.addEventListener('DOMContentLoaded', loadData);

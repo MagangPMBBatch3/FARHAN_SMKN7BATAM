@@ -13,6 +13,11 @@ type JamKerja {
   created_at: DateTime
   updated_at: DateTime
   deleted_at: DateTime
+  userProfile: UserProfile @belongsTo
+  Aktivitas: Aktivitas @belongsTo
+  Proyek: Proyek @belongsTo
+  statusJamKerja: StatusJamKerja @belongsTo
+  ModeJamKerja: ModeJamKerja @belongsTo
 }
 
 input CreateJamKerjaInput {
@@ -42,6 +47,9 @@ input UpdateJamKerjaInput {
 }
 
 extend type Query {
+  searchJamKerja(keyword: String!): [JamKerja!]!
+    @field(resolver: "App\\GraphQL\\JamKerja\\Queries\\JamKerjaQuery@search")
+
   allJamKerja: [JamKerja!]!
     @all(model: "App\\Models\\JamKerja\\JamKerja")
 

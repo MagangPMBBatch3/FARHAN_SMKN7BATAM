@@ -1,8 +1,4 @@
-// ==========================
-// Load Data Status
-// ==========================
 async function loadStatusData() {
-    // Query data aktif
     const queryAktif = `
       query {
         allStatus {
@@ -20,7 +16,6 @@ async function loadStatusData() {
     const dataAktif = await resAktif.json();
     renderStatusTable(dataAktif?.data?.allStatus || [], 'dataStatus', true);
 
-    // Query data arsip
     const queryArsip = `
       query {
         allStatusArsip {
@@ -40,9 +35,6 @@ async function loadStatusData() {
     renderStatusTable(dataArsip?.data?.allStatusArsip || [], 'dataStatusArsip', false);
 }
 
-// ==========================
-// Render Table Status
-// ==========================
 function renderStatusTable(statusList, tableId, isActive) {
     const tbody = document.getElementById(tableId);
     tbody.innerHTML = '';
@@ -80,9 +72,6 @@ function renderStatusTable(statusList, tableId, isActive) {
     });
 }
 
-// ==========================
-// Archive, Restore, Force Delete
-// ==========================
 async function archiveStatus(id) {
     if (!confirm('Pindahkan ke arsip?')) return;
     const mutation = `
@@ -128,9 +117,6 @@ async function forceDeleteStatus(id) {
     loadStatusData();
 }
 
-// ==========================
-// Search Status
-// ==========================
 async function searchStatus() {
     const keyword = document.getElementById('searchStatus').value.trim();
     if (!keyword) {

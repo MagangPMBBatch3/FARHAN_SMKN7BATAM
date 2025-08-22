@@ -12,20 +12,29 @@ input CreateJenisPesanInput {
 }
 
 input UpdateJenisPesanInput {
-  id: ID!
   nama: String
 }
 
 extend type Query {
-  allJenisPesan: [JenisPesan!]! @all(model: "App\\Models\\JenisPesan\\JenisPesan")
-  jenisPesan(id: ID! @eq): JenisPesan @find(model: "App\\Models\\JenisPesan\\JenisPesan")
+  allJenisPesan: [JenisPesan!]! 
+    @all(model: "App\\Models\\JenisPesan\\JenisPesan")
+
+  jenisPesan(id: ID! @eq): JenisPesan 
+    @find(model: "App\\Models\\JenisPesan\\JenisPesan")
+  jenisPesanArsip: [JenisPesan!]!
+        @field(resolver: "App\\GraphQL\\JenisPesan\\Queries\\JenisPesanQuery@allArsip")
 }
 
-
 extend type Mutation {
-  createJenisPesan(input: CreateJenisPesanInput! @spread): JenisPesan! @create(model: "App\\Models\\JenisPesan\\JenisPesan")
-  updateJenisPesan(input: UpdateJenisPesanInput! @spread): JenisPesan! @update(model: "App\\Models\\JenisPesan\\JenisPesan")
-  deleteJenisPesan(id: ID! @eq): JenisPesan @delete(model: "App\\Models\\JenisPesan\\JenisPesan")
+  createJenisPesan(input: CreateJenisPesanInput! @spread): JenisPesan! 
+    @create(model: "App\\Models\\JenisPesan\\JenisPesan")
+
+  updateJenisPesan(id: ID! @eq, input: UpdateJenisPesanInput! @spread): JenisPesan! 
+    @update(model: "App\\Models\\JenisPesan\\JenisPesan")
+
+  deleteJenisPesan(id: ID! @eq): JenisPesan 
+    @delete(model: "App\\Models\\JenisPesan\\JenisPesan")
+
   restoreJenisPesan(id: ID!): JenisPesan
     @field(resolver: "App\\GraphQL\\JenisPesan\\Mutations\\JenisPesanMutation@restore")
 

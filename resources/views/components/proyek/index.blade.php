@@ -4,18 +4,17 @@
 
         {{-- Search & Tambah Data --}}
         <div class="flex justify-between mb-4">
-            <input type="text" id="search" placeholder="Cari ID atau Nama Proyek..." 
-                   class="border p-2 rounded w-64" oninput="search()">
-            <button onclick="openAddProyekModal()" 
-                    class="bg-blue-500 text-white px-4 py-2 rounded">Tambah Data</button>
+            <input type="text" id="search" placeholder="Cari ID atau Nama Proyek..." class="border p-2 rounded w-64"
+                oninput="search()">
+            <button onclick="openAddProyekModal()" class="bg-blue-500 text-white px-4 py-2 rounded">Tambah Data</button>
         </div>
 
         {{-- Tabs --}}
         <div class="mb-4">
-            <button class="px-4 py-2 bg-blue-500 text-white rounded-t" 
-                    onclick="showTab('aktif')" id="tabAktif">Data Aktif</button>
-            <button onclick="showTab('arsip')" id="tabArsip" 
-                    class="px-4 py-2 bg-gray-300 text-black rounded-t">Data Arsip</button>
+            <button class="px-4 py-2 bg-blue-500 text-white rounded-t" onclick="showTab('aktif')" id="tabAktif">Data
+                Aktif</button>
+            <button onclick="showTab('arsip')" id="tabArsip" class="px-4 py-2 bg-gray-300 text-black rounded-t">Data
+                Arsip</button>
         </div>
 
         {{-- Table Aktif --}}

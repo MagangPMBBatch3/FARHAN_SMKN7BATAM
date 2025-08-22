@@ -1,8 +1,4 @@
-// ==========================
-// Load Data User
-// ==========================
 async function loadUserData() {
-    // Query data aktif
     const queryAktif = `
       query {
         allUsers{
@@ -21,7 +17,6 @@ async function loadUserData() {
     const dataAktif = await resAktif.json();
     renderUserTable(dataAktif?.data?.allUsers || [], 'dataUser', true);
 
-    // Query data arsip
     const queryArsip = `
       query {
         allUserArsip {
@@ -43,9 +38,6 @@ async function loadUserData() {
     renderUserTable(dataArsip?.data?.allUserArsip || [], 'dataUserArsip', false);
 }
 
-// ==========================
-// Render Table User
-// ==========================
 function renderUserTable(userList, tableId, isActive) {
     const tbody = document.getElementById(tableId);
     tbody.innerHTML = '';
@@ -55,16 +47,17 @@ function renderUserTable(userList, tableId, isActive) {
             <tr>
                 <td colspan="4" class="text-center text-gray-500 p-3">Tidak ada data</td>
             </tr>
-        `;
+        `;  
         return;
     }
-
+    
     userList.forEach(item => {
         let actions = '';
         if (isActive) {
             actions = `
                 <button onclick="openEditModal(${item.id}, '${item.name}', '${item.email}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
                 <button onclick="archiveUser(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
+                <button onclick="userProfile(${item.id})" class="bg-green-500 text-white px-2 py-1 rounded">User Profile</button>
             `;
         } else {
             actions = `
@@ -84,9 +77,6 @@ function renderUserTable(userList, tableId, isActive) {
     });
 }
 
-// ==========================
-// Archive, Restore, Force Delete
-// ==========================
 async function archiveUser(id) {
     if (!confirm('Pindahkan ke arsip?')) return;
     const mutation = `
@@ -131,10 +121,6 @@ async function forceDeleteUser(id) {
     });
     loadUserData();
 }
-
-// ==========================
-// Search User
-// ==========================
 async function search() {
     const keyword = document.getElementById('search').value.trim();
     if (!keyword) {

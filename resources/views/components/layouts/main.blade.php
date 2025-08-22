@@ -8,20 +8,16 @@
 <body class="bg-gray-100 flex">
     <aside class="w-64 bg-blue-600 text-white min-h-screen flex flex-col p-4 shadow-lg">
         <div class="flex items-center gap-2 mb-8">
-            <i data-feather="menu" class="w-6 h-6"></i>
             <h2 class="text-2xl font-bold">Menu</h2>
         </div>
         <nav class="flex-1">
             <ul class="space-y-1">
-
-                <!-- Dashboard -->
                 <li>
                     <a href="/dashboard" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500 transition">
                         <i data-feather="home"></i> Dashboard
                     </a>
                 </li>
 
-                <!-- Master Data Dropdown -->
                 <li>
                     <button class="w-full flex justify-between items-center p-2 rounded hover:bg-blue-500 transition dropdown-btn">
                         <span class="flex items-center gap-3"><i data-feather="grid"></i> Master Data</span>
@@ -34,7 +30,6 @@
                     </ul>
                 </li>
 
-                <!-- Manajemen User Dropdown -->
                 <li>
                     <button class="w-full flex justify-between items-center p-2 rounded hover:bg-blue-500 transition dropdown-btn">
                         <span class="flex items-center gap-3"><i data-feather="users"></i> Manajemen User</span>
@@ -46,7 +41,6 @@
                     </ul>
                 </li>
 
-                <!-- Proyek Dropdown -->
                 <li>
                     <button class="w-full flex justify-between items-center p-2 rounded hover:bg-blue-500 transition dropdown-btn">
                         <span class="flex items-center gap-3"><i data-feather="briefcase"></i> Proyek</span>
@@ -58,14 +52,12 @@
                     </ul>
                 </li>
 
-                <!-- Aktivitas -->
                 <li>
                     <a href="/aktivitas" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500 transition">
                         <i data-feather="check-square"></i> Aktivitas
                     </a>
                 </li>
 
-                <!-- Jam Kerja Dropdown -->
                 <li>
                     <button class="w-full flex justify-between items-center p-2 rounded hover:bg-blue-500 transition dropdown-btn">
                         <span class="flex items-center gap-3"><i data-feather="clock"></i> Jam Kerja</span>
@@ -80,7 +72,6 @@
                     </ul>
                 </li>
 
-                <!-- Pesan Dropdown -->
                 <li>
                     <button class="w-full flex justify-between items-center p-2 rounded hover:bg-blue-500 transition dropdown-btn">
                         <span class="flex items-center gap-3"><i data-feather="message-square"></i> Pesan</span>
@@ -92,7 +83,6 @@
                     </ul>
                 </li>
 
-                <!-- Keterangan -->
                 <li>
                     <a href="/keterangan" class="flex items-center gap-3 p-2 rounded hover:bg-blue-500 transition">
                         <i data-feather="info"></i> Keterangan
@@ -101,7 +91,6 @@
             </ul>
         </nav>
 
-        <!-- Logout -->
         <div class="mt-6 border-t border-blue-400 pt-4">
             <form action="/logout" method="POST">
                 @csrf

@@ -44,7 +44,7 @@ async function loadData() {
     const dataArsip = await resArsip.json();
     renderAktivitasTable(dataArsip?.data?.allAktivitasArsip || [], 'dataAktivitasArsip', false);
 }
-async function openAddAktivitasModal() {
+async function openAddKeteranganModal() {
     document.getElementById('modalAdd').classList.remove('hidden');
     await loadBagianOptions(); 
 }

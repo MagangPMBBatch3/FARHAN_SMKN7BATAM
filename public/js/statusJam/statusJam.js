@@ -1,16 +1,9 @@
-// ==========================
-// Load Data User
-// ==========================
 async function loadData() {
-    // Query data aktif
     const queryAktif = `
       query {
-        allJamPerTanggal{
+        allStatusJamKerja{
           id
-          users_profile_id
-          proyek_id
-          tanggal
-          jam
+          nama
         }
       }
     `;
@@ -21,17 +14,12 @@ async function loadData() {
         body: JSON.stringify({ query: queryAktif }),
     });
     const dataAktif = await resAktif.json();
-    renderUserTable(dataAktif?.data?.allJamPerTanggal || [], "dataTanggal", true);
-
-    // Query data arsip
+    renderUserTable(dataAktif?.data?.allStatusJamKerja || [], "dataStatusJam", true);
     const queryArsip = `
     query {
-        allJamPerTanggalArsip{
+        allStatusJamKerja{
           id
-          users_profile_id
-          proyek_id
-          tanggal
-          jam
+          nama
         }
       }
     `;
@@ -44,15 +32,12 @@ async function loadData() {
     const dataArsip = await resArsip.json();
     console.log(dataArsip);
     renderUserTable(
-        dataArsip?.data?.allJamPerTanggalArsip || [],
-        "dataTanggalArsip",
+        dataArsip?.data?.allStatusJamKerja || [],
+        "dataStatusJamArsip",
         false
     );
 }
 
-// ==========================
-// Render Table User
-// ==========================
 function renderUserTable(userList, tableId, isActive) {
     const tbody = document.getElementById(tableId);
     tbody.innerHTML = "";
@@ -83,19 +68,13 @@ function renderUserTable(userList, tableId, isActive) {
         tbody.innerHTML += `
             <tr>
                 <td class="border p-2">${item.id}</td>
-                <td class="border p-2">${item.users_profile_id}</td>
-                <td class="border p-2">${item.proyek_id}</td>
-                <td class="border p-2">${item.tanggal}</td>
-                <td class="border p-2">${item.jam}</td>
+                <td class="border p-2">${item.nama}</td>
                 <td class="border p-2">${actions}</td>
             </tr>
         `;
     });
 }
 
-// ==========================
-// Archive, Restore, Force Delete
-// ==========================
 async function archiveJamPerTanggal(id) {
     if (!confirm("Pindahkan ke arsip?")) return;
     const mutation = `
@@ -141,9 +120,6 @@ async function forceDeleteJamPerTanggal(id) {
     loadData();
 }
 
-// ==========================
-// Search User
-// ==========================
 async function search() {
     const keyword = document.getElementById("search").value.trim();
     if (!keyword) {
@@ -158,10 +134,7 @@ async function search() {
         {
             jamPerTanggal(id: ${keyword}) {
                 id
-          users_profile_id
-          proyek_id
-          tanggal
-          jam
+          nama
             }
         }
         `;
@@ -174,7 +147,7 @@ async function search() {
         console.log(data);
         renderUserTable(
             data.data.jamPerTanggal ? [data.data.jamPerTanggal] : [],
-            "dataTanggal",
+            "dataStatusJam",
             true
         );
     } else {
@@ -182,10 +155,7 @@ async function search() {
         {
             userByName(name: "%${keyword}%") {
                 id
-          users_profile_id
-          proyek_id
-          tanggal
-          jam
+          nama
         }
             }
         }
@@ -196,7 +166,7 @@ async function search() {
             body: JSON.stringify({ query }),
         });
         const data = await res.json();
-        renderUserTable(data.data.jamPerTanggal || [], "dataTanggal", true);
+        renderUserTable(data.data.jamPerTanggal || [], "dataStatusJam", true);
     }
 }
 

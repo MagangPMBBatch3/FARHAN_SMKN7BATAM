@@ -1,5 +1,4 @@
 async function loadProyekData() {
-    // Data aktif
     const queryAktif = `
       query {
         allProyeks {
@@ -20,7 +19,6 @@ async function loadProyekData() {
     const dataAktif = await resAktif.json();
     renderProyekTable(dataAktif?.data?.allProyeks || [], 'dataProyek', true);
 
-    // Data arsip
     const queryArsip = `
       query {
         allProyeksArsip {
@@ -40,7 +38,7 @@ async function loadProyekData() {
         body: JSON.stringify({ query: queryArsip })
     });
     const dataArsip = await resArsip.json();
-    renderProyekTable(dataArsip?.data?.allProyekArsip || [], 'dataProyekArsip', false);
+    renderProyekTable(dataArsip?.data?.allProyeksArsip || [], 'dataProyekArsip', false);
 }
 
 
@@ -61,7 +59,7 @@ function renderProyekTable(proyeks, tableId, isActive) {
         let actions = '';
         if (isActive) {
             actions = `
-                <button onclick="openEditModal(${JSON.stringify(item)})" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+                <button onclick="openEditModal(${item.id}, '${item.kode}', '${item.nama}', '${item.tanggal}', '${item.nama_sekolah}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
                 <button onclick="archiveProyek(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
             `;
         } else {

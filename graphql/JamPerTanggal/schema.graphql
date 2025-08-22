@@ -8,6 +8,7 @@ type JamPerTanggal {
   updated_at: DateTime
   deleted_at: DateTime
   proyek: Proyek @belongsTo
+  userProfile: UserProfile @belongsTo
 }
 
 input CreateJamPerTanggalInput {

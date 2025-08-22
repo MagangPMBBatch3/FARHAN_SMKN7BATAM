@@ -34,7 +34,6 @@ input CreateUserProfileInput {
     status_id: Int
 }
 
-
 extend type Query {
     allUserProfiles: [UserProfile!]!
         @all(model: "App\\Models\\UserProfile\\UserProfile")
@@ -42,23 +41,30 @@ extend type Query {
     userProfile(id: ID! @eq): UserProfile
         @find(model: "App\\Models\\UserProfile\\UserProfile")
 
-    userProfileByName(name: String! @where(operator: "like", key: "name")): [UserProfile!]!
-      @all(model: "App\\Models\\UserProfile\\UserProfile")  
+    userProfileByName(
+        nama_lengkap: String! @where(operator: "like", key: "nama_lengkap")
+    ): [UserProfile!]! @all(model: "App\\Models\\UserProfile\\UserProfile")
 }
 
 extend type Mutation {
     createUserProfile(input: CreateUserProfileInput! @spread): UserProfile
         @create(model: "App\\Models\\UserProfile\\UserProfile")
 
-    updateUserProfile(id: ID! @eq, input: UpdateUserProfileInput! @spread): UserProfile
-        @update(model: "App\\Models\\UserProfile\\UserProfile")
+    updateUserProfile(
+        id: ID! @eq
+        input: UpdateUserProfileInput! @spread
+    ): UserProfile @update(model: "App\\Models\\UserProfile\\UserProfile")
 
     deleteUserProfile(id: ID! @eq): UserProfile
         @delete(model: "App\\Models\\UserProfile\\UserProfile")
 
     restoreUserProfile(id: ID!): UserProfile
-        @field(resolver: "App\\GraphQL\\UserProfile\\Mutations\\UserProfileMutation@restore")
+        @field(
+            resolver: "App\\GraphQL\\UserProfile\\Mutations\\UserProfileMutation@restore"
+        )
 
     forceDeleteUserProfile(id: ID!): UserProfile
-        @field(resolver: "App\\GraphQL\\UserProfile\\Mutations\\UserProfileMutation@forceDelete")
+        @field(
+            resolver: "App\\GraphQL\\UserProfile\\Mutations\\UserProfileMutation@forceDelete"
+        )
 }
