@@ -3,32 +3,30 @@
         <h1 class="text-2x1 font-bold mb-4">Data Jam Kerja</h1>
 
         <div class="flex justify-between mb-4">
-            <input type="text" id="searchJam" placeholder="Cari ID atau No WBS..." 
+            <input type="text" id="searchInput" placeholder="Cari ID atau No WBS..." 
                    class="border p-2 rounded w-64" oninput="searchJam()">
-            <button onclick="openAddJamModal()" class="bg-blue-500 text-white px-4 py-2 rounded">Tambah Data</button>
+            <button onclick="modalAdd()" class="bg-blue-500 text-white px-4 py-2 rounded">Tambah Data</button>
         </div>
 
         <div class="mb-4">
             <button class="px-4 py-2 bg-blue-500 text-white rounded-t" onclick="showTab('aktif')" id="tabAktif">Data Aktif</button>
             <button onclick="showTab('arsip')" id="tabArsip" class="px-4 py-2 bg-gray-300 text-black rounded-t">Data Arsip</button>
         </div>
-
-        {{-- Tabel Aktif --}}
         <div id="tableAktif">
             <table class="w-full border text-sm">
                 <thead class="bg-gray-200">
                     <tr>
                         <th class="p-2 border">ID</th>
-                        <th class="p-2 border">User Profile ID</th>
+                        <th class="p-2 border">User Profile</th>
                         <th class="p-2 border">No WBS</th>
                         <th class="p-2 border">Kode Proyek</th>
-                        <th class="p-2 border">Proyek ID</th>
-                        <th class="p-2 border">Aktivitas ID</th>
+                        <th class="p-2 border">Proyek</th>
+                        <th class="p-2 border">Aktivitas</th>
                         <th class="p-2 border">Tanggal</th>
                         <th class="p-2 border">Jumlah Jam</th>
                         <th class="p-2 border">Keterangan</th>
-                        <th class="p-2 border">Status ID</th>
-                        <th class="p-2 border">Mode ID</th>
+                        <th class="p-2 border">Status</th>
+                        <th class="p-2 border">Mode</th>
                         <th class="p-2 border">Aksi</th>
                     </tr>
                 </thead>
@@ -36,22 +34,21 @@
             </table>
         </div>
 
-        {{-- Tabel Arsip --}}
         <div id="tableArsip" class="hidden">
             <table class="w-full border text-sm">
                 <thead class="bg-gray-200">
                     <tr>
                         <th class="p-2 border">ID</th>
-                        <th class="p-2 border">User Profile ID</th>
+                        <th class="p-2 border">User Profile</th>
                         <th class="p-2 border">No WBS</th>
                         <th class="p-2 border">Kode Proyek</th>
-                        <th class="p-2 border">Proyek ID</th>
-                        <th class="p-2 border">Aktivitas ID</th>
+                        <th class="p-2 border">Proyek</th>
+                        <th class="p-2 border">Aktivitas</th>
                         <th class="p-2 border">Tanggal</th>
                         <th class="p-2 border">Jumlah Jam</th>
                         <th class="p-2 border">Keterangan</th>
-                        <th class="p-2 border">Status ID</th>
-                        <th class="p-2 border">Mode ID</th>
+                        <th class="p-2 border">Status</th>
+                        <th class="p-2 border">Mode</th>
                         <th class="p-2 border">Aksi</th>
                     </tr>
                 </thead>

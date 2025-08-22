@@ -1,5 +1,4 @@
 async function loadData() {
-    // Data aktif
     const queryAktif = `
       query {
         allProyeks {

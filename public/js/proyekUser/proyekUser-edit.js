@@ -1,37 +1,43 @@
-function openEditModal(id, proyekId, userId) {
+let cacheUserProfiles = null;
+let cacheProyeks = null;
+
+async function openEditModal(id, proyekId, userId) {
     document.getElementById('modalEdit').classList.remove('hidden');
     document.getElementById('editId').value = id;
 
-    const queryUsers = `
-        query {
-            allUserProfiles {
-                id
-                nama_lengkap
-            }
+    try {
+        if (!cacheUserProfiles || !cacheProyeks) {
+            const query = `
+                query {
+                    allUserProfiles { id, nama_lengkap }
+                    allProyeks { id, nama }
+                }
+            `;
+            const res = await fetch('/graphql', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query })
+            });
+            const data = await res.json();
+
+            cacheUserProfiles = data.data.allUserProfiles;
+            cacheProyeks = data.data.allProyeks;
         }
-    `;
 
-    fetch('/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: queryUsers })
-    })
-    .then(res => res.json())
-    .then(data => {
         const selectUser = document.getElementById('editUser');
-        selectUser.innerHTML = `<option value="">-- Pilih User --</option>`;
-
+        selectUser.innerHTML = '';
+        const userFragment = document.createDocumentFragment();
         let foundUser = false;
-        data.data.allUserProfiles.forEach(u => {
+
+        cacheUserProfiles.forEach(u => {
             const opt = document.createElement('option');
             opt.value = u.id;
             opt.textContent = u.nama_lengkap;
-
             if (String(u.id) === String(userId)) {
                 opt.selected = true;
                 foundUser = true;
             }
-            selectUser.appendChild(opt);
+            userFragment.appendChild(opt);
         });
 
         if (!foundUser && userId) {
@@ -40,40 +46,25 @@ function openEditModal(id, proyekId, userId) {
             opt.textContent = "User sudah dihapus";
             opt.selected = true;
             opt.classList.add("text-red-500");
-            selectUser.appendChild(opt);
+            userFragment.appendChild(opt);
         }
-    });
+        selectUser.appendChild(userFragment);
+        selectUser.insertAdjacentHTML('afterbegin', `<option value="">-- Pilih User --</option>`);
 
-    const queryProyek = `
-        query {
-            allProyeks {
-                id
-                nama
-            }
-        }
-    `;
-
-    fetch('/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: queryProyek })
-    })
-    .then(res => res.json())
-    .then(data => {
         const selectProyek = document.getElementById('editProyek');
-        selectProyek.innerHTML = `<option value="">-- Pilih Proyek --</option>`;
-
+        selectProyek.innerHTML = '';
+        const proyekFragment = document.createDocumentFragment();
         let foundProyek = false;
-        data.data.allProyeks.forEach(p => {
+
+        cacheProyeks.forEach(p => {
             const opt = document.createElement('option');
             opt.value = p.id;
             opt.textContent = p.nama;
-
             if (String(p.id) === String(proyekId)) {
                 opt.selected = true;
                 foundProyek = true;
             }
-            selectProyek.appendChild(opt);
+            proyekFragment.appendChild(opt);
         });
 
         if (!foundProyek && proyekId) {
@@ -82,14 +73,23 @@ function openEditModal(id, proyekId, userId) {
             opt.textContent = "Proyek sudah dihapus";
             opt.selected = true;
             opt.classList.add("text-red-500");
-            selectProyek.appendChild(opt);
+            proyekFragment.appendChild(opt);
         }
-    });
+        selectProyek.appendChild(proyekFragment);
+        selectProyek.insertAdjacentHTML('afterbegin', `<option value="">-- Pilih Proyek --</option>`);
+
+    } catch (err) {
+        console.error(err);
+        alert("Gagal memuat data user/proyek");
+    }
 }
+
 
 
 function closeEditModal() {
     document.getElementById('modalEdit').classList.add('hidden');
+    document.getElementById('editUser').value = '';
+    document.getElementById('editProyek').value = '';
 }
 
 async function update() {

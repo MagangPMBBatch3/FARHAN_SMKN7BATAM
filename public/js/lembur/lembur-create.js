@@ -1,7 +1,6 @@
 async function openAddLemburModal() {
     document.getElementById('modalAddLembur').classList.remove('hidden');
 
-    // load user
     const queryUsers = `
         query {
             allUserProfiles {
@@ -27,7 +26,6 @@ async function openAddLemburModal() {
         }
     });
 
-    // load proyek
     const queryProyek = `
         query {
             allProyeks {

@@ -1,5 +1,4 @@
 async function loadProyekData() {
-    // Data aktif
     const queryAktif = `
       query {
         allProyeks {
@@ -20,7 +19,6 @@ async function loadProyekData() {
     const dataAktif = await resAktif.json();
     renderProyekTable(dataAktif?.data?.allProyeks || [], 'dataProyek', true);
 
-    // Data arsip
     const queryArsip = `
       query {
         allProyeksArsip {

@@ -15,7 +15,7 @@ async function loadData(queryType = "all") {
         } else {
             queryAktif = `
             query {
-                modeJamKerja(search: "%${searchValue}%"){
+                modeJamKerjaByNama(nama: "%${searchValue}%"){
                     id
                     nama
                 }

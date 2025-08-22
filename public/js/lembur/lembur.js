@@ -77,7 +77,6 @@ function renderLemburTable(lemburs, tableId, isActive) {
             `;
         }
 
-        // 🛠️ cek null
         const userName = item.userProfile ? item.userProfile.nama_lengkap : "User tidak tersedia";
         const proyekName = item.proyek 
             ? item.proyek.nama 

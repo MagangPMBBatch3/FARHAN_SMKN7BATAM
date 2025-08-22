@@ -25,8 +25,8 @@
                 <thead class="bg-gray-200">
                     <tr>
                         <th class="p-2 border">ID</th>
-                        <th class="p-2 border">User Profile Id</th>
-                        <th class="p-2 border">Proyek Id</th>
+                        <th class="p-2 border">User Profile</th>
+                        <th class="p-2 border">Proyek</th>
                         <th class="p-2 border">Tanggal</th>
                         <th class="p-2 border">Jam</th>
                         <th class="p-2 border">Aksi</th>
@@ -42,8 +42,8 @@
                 <thead class="bg-gray-200">
                     <tr>
                     <th class="p-2 border">ID</th>
-                        <th class="p-2 border">User Profile Id</th>
-                        <th class="p-2 border">Proyek Id</th>
+                        <th class="p-2 border">User Profile</th>
+                        <th class="p-2 border">Proyek</th>
                         <th class="p-2 border">Tanggal</th>
                         <th class="p-2 border">Jam</th>
                         <th class="p-2 border">Aksi</th>

@@ -93,7 +93,6 @@ function renderProyekUserTable(data, tableId, isActive) {
   });
 }
 
-// Mutations
 async function deleteProyekUser(id) {
   if (!confirm("Pindahkan ke arsip?")) return;
   const mutation = `
@@ -139,7 +138,6 @@ async function forceDeleteProyekUser(id) {
   loadProyekUserData();
 }
 
-// Search
 async function searchProyekUser() {
   const keyword = document.getElementById("searchProyekUser").value.trim();
   if (!keyword) {
@@ -149,7 +147,6 @@ async function searchProyekUser() {
 
   let query;
   if (!isNaN(keyword)) {
-    // Pencarian by ID
     query = `
       query {
         proyekUser(id: ${keyword}) {
