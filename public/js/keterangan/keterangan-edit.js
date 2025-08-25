@@ -1,16 +1,15 @@
-// OPEN MODAL
 async function openEditKeteranganModal(id, bagianId, proyekId, tanggal) {
     document.getElementById('modalEdit').classList.remove('hidden');
+    document.getElementById('editTanggal').value = tanggal;
     const form = document.getElementById('formEdit');
     form.dataset.id = id;
-
     await loadBagianOptionsEdit(bagianId);
     await loadProyekOptionsEdit(proyekId);
 
-    document.getElementById('editTanggal').value = tanggal;
+    
+    console.log(tanggal )
 }
 
-// CLOSE MODAL
 function closeEditModal() {
     const modal = document.getElementById('modalEdit');
     const form = document.getElementById('formEdit');
@@ -19,7 +18,6 @@ function closeEditModal() {
     delete form.dataset.id;
 }
 
-// LOAD BAGIAN OPTIONS
 async function loadBagianOptionsEdit(selectedId) {
     const query = `
         query {
@@ -52,7 +50,6 @@ async function loadBagianOptionsEdit(selectedId) {
     }
 }
 
-// LOAD PROYEK OPTIONS
 async function loadProyekOptionsEdit(selectedId) {
     const query = `
         query {

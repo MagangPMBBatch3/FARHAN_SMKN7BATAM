@@ -6,20 +6,17 @@
                 @csrf
 
                 <div class="grid grid-cols-2 gap-4">
-                    <!-- User -->
                     <div>
                         <label for="addUsersProfile" class="block mb-1">User</label>
                         <select id="addUsersProfile" name="users_profile_id" class="border p-2 w-full rounded" required>
                         </select>
                     </div>
 
-                    <!-- Tanggal -->
                     <div>
                         <label for="addTanggal" class="block mb-1">Tanggal</label>
                         <input type="date" id="addTanggal" name="tanggal" class="border p-2 w-full rounded" required>
                     </div>
 
-                    <!-- Proyek + Kode Proyek -->
                     <div class="col-span-2 grid grid-cols-2 gap-4">
                         <div>
                             <label for="addProyek" class="block mb-1">Proyek</label>
@@ -32,7 +29,6 @@
                         </div>
                     </div>
 
-                    <!-- Aktivitas + No WBS -->
                     <div class="col-span-2 grid grid-cols-2 gap-4">
                         <div>
                             <label for="addAktivitas" class="block mb-1">Aktivitas</label>
@@ -45,34 +41,29 @@
                         </div>
                     </div>
 
-                    <!-- Jumlah Jam -->
                     <div>
                         <label for="addJumlahJam" class="block mb-1">Jumlah Jam</label>
                         <input type="time" id="addJumlahJam" name="jumlah_jam" class="border p-2 w-full rounded" required>
                     </div>
 
-                    <!-- Status -->
                     <div>
                         <label for="addStatus" class="block mb-1">Status</label>
                         <select id="addStatus" name="status_id" class="border p-2 w-full rounded" required>
                         </select>
                     </div>
 
-                    <!-- Mode -->
                     <div>
                         <label for="addMode" class="block mb-1">Mode Jam Kerja</label>
                         <select id="addMode" name="mode_id" class="border p-2 w-full rounded" required>
                         </select>
                     </div>
 
-                    <!-- Keterangan -->
                     <div class="col-span-2">
                         <label for="addKeterangan" class="block mb-1">Keterangan</label>
                         <textarea id="addKeterangan" name="keterangan" class="border p-2 w-full rounded"></textarea>
                     </div>
                 </div>
 
-                <!-- Tombol -->
                 <div class="flex justify-end gap-2 mt-6">
                     <button type="button" onclick="closeAddModal()" class="bg-gray-400 text-white px-4 py-2 rounded">
                         Batal

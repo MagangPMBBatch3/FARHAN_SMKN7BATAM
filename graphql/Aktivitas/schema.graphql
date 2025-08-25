@@ -34,7 +34,7 @@ extend type Query {
   aktivitasByNama(nama: String! @where(operator: "like", key: "nama")
     ): [Aktivitas]! @all(model: "App\\Models\\Aktivitas\\Aktivitas")
 }
-
+  
 extend type Mutation {
   createAktivitas(input: CreateAktivitasInput! @spread): Aktivitas!
     @create(model: "App\\Models\\Aktivitas\\Aktivitas")

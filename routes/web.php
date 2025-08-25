@@ -5,6 +5,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController\AuthController;
 use App\Http\Controllers\BagianController;
 use App\Http\Controllers\LevelController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RegisterController;
+
+Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.index');
+Route::post('/register', [RegisterController::class, 'register'])->name('register');
+
+Route::get('/admin/user-profiles/{id}', [UserController::class, 'show'])->name('admin.userProfiles.show');
+
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
