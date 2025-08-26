@@ -49,9 +49,9 @@
         document.getElementById("registerForm").addEventListener("submit", async function(e) {
             e.preventDefault();
 
-            const name = this.name.value.trim();
-            const email = this.email.value.trim();
-            const password = this.password.value.trim();
+            const name = document.querySelector('[name="name"]').value.trim();
+            const email = document.querySelector('[name="email"]').value.trim();
+            const password = document.querySelector('[name="password"]').value.trim();
             const confirm = document.getElementById("password_confirmation").value.trim();
 
             const errorMsg = document.getElementById("errorMsg");
@@ -71,36 +71,70 @@
                 return;
             }
 
-            const query = `
-              mutation {
-                createUser(input: {
-                  name: "${name}",
-                  email: "${email}",
-                  password: "${password}"
-                }) {
-                  id
-                  name
-                  email
-                }
-              }
-            `;
-
             try {
-                const res = await fetch("/graphql", {
+                const queryCreateUser = `
+                  mutation($input: CreateUserInput!) {
+                    createUser(input: $input) {
+                      id
+                      name
+                      email
+                    }
+                  }
+                `;
+                const resUser = await fetch("/graphql", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ query })
+                    body: JSON.stringify({
+                        query: queryCreateUser,
+                        variables: {
+                            input: { name, email, password }
+                        }
+                    })
                 });
-                const data = await res.json();
+                const dataUser = await resUser.json();
 
-                if (data.errors) {
-                    errorMsg.textContent = data.errors[0].message;
+                if (dataUser.errors) {
+                    errorMsg.textContent = dataUser.errors[0].message;
                     errorMsg.classList.remove("hidden");
-                } else {
-                    successMsg.textContent = "Registrasi berhasil! Silakan login.";
-                    successMsg.classList.remove("hidden");
-                    this.reset();
+                    return;
                 }
+
+                const userId = dataUser.data.createUser.id;
+                const queryCreateProfile = `
+                    mutation($input: CreateUserProfileInput!) {
+                        createUserProfile(input: $input) {
+                        id
+                        user_id
+                        nama_lengkap
+                        }
+                    }
+                    `;
+                    const resProfile = await fetch("/graphql", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            query: queryCreateProfile,
+                            variables: {
+                                input: { 
+                                    user_id: userId, 
+                                    nama_lengkap: name
+                                }
+                            }
+                        })
+                    });
+
+                const dataProfile = await resProfile.json();
+
+                if (dataProfile.errors) {
+                    errorMsg.textContent = dataProfile.errors[0].message;
+                    errorMsg.classList.remove("hidden");
+                    return;
+                }
+
+                successMsg.textContent = "Registrasi berhasil! Silakan login.";
+                successMsg.classList.remove("hidden");
+                this.reset();
+
             } catch (err) {
                 errorMsg.textContent = "Terjadi kesalahan koneksi.";
                 errorMsg.classList.remove("hidden");

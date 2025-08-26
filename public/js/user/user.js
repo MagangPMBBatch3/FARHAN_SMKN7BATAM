@@ -52,7 +52,7 @@ function renderUserTable(userList, tableId, isActive) {
     }
     
     userList.forEach(item => {
-        let actions = '';
+        let actions = '';   
         if (isActive) {
             actions = `
                 <button onclick="openEditModal(${item.id}, '${item.name}', '${item.email}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>

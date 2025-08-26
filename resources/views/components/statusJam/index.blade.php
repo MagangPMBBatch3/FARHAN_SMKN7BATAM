@@ -23,7 +23,7 @@
                         <th class="p-2 border">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="dataStatus"></tbody>
+                <tbody id="dataStatusJam"></tbody>
             </table>
         </div>
 
@@ -36,16 +36,16 @@
                         <th class="p-2 border">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="dataStatusArsip"></tbody>
+                <tbody id="dataStatusJamArsip"></tbody>
             </table>
         </div>
 
         @include('components.statusJam.modal-add')
         @include('components.statusJam.modal-edit')
 
-        <script src="{{ asset('js/status/status.js') }}"></script>
-        <script src="{{ asset('js/status/status-create.js') }}"></script>
-        <script src="{{ asset('js/status/status-edit.js') }}"></script>
+        <script src="{{ asset('js/statusJam/statusJam.js') }}"></script>
+        <script src="{{ asset('js/statusJam/statusJam-create.js') }}"></script>
+        <script src="{{ asset('js/statusJam/statusJam-edit.js') }}"></script>
 
         <script>
             function showTab(tab) {
@@ -70,7 +70,7 @@
                     tableAktif.classList.add('hidden');
                 }
 
-                loadStatusData();
+                loadData();
             }
         </script>
     </div>
