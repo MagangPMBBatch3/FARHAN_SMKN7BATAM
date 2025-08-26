@@ -20,7 +20,7 @@
         </div>
 
         <!-- Tabel Aktif -->
-        <div id="tableAktif">
+        <div id="tableAktif">   
             <table class="w-full border">
                 <thead class="bg-gray-200">
                     <tr>

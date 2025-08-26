@@ -52,13 +52,12 @@
             </table>
         </div>
 
-        <!-- @include('components.level.modal-add')
-        @include('components.level.modal-edit') -->
+        @include('components.pesan.modal-add')
+        @include('components.pesan.modal-edit')
 
         <script src="{{ asset('js/pesan/pesan.js') }}"></script>
-        <!-- <script src="{{ asset('js/level/level-create.js') }}"></script>
-        <script src="{{ asset('js/level/level-edit.js') }}"></script> -->
-
+        <script src="{{ asset('js/pesan/pesan-create.js') }}"></script>
+        <script src="{{ asset('js/pesan/pesan-edit.js') }}">
         <script>
             function showTab(tab) {
                 const tabAktif = document.getElementById('tabAktif');

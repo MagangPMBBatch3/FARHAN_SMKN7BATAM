@@ -107,7 +107,6 @@ function timeToDecimal(timeStr) {
     return parseFloat((h + (m / 60)).toFixed(2));
 }
 
-console.log(decimalToTime(1.0))
 //* ================== MODAL EDIT ==================
 async function modalEdit(id, userId, proyekId, aktivitasId, statusId, modeId, no_wbs, kode, tanggal, jumlah_jam, keterangan) {
     document.getElementById('modalEdit').classList.remove('hidden');

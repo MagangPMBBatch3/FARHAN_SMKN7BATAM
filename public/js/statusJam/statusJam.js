@@ -17,7 +17,7 @@ async function loadData() {
     renderUserTable(dataAktif?.data?.allStatusJamKerja || [], "dataStatusJam", true);
     const queryArsip = `
     query {
-        allStatusJamKerja{
+        allStatusJamKerjaArsip{
           id
           nama
         }

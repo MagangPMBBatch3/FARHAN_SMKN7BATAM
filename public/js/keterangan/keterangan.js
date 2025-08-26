@@ -67,7 +67,7 @@ function renderKeteranganTable(keterangan, tableId, isActive) {
         let actions = '';
         if (isActive) {
             actions = `
-                <button onclick="openEditKeteranganModal(${item.proyek_id}, ${item.bagian_id})" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+                <button onclick="openEditKeteranganModal(${item.proyek_id}, ${item.bagian_id}, ${item.proyek_id}, ${item.tanggal})" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
                 <button onclick="archiveKeterangan(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
             `;
         } else {

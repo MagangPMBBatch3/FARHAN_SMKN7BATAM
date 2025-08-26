@@ -10,24 +10,21 @@ class AuthController {
         return view('auth.login');
     }
     public function login(Request $request)
-{
-    $credentials = $request->validate([
-        'email' => 'required|email',
-        'password' => 'required'
-    ]);
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
-    $user = \App\Models\User\User::where('email', $credentials['email'])->first();
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('/dashboard');
+        }
 
-    if ($user && $user->password === $credentials['password']) {
-        Auth::login($user);
-        $request->session()->regenerate();
-        return redirect()->intended('/dashboard');
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ])->onlyInput('email');
     }
-
-    return back()->withErrors([
-        'email' => 'Email atau password salah.'
-    ]);
-}
 
     public function dashboard()
     {
@@ -91,5 +88,9 @@ class AuthController {
     public function statusJam()
     {
         return view('components.statusJam.index');
+    }
+
+    public function register(){
+        return view('auth.register.index');
     }
 }

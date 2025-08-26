@@ -70,7 +70,7 @@
                     tableAktif.classList.add('hidden');
                 }
 
-                loadStatusData();
+                loadData();
             }
         </script>
     </div>

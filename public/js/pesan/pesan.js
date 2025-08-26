@@ -60,6 +60,8 @@ function renderPesanTable(pesans, tableId, isActive) {
 
     pesans.forEach(item => {
         let actions = '';
+        console.log(item.jenis_id)
+        console.log(item.id)
         if (isActive) {
             actions = `
                 <button onclick="openEditLevelModal(${item.id}, '${item.nama}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>

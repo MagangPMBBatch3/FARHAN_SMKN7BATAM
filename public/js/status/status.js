@@ -10,7 +10,7 @@ async function loadStatusData() {
 
     const resAktif = await fetch('/graphql', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },    
         body: JSON.stringify({ query: queryAktif })
     });
     const dataAktif = await resAktif.json();
