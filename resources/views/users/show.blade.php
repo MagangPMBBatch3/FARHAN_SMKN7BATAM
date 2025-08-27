@@ -3,9 +3,14 @@
 
         <!-- Header -->
         <div class="bg-gradient-to-r from-blue-600 to-indigo-700 p-8 flex flex-col md:flex-row items-center md:items-start md:space-x-8">
-            <img src="{{ $user->foto ? asset('storage/'.$user->foto) : 'https://via.placeholder.com/150' }}"
-                 alt="Foto {{ $user->nama_lengkap }}"
-                 class="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover">
+        @php
+    $fotoPath = $user->foto && file_exists(public_path($user->foto))
+        ? asset($user->foto)
+        : asset('/image/default.png');
+@endphp    
+        <img src="{{ $fotoPath }}"
+     alt="Foto Profil"
+     class="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover">
             
             <div class="mt-6 md:mt-0 text-center md:text-left">
                 <h2 class="text-3xl font-bold text-white">{{ $user->nama_lengkap }}</h2>
@@ -64,10 +69,10 @@
                ← Kembali
             </a>
             <div class="flex gap-3 w-full md:w-auto">
-                <a href=""
+                <button href="" onclick="editModal({{ $user->id }})" 
                    class="flex-1 md:flex-none px-5 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white font-medium rounded-lg text-center transition">
                    <i class="fas fa-edit mr-1"></i> Edit
-                </a>
+                </button>
                 <a href="#"
                    onclick="return confirm('Hapus permanen user ini?')"
                    class="flex-1 md:flex-none px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg text-center transition">
@@ -76,4 +81,6 @@
             </div>
         </div>
     </div>
+    @include('components.userProfile.modal-edit')
+    <script src="{{ asset('js/userProfile/userProfile-edit.js') }}"></script>
 </x-layouts.main>

@@ -1,10 +1,10 @@
 <div id="modalAdd" class="hidden">
     <div class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center flex">
         <div class="bg-white rounded-lg shadow-lg w-[48rem] p-6">
-            <h2 class="text-lg font-bold mb-4">Tambah Jam Kerja</h2>
-            <form id="formAddJamKerja" onsubmit="createJamKerja(); return false;">
+            <h2 class="text-lg font-bold mb-4">Tambah User Profile</h2>
+            <form id="formAddUserProfile" onsubmit="createUserProfile(); return false;">
                 @csrf
-
+                <meta name="csrf-token" content="{{ csrf_token() }}">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label for="addUsersProfile" class="block mb-1">User</label>

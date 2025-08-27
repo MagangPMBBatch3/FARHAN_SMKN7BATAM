@@ -41,7 +41,7 @@ async function loadData() {
 
     const queryArsip = `
       query {
-        allUserProfiles {
+        allUserProfileArsip {
             id
     user_id
     nama_lengkap
@@ -73,9 +73,8 @@ async function loadData() {
         body: JSON.stringify({ query: queryArsip }),
     });
     const dataArsip = await resArsip.json();
-    console.log(dataArsip);
     renderUserTable(
-        dataArsip?.data?.allUserProfilesArsip || [],
+        dataArsip?.data?.allUserProfileArsip || [],
         "dataUserProfilesArsip",
         false
     );
@@ -83,7 +82,6 @@ async function loadData() {
 
 function renderUserTable(userList, tableId, isActive) {
     const tbody = document.getElementById(tableId);
-    console.log("a" + tbody);
     tbody.innerHTML = "";
 
     if (!userList.length) {
@@ -99,37 +97,62 @@ function renderUserTable(userList, tableId, isActive) {
         let actions = "";
         if (isActive) {
             actions = `
-                <button onclick="openEditModal(${item.id}, '${item.nama_lengkap}', '${item.email}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
-                <button onclick="archiveUserProfile(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
+            <button 
+            onclick="editModal(
+                ${item.id}, 
+                ${item.user_id}, 
+                '${item.nama_lengkap}', 
+                '${item.user.email}', 
+                '${item.nrp || "-"}', 
+                '${item.alamat || "-"}', 
+                '${item.foto || "-"}', 
+                '${item.status_id || "-"}', 
+                '${item.bagian_id || "-"}', 
+                '${item.level_id || "-"}'
+            )" 
+            class="bg-yellow-500 text-white px-2 py-1 rounded">
+            Edit
+        </button>
+                <button onclick="archiveUserProfile(${
+                    item.id
+                })" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
                 <a href="/admin/user-profiles/${item.id}" 
        class="bg-blue-500 text-white px-2 py-1 rounded">Profil</a>
             `;
         } else {
             actions = `
-                <button onclick="restoreUser(${item.id})" class="bg-green-500 text-white px-2 py-1 rounded">Restore</button>
-                <button onclick="forceDeleteUser(${item.id})" class="bg-red-700 text-white px-2 py-1 rounded">Hapus Permanen</button>
+                <button onclick="restoreUserProfile(${item.id})" class="bg-green-500 text-white px-2 py-1 rounded">Restore</button>
+                <button onclick="forceDeleteUserProfile(${item.id})" class="bg-red-700 text-white px-2 py-1 rounded">Hapus Permanen</button>
             `;
         }
 
         tbody.innerHTML += `
-            <tr>
-                <td class="border p-2">${item.id}</td>
-                <td class="border p-2">${item.user_id}</td>
-                <td class="border p-2">${item.nama_lengkap}</td>
-                <td class="border p-2">${item.user.email}</td>
-                <td class="border p-2">${item.nrp}</td>
-                <td class="border p-2">${item.alamat}</td>
-                <td class="border p-2">${item.foto}</td>
-                <td class="border p-2">${item.bagian.nama}</td>
-                <td class="border p-2">${item.level.nama}</td>
-                <td class="border p-2">${item.status.nama}</td>
-                <td class="border p-2">${actions}</td>
-            </tr>
+        <tr>
+        <td class="border p-2">${item.id}</td>
+        <td class="border p-2" hidden>${item.user_id}</td>
+        <td class="border p-2">${item.nama_lengkap}</td>
+        <td class="border p-2">${item.user?.email || "-"}</td>
+        <td class="border p-2">${item.nrp || "-"}</td>
+        <td class="border p-2">${item.alamat || "-"}</td>
+        <td class="border p-2" style="
+    max-width: 120px; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    color: blue;
+    text-overflow: ellipsis;
+" title="${item.foto || "-"}"><a href="${item.foto || "-"}">${item.foto || "-"}</a>
+    
+</td>
+        <td class="border p-2">${item.bagian?.nama || "-"}</td>
+        <td class="border p-2">${item.level?.nama || "-"}</td>
+        <td class="border p-2">${item.status?.nama || "-"}</td>
+        <td class="border p-2">${actions}</td>
+    </tr>
         `;
     });
 }
 
-async function archiveUser(id) {
+async function archiveUserProfile(id) {
     if (!confirm("Pindahkan ke arsip?")) return;
     const mutation = `
         mutation {
@@ -144,7 +167,7 @@ async function archiveUser(id) {
     loadData();
 }
 
-async function restoreUser(id) {
+async function restoreUserProfile(id) {
     if (!confirm("Kembalikan dari arsip?")) return;
     const mutation = `
         mutation {

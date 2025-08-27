@@ -21,7 +21,8 @@ class Pesan extends Model
     ];
 
     public function jenis()
-    {
-        return $this->belongsTo(Pesan::class, 'jenis_id', 'id');
-    }
+{
+    return $this->belongsTo(\App\Models\Pesan\JenisPesan::class, 'jenis_id', 'id');
+}
+
 }

@@ -7,7 +7,9 @@ use App\Http\Controllers\BagianController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\UploadController;
 
+Route::post('/upload', [UploadController::class, 'store']);
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.index');
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 

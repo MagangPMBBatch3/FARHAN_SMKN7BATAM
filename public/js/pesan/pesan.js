@@ -1,187 +1,126 @@
-async function loadPesanData() {
-    const queryAktif = `
+async function loadContacts() {
+    const query = `
       query {
         allPesan {
-          id
           pengirim
           penerima
           isi
-          parent_id
           tgl_pesan
-          jenis_id
-        }   
-      }
-    `;
-
-    const resAktif = await fetch('/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: queryAktif })
-    });
-    const dataAktif = await resAktif.json();
-    renderPesanTable(dataAktif?.data?.allPesan || [], 'dataPesan', true);
-
-    const queryArsip = `
-      query {
-        allPesanArsip {
-            id
-            pengirim
-            penerima
-            isi
-            parent_id
-            tgl_pesan
-            jenis_id
         }
       }
     `;
+    const res = await fetchGraphQL(query);
+    const pesan = res.data.allPesan;
 
-    const resArsip = await fetch('/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: queryArsip })
+    let kontak = new Map();
+
+    pesan.forEach(p => {
+        let friend = (p.pengirim === me) ? p.penerima : p.pengirim;
+        if (friend !== me) {
+            kontak.set(friend, p);
+        }
     });
-    const dataArsip = await resArsip.json();
-    renderPesanTable(dataArsip?.data?.allPesanArsip || [], 'dataPesanArsip', false);
+
+    renderContacts([...kontak.entries()]);
 }
 
+function renderContacts(list) {
+    const container = document.getElementById("contactList");
+    container.innerHTML = "";
+    list.forEach(([friend, lastMsg]) => {
+        const div = document.createElement("div");
+        div.className = "flex items-center gap-3 p-3 cursor-pointer hover:bg-gray-100 border-b";
+        div.onclick = () => openChat(friend);
 
-function renderPesanTable(pesans, tableId, isActive) {
-    const tbody = document.getElementById(tableId);
-    tbody.innerHTML = '';
-
-    if (!pesans.length) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="3" class="text-center text-gray-500 p-3">Tidak ada data</td>
-            </tr>
+        div.innerHTML = `
+            <div class="w-10 h-10 rounded-full bg-gray-300"></div>
+            <div class="flex-1">
+                <p class="font-semibold">${friend}</p>
+                <p class="text-xs text-gray-500 truncate">${lastMsg.isi}</p>
+            </div>
+            <span class="text-xs text-gray-400">${new Date(lastMsg.tgl_pesan).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
         `;
-        return;
-    }
-
-    pesans.forEach(item => {
-        let actions = '';
-        console.log(item.jenis_id)
-        console.log(item.id)
-        if (isActive) {
-            actions = `
-                <button onclick="openEditLevelModal(${item.id}, '${item.nama}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
-                <button onclick="archiveLevel(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
-            `;
-        } else {
-            actions = `
-                <button onclick="restoreLevel(${item.id})" class="bg-green-500 text-white px-2 py-1 rounded">Restore</button>
-                <button onclick="forceDeleteLevel(${item.id})" class="bg-red-700 text-white px-2 py-1 rounded">Hapus Permanen</button>
-            `;
-        }
-
-        tbody.innerHTML += `
-            <tr>
-                <td class="border p-2">${item.id}</td>
-                <td class="border p-2">${item.pengirim}</td>
-                <td class="border p-2">${item.penerima}</td>
-                <td class="border p-2">${item.isi}</td>
-                <td class="border p-2">${item.parent_id}</td>
-                <td class="border p-2">${item.tgl_pesan}</td>
-                <td class="border p-2">${item.jenis_id}</td>
-                <td class="border p-2">${item.jenis}</td>
-                <td class="border p-2">${actions}</td>
-            </tr>
-        `;
+        container.appendChild(div);
     });
 }
 
-async function archivePesan(id) {
-    if(!confirm('Pindahkan ke arsip?')) return;
-    const mutation = `
-    mutation {
-    deletePesan(id: ${id}){id}
-    }
+async function openChat(friend) {
+    activeChat = friend;
+    document.getElementById("chatHeader").innerText = friend;
+
+    const query = `
+      query($me: String!, $friend: String!) {
+        allPesan(
+          filter: {
+            OR: [
+              { AND: [{ pengirim: { eq: $me }}, { penerima: { eq: $friend }}] }
+              { AND: [{ pengirim: { eq: $friend }}, { penerima: { eq: $me }}] }
+            ]
+          }
+          orderBy: [{ field: "tgl_pesan", order: ASC }]
+        ) {
+          id pengirim penerima isi tgl_pesan
+        }
+      }
     `;
-    await fetch('/graphql', {
-    method: 'POST',
-    headers: {'Content-Type' : 'application/json'},
-    body: JSON.stringify({ query: mutation})
-  });
-  loadPesanData();
-    
+
+    const res = await fetchGraphQL(query, { me, friend });
+    renderMessages(res.data.allPesan);
 }
 
-async function restoreLevel(id) {
-    if (!confirm('Kembalikan dari arsip')) return;
-    const mutation =`
-    mutation {
-    restoreLevel(id: ${id}){id}}
-    `;
-    await fetch('/graphql', {
-    method: 'POST',
-    headers: {'Content-Type' : 'application/json'},
-    body: JSON.stringify({ query: mutation})
-  });
-  loadPesanData();
+function renderMessages(pesan) {
+    const container = document.getElementById("chatContainer");
+    container.innerHTML = "";
+    pesan.forEach(p => {
+        const div = document.createElement("div");
+        div.className = (p.pengirim === me) ? "flex justify-end" : "flex justify-start";
+
+        div.innerHTML = `
+          <div class="max-w-xs ${p.pengirim === me ? 'bg-blue-500 text-white' : 'bg-gray-200'} p-2 rounded-lg shadow">
+              <p class="text-sm">${p.isi}</p>
+              <p class="text-xs text-right text-gray-500">${new Date(p.tgl_pesan).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+          </div>
+        `;
+        container.appendChild(div);
+    });
+    container.scrollTop = container.scrollHeight;
 }
 
-async function forceDeleteLevel(id) {
-    if(!confirm('Hapus permanen? Data tidak bisa dikembalikan')) return;
-    const mutation = `
-    mutation{
-    forceDeleteLevel(id: ${id}){id}}`;
-    await fetch('/graphql', {
-    method: 'POST',
-    headers: {'Content-Type' : 'application/json'},
-    body: JSON.stringify({ query: mutation})
-  });
-  loadPesanData();
-}
-
-async function searchPesan() {
-    const keyword = document.getElementById('searchPesan').value.trim();
-    if (!keyword) {
-        loadPesanData();
+async function sendMessage() {
+    if (!activeChat) {
+        alert("Pilih kontak dulu!");
         return;
     }
+    const input = document.getElementById("messageInput");
+    const text = input.value.trim();
+    if (!text) return;
 
-    let query = '';
-
-    if (!isNaN(keyword)) {
-        query = `
-        {
-            pesan(id: ${keyword}) {
-                id
-          pengirim
-          penerima
-          isi
-          parent_id
-          tgl_pesan
-          jenis_id
-            }
+    const mutation = `
+      mutation($input: CreatePesanInput!) {
+        createPesan(input: $input) {
+          id pengirim penerima isi tgl_pesan
         }
-        `;
-        const res = await fetch('/graphql', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query })
-        });
-        const data = await res.json();
-        renderPesanTable(data.data.Pesan ? [data.data.Pesan] : [], 'dataLevel', true);
+      }
+    `;
 
-    } else {
-        query = `
-        {
-            levelByNama(nama: "%${keyword}%") {
-                id
-                nama
-            }
+    await fetchGraphQL(mutation, {
+        input: {
+            pengirim: me,
+            penerima: activeChat,
+            isi: text,
+            jenis_id: 1
         }
-        `;
-        const res = await fetch('/graphql', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query })
-        });
-        const data = await res.json();
-        renderPesanTable(data.data.PesanByNama, 'dataPesan', true);
-    }
+    });
+
+    input.value = "";
+    openChat(activeChat); // refresh chat
 }
 
-
-document.addEventListener('DOMContentLoaded', loadPesanData);
+async function fetchGraphQL(query, variables = {}) {
+    const res = await fetch("/graphql", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query, variables })
+    });
+    return res.json();
+}
