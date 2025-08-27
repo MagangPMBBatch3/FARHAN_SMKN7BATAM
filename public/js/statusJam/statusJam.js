@@ -30,9 +30,8 @@ async function loadData() {
         body: JSON.stringify({ query: queryArsip }),
     });
     const dataArsip = await resArsip.json();
-    console.log(dataArsip);
     renderUserTable(
-        dataArsip?.data?.allStatusJamKerja || [],
+        dataArsip?.data?.allStatusJamKerjaArsip || [],
         "dataStatusJamArsip",
         false
     );
@@ -55,7 +54,7 @@ function renderUserTable(userList, tableId, isActive) {
         let actions = "";
         if (isActive) {
             actions = `
-                <button onclick="openEditModal(${item.id}, '${item.name}', '${item.email}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+                <button onclick="openEditModal(${item.id}, '${item.nama}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
                 <button onclick="archiveJamPerTanggal(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
             `;
         } else {
@@ -79,7 +78,7 @@ async function archiveJamPerTanggal(id) {
     if (!confirm("Pindahkan ke arsip?")) return;
     const mutation = `
         mutation {
-            deleteJamPerTanggal(id: ${id}) { id }
+            deleteStatusJamKerja(id: ${id}) { id }
         }
     `;
     await fetch("/graphql", {
@@ -94,7 +93,7 @@ async function restoreJamPerTanggal(id) {
     if (!confirm("Kembalikan dari arsip?")) return;
     const mutation = `
         mutation {
-            restoreJamPerTanggal(id: ${id}) { id }
+            restoreStatusJamKerja(id: ${id}) { id }
         }
     `;
     await fetch("/graphql", {
@@ -109,7 +108,7 @@ async function forceDeleteJamPerTanggal(id) {
     if (!confirm("Hapus permanen? Data tidak bisa dikembalikan")) return;
     const mutation = `
         mutation {
-            forceDeleteJamPerTanggal(id: ${id}) { id }
+            forceStatusJamKerja(id: ${id}) { id }
         }
     `;
     await fetch("/graphql", {
@@ -120,8 +119,8 @@ async function forceDeleteJamPerTanggal(id) {
     loadData();
 }
 
-async function search() {
-    const keyword = document.getElementById("search").value.trim();
+async function searchStatus() {
+    const keyword = document.getElementById("searchStatus").value.trim();
     if (!keyword) {
         loadData();
         return;
@@ -132,7 +131,7 @@ async function search() {
     if (!isNaN(keyword)) {
         query = `
         {
-            jamPerTanggal(id: ${keyword}) {
+            statusJamKerja(id: ${keyword}) {
                 id
           nama
             }
@@ -146,18 +145,17 @@ async function search() {
         const data = await res.json();
         console.log(data);
         renderUserTable(
-            data.data.jamPerTanggal ? [data.data.jamPerTanggal] : [],
+            data.data.statusJamKerja ? [data.data.statusJamKerja] : [],
             "dataStatusJam",
             true
         );
     } else {
         query = `
         {
-            userByName(name: "%${keyword}%") {
+            statusJamKerjaByNama(nama: "%${keyword}%") {
                 id
           nama
         }
-            }
         }
         `;
         const res = await fetch("/graphql", {
@@ -166,7 +164,7 @@ async function search() {
             body: JSON.stringify({ query }),
         });
         const data = await res.json();
-        renderUserTable(data.data.jamPerTanggal || [], "dataStatusJam", true);
+        renderUserTable(data.data.statusJamKerjaByNama || [], "dataStatusJam", true);
     }
 }
 

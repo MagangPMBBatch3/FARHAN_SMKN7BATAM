@@ -18,7 +18,6 @@ async function creatBagian(){
             id
             nama
             }
-        }
     `;
 
     await fetch('/graphql', {

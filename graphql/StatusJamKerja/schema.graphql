@@ -19,10 +19,22 @@ extend type Query {
   statusJamKerja(id: ID! @eq): StatusJamKerja @find(model: "App\\Models\\StatusJamKerja\\StatusJamKerja")
   allStatusJamKerjaArsip: [StatusJamKerja!]!
     @field(resolver: "App\\GraphQL\\StatusJamKerja\\Queries\\StatusJamKerjaQuery@allArsip")
+  statusJamKerjaByNama(
+        nama: String! @where(operator: "like", key: "nama")
+    ): [Status!]! @all(model: "App\\Models\\StatusJamKerja\\StatusJamKerja")
 }
 
 extend type Mutation {
-  createStatusJamKerja(input: CreateStatusJamKerjaInput! @spread): StatusJamKerja @create
-  updateStatusJamKerja(id: ID! @eq, input: UpdateStatusJamKerjaInput! @spread): StatusJamKerja @update
-  deleteStatusJamKerja(id: ID! @eq): StatusJamKerja @delete
+  createStatusJamKerja(input: CreateStatusJamKerjaInput! @spread): StatusJamKerja @create(model: "App\\Models\\StatusJamKerja\\StatusJamKerja")
+  updateStatusJamKerja(id: ID! @eq, input: UpdateStatusJamKerjaInput! @spread): StatusJamKerja @update(model: "App\\Models\\StatusJamKerja\\StatusJamKerja")
+  deleteStatusJamKerja(id: ID! @eq): StatusJamKerja @delete(model: "App\\Models\\StatusJamKerja\\StatusJamKerja")
+  restoreStatusJamKerja(id: ID!): Status
+        @field(
+            resolver: "App\\GraphQL\\StatusJamKerja\\Mutations\\StatusJamKerjaMutation@restore"
+        )
+
+    forceDeleteStatusJamKerja(id: ID!): Status
+        @field(
+            resolver: "App\\GraphQL\\StatusJamKerja\\Mutations\\StatusJamKerjaMutation@forceDelete"
+        )
 }

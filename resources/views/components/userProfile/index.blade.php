@@ -5,7 +5,7 @@
         <div class="flex justify-between mb-4">
             <input type="text" id="search" placeholder=" Cari ID atau Nama..." class="border p-2 rounded w-64"
                 oninput="search()">
-            <button onclick="openAddModal()" class="bg-blue-500 text-white px-4 py-2 rounded">
+            <button onclick="addModal()" class="bg-blue-500 text-white px-4 py-2 rounded">
                 Tambah Data
             </button>
         </div>
@@ -25,7 +25,7 @@
                 <thead class="bg-gray-200">
                     <tr>
                         <th class="p-2 border">ID</th>
-                        <th class="p-2 border">user ID</th>
+                        <th class="p-2 border" hidden>user ID</th>
                         <th class="p-2 border">Nama Lengkap</th>
                         <th class="p-2 border">Email</th>
                         <th class="p-2 border">nrp</th>
@@ -47,6 +47,7 @@
                 <thead class="bg-gray-200">
                     <tr>
                         <th class="p-2 border">ID</th>
+                        <th class="p-2 border" hidden>user ID</th>
                         <th class="p-2 border">Nama Lengkap</th>
                         <th class="p-2 border">Email</th>
                         <th class="p-2 border">nrp</th>

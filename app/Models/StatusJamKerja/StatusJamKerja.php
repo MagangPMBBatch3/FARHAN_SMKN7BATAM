@@ -12,4 +12,10 @@ class StatusJamKerja extends Model
     protected $table = 'status_jam_kerja';
     protected $primaryKey = 'id';
     protected $fillable = ['nama'];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
+    ];
 }

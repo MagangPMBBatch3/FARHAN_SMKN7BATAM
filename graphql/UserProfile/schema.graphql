@@ -18,10 +18,16 @@ type UserProfile {
 }
 
 input UpdateUserProfileInput {
+    user_id: ID!
+    nama_lengkap: String!  
     nrp: String
     alamat: String
     foto: String
+    bagian_id: Int
+    level_id: Int
+    status_id: Int
 }
+
 
 input CreateUserProfileInput {
     user_id: ID!
@@ -37,6 +43,9 @@ input CreateUserProfileInput {
 extend type Query {
     allUserProfiles: [UserProfile!]!
         @all(model: "App\\Models\\UserProfile\\UserProfile")
+
+    allUserProfileArsip: [UserProfile!]!
+      @field(resolver: "App\\GraphQL\\UserProfile\\Queries\\UserProfileQuery@allArsip")
 
     userProfile(id: ID! @eq): UserProfile
         @find(model: "App\\Models\\UserProfile\\UserProfile")

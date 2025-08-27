@@ -24,14 +24,10 @@ class UserProfile extends Model
     ];
 
     protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
-    protected static function booted()
-    {
-        static::addGlobalScope('not_deleted', function ($builder) {
-            $builder->whereNull('deleted_at');
-        });
-    }
 
     public function user()
     {

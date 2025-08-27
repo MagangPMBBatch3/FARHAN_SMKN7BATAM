@@ -17,4 +17,3 @@ scalar DateTime
 #import ./Keterangan/Schema.graphql
 #import ./ModeJamKerja/Schema.graphql
 #import ./StatusJamKerja/Schema.graphql
-

@@ -1,48 +1,53 @@
 type Pesan {
-  id: ID!
-  pengirim: String!
-  penerima: String!
-  isi: String!
-  parent_id: Int
-  tgl_pesan: DateTime
-  jenis_id: Int!
-  jenis: JenisPesan! @belongsTo
-  created_at: DateTime
-  updated_at: DateTime
-  deleted_at: DateTime
+    id: ID!
+    pengirim: String!
+    penerima: String!
+    isi: String!
+    parent_id: Int
+    tgl_pesan: DateTime
+    jenis_id: Int!
+    jenis: JenisPesan! @belongsTo
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
 }
 
 input CreatePesanInput {
-  pengirim: String!
-  penerima: String!
-  isi: String!
-  parent_id: Int
-  tgl_pesan: DateTime
-  jenis_id: Int!
+    pengirim: String!
+    penerima: String!
+    isi: String!
+    parent_id: Int
+    tgl_pesan: DateTime
+    jenis_id: Int!
 }
 
 input UpdatePesanInput {
-  id: ID!
-  pengirim: String
-  penerima: String
-  isi: String
-  parent_id: Int
-  tgl_pesan: DateTime
-  jenis_id: Int
+    id: ID!
+    pengirim: String
+    penerima: String
+    isi: String
+    parent_id: Int
+    tgl_pesan: DateTime
+    jenis_id: Int
 }
 extend type Query {
-  allPesan: [Pesan!]! @all(model: "App\\Models\\Pesan\\Pesan")
-  pesan(id: ID! @eq): Pesan @find(model: "App\\Models\\Pesan\\Pesan")
+    allPesan: [Pesan!]! @all(model: "App\\Models\\Pesan\\Pesan")
+    pesan(id: ID! @eq): Pesan @find(model: "App\\Models\\Pesan\\Pesan")
 }
 
-
 extend type Mutation {
-  createPesan(input: CreatePesanInput! @spread): Pesan! @create(model: "App\\Models\\Pesan\\Pesan")
-  updatePesan(input: UpdatePesanInput! @spread): Pesan! @update(model: "App\\Models\\Pesan\\Pesan")
-  deletePesan(id: ID! @eq): Pesan @delete(model: "App\\Models\\Pesan\\Pesan")
-  restorePesan(id: ID!): Pesan
-    @field(resolver: "App\\GraphQL\\Pesan\\Mutations\\PesanMutation@restore")
+    createPesan(input: CreatePesanInput! @spread): Pesan!
+        @create(model: "App\\Models\\Pesan\\Pesan")
+    updatePesan(input: UpdatePesanInput! @spread): Pesan!
+        @update(model: "App\\Models\\Pesan\\Pesan")
+    deletePesan(id: ID! @eq): Pesan @delete(model: "App\\Models\\Pesan\\Pesan")
+    restorePesan(id: ID!): Pesan
+        @field(
+            resolver: "App\\GraphQL\\Pesan\\Mutations\\PesanMutation@restore"
+        )
 
-  forceDeletePesan(id: ID!): Pesan
-    @field(resolver: "App\\GraphQL\\Pesan\\Mutations\\PesanMutation@forceDelete")
+    forceDeletePesan(id: ID!): Pesan
+        @field(
+            resolver: "App\\GraphQL\\Pesan\\Mutations\\PesanMutation@forceDelete"
+        )
 }
