@@ -1,4 +1,4 @@
-  type User {
+type User {
     id: ID!
     name: String!
     email: String!
@@ -6,54 +6,51 @@
     created_at: DateTime
     updated_at: DateTime
     deleted_at: DateTime
-  }
+}
 
-  input CreateUserInput {
+input CreateUserInput {
     name: String!
     email: String!
     password: String!
-  }
+}
 
-  input UpdateUserInput {
+input UpdateUserInput {
     name: String
     email: String
     password: String
     email_verified_at: DateTime
-  }
+}
 
-  extend type Query {
-    allUsers: [User!]!
-      @all(model: "App\\Models\\User\\User")
+extend type Query {
+    allUsers: [User!]! @all(model: "App\\Models\\User\\User")
 
-    user(id: ID! @eq(key: "id")): User
-      @find(model: "App\\Models\\User\\User")
+    user(id: ID! @eq(key: "id")): User @find(model: "App\\Models\\User\\User")
     allUserArsip: [User!]!
-      @field(resolver: "App\\GraphQL\\User\\Queries\\UserQuery@allArsip")
+        @field(resolver: "App\\GraphQL\\User\\Queries\\UserQuery@allArsip")
 
-    userByEmail(email: String! @where(operator: "like", key: "email")): [User!]!
-      @all(model: "App\\Models\\User\\User")
+    userByEmail(
+        email: String! @where(operator: "like", key: "email")
+    ): [User!]! @all(model: "App\\Models\\User\\User")
 
     userByName(name: String! @where(operator: "like", key: "name")): [User!]!
-      @all(model: "App\\Models\\User\\User")  
-      
-  }
+        @all(model: "App\\Models\\User\\User")
+}
 
-  extend type Mutation {
+extend type Mutation {
     createUser(input: CreateUserInput! @spread): User
-      @create(model: "App\\Models\\User\\User")
+        @create(model: "App\\Models\\User\\User")
 
-    updateUser(
-      id: ID! @eq(key: "id"),
-      input: UpdateUserInput! @spread
-    ): User
-      @update(model: "App\\Models\\User\\User")
+    updateUser(id: ID! @eq(key: "id"), input: UpdateUserInput! @spread): User
+        @update(model: "App\\Models\\User\\User")
 
     deleteUser(id: ID! @eq(key: "id")): User
-      @delete(model: "App\\Models\\User\\User")
+        @delete(model: "App\\Models\\User\\User")
 
     restoreUser(id: ID!): User
-      @field(resolver: "App\\GraphQL\\User\\Mutations\\UserMutation@restore")
+        @field(resolver: "App\\GraphQL\\User\\Mutations\\UserMutation@restore")
 
     forceDeleteUser(id: ID!): User
-      @field(resolver: "App\\GraphQL\\User\\Mutations\\UserMutation@forceDelete")
-  }
+        @field(
+            resolver: "App\\GraphQL\\User\\Mutations\\UserMutation@forceDelete"
+        )
+}
