@@ -57,7 +57,8 @@ function renderUserTable(userList, tableId, isActive) {
             actions = `
                 <button onclick="openEditModal(${item.id}, '${item.name}', '${item.email}')" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
                 <button onclick="archiveUser(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Arsipkan</button>
-                <button onclick="userProfile(${item.id})" class="bg-green-500 text-white px-2 py-1 rounded">User Profile</button>
+                <a href="/admin/user-profiles/${item.id}" 
+       class="bg-blue-500 text-white px-2 py-1 rounded">Profil</a>
             `;
         } else {
             actions = `

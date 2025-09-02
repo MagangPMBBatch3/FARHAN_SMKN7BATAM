@@ -90,7 +90,7 @@ async function createUserProfile() {
         uploadData.append("foto", fotoFile);
 
         const token = document
-            .querySelector('meta[name="csrf-token"]')
+            .querySelector('meta[name="csrf-token"]') 
             .getAttribute("content");
 
         const uploadRes = await fetch("/upload", {

@@ -18,5 +18,5 @@ class StatusMutation {
         $status = Statuses::withTrashed()->findOrFail($args['id']);
         $status->forceDelete();
         return $status;
-    }
+    }       
 }

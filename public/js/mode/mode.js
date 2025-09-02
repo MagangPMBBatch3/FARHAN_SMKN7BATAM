@@ -105,7 +105,7 @@ function renderModeJamKerjaTable(items, tableId, isActive) {
                 <td class="border p-2">${item.nama}</td>
                 <td class="border p-2">${actions}</td>
             </tr>
-        `;
+        `;  
     });
 }
 

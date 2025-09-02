@@ -3,14 +3,14 @@
 
         <!-- Header -->
         <div class="bg-gradient-to-r from-blue-600 to-indigo-700 p-8 flex flex-col md:flex-row items-center md:items-start md:space-x-8">
-        @php
-    $fotoPath = $user->foto && file_exists(public_path($user->foto))
-        ? asset($user->foto)
-        : asset('/image/default.png');
-@endphp    
-        <img src="{{ $fotoPath }}"
-     alt="Foto Profil"
-     class="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover">
+            @php
+        $fotoPath = $user->foto && file_exists(public_path($user->foto))
+            ? asset($user->foto)
+            : asset('/image/default.png');
+    @endphp    
+            <img src="{{ $fotoPath }}"
+        alt="Foto Profil"
+        class="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover">
             
             <div class="mt-6 md:mt-0 text-center md:text-left">
                 <h2 class="text-3xl font-bold text-white">{{ $user->nama_lengkap }}</h2>
@@ -44,8 +44,8 @@
                     </li>
                 </ul>
 
-                <!-- Right Info -->
-                <ul class="space-y-4">
+                <!-- Right Info -->`
+                <ul class="space-y-4">  
                     <li class="flex items-start">
                         <i class="fas fa-users text-purple-500 w-6"></i>
                         <span class="ml-3"><span class="font-medium text-gray-700">Bagian:</span> {{ $user->bagian->nama ?? '-' }}</span>

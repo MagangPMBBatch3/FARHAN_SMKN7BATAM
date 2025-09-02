@@ -11,7 +11,7 @@ class UploadController extends Controller
         if (!$request->hasFile('foto')) {
             return response()->json(['success' => false, 'message' => 'No file uploaded'], 400);
         }
-
+        
         $file = $request->file('foto');
         $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
 

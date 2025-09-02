@@ -13,7 +13,7 @@ Route::post('/upload', [UploadController::class, 'store']);
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.index');
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
-Route::get('/admin/user-profiles/{id}', [UserController::class, 'show'])->name('admin.userProfiles.show');
+Route::get('/admin/user-profiles/{id}', [UserController::class, 'show']);   
 
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
