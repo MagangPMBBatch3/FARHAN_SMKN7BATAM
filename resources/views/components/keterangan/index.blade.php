@@ -72,7 +72,7 @@
                     tableArsip.classList.remove('hidden');
                     tableAktif.classList.add('hidden');
                 }
-
+                    
                 loadKeteranganData();
             }
 
